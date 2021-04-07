@@ -1,5 +1,5 @@
 <template>
-    <div>
-        333
-    </div>
+  <div>
+    <router-link to="model.vue">首页</router-link>
+  </div>
 </template>
