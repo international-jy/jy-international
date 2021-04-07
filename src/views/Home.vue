@@ -515,9 +515,6 @@ export default {
 };
 </script>
 
-
-
-
 <style lang="less" scope>
 @import "../assets/less/base.less";
 
@@ -876,5 +873,3 @@ export default {
   }
 }
 </style>
-
-
