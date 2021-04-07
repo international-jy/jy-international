@@ -4,7 +4,7 @@
       <!-- 头部导航 -->
       <div class="nav-box">
         <img src="@/assets/img/nav.png" alt="" class="nav-title" />
-        <div class="nav-btn">
+        <div class="nav-btn" @click="onClickNav">
           <img src="@/assets/img/nav-right.png" alt="" />
         </div>
       </div>
@@ -448,12 +448,12 @@
     <div class="pql-btm-fixed">
       <ul>
         <li>
-          <a href="javascript:;">
+          <router-link to="/news">
             <i>
               <img src="@/assets/img/btm-fiexd3.png" alt="" />
             </i>
             <p>首页</p>
-          </a>
+          </router-link>
         </li>
         <li>
           <a href="javascript:;">
@@ -473,16 +473,58 @@
         </li>
       </ul>
     </div>
+    <div class="mip-lightbox" :class="navFlag ? 'dn' : ''" @click="onClickTier">
+      <div class="lightbox-r">
+        <div class="moresetup">
+          <ul>
+            <li>
+              <router-link to="/home">首页</router-link>
+            </li>
+            <li>
+              <router-link to="/news">夜场新闻</router-link>
+            </li>
+            <li>
+              <!-- <a href="">联系我们</a> -->
+              <router-link to="/contact">联系我们</router-link>
+            </li>
+            <li>
+              <!-- <a href="">模特展示</a> -->
+              <router-link to="/show">模特展示</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      navFlag: true,
+    };
+  },
+  methods: {
+    onClickNav: function () {
+      this.navFlag = !this.navFlag;
+    },
+    onClickTier: function () {
+      this.navFlag = !this.navFlag;
+    },
+  },
+};
+</script>
+
+
+
 
 <style lang="less" scope>
-@import '../assets/less/base.less';
+@import "../assets/less/base.less";
 
 .nav-box {
   // position: relative;
   width: 100%;
-  height: (100/@vw);
+  height: (100 / @vw);
   .nav-title {
     width: 100%;
   }
@@ -773,6 +815,61 @@
         text-align: center;
         img {
           .setwh(40,40);
+        }
+      }
+    }
+  }
+}
+
+.mip-lightbox {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+  .lightbox-r {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 60%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 99;
+    box-shadow: -2px 0 5px #000;
+    .moresetup {
+      width: 100%;
+      ul {
+        width: 100%;
+        li {
+          position: relative;
+          border-bottom: 2px solid #45494c;
+          margin: (28 / @vw);
+          &:last-child {
+            border: none;
+          }
+          a {
+            display: block;
+            color: #fff;
+            font-size: (31 / @vw);
+            padding: (10 / @vw) 0 (10 / @vw) (46 / @vw);
+            box-sizing: border-box;
+            &::before {
+              content: "";
+              position: absolute;
+              left: (-6 / @vw);
+              top: 50%;
+              background-color: #5b5d5e;
+              height: 1px;
+              width: 4px;
+              margin-left: (26 / @vw);
+              box-shadow: -1px 1px 0 #5b5d5e, -2px 2px 0 #5b5d5e,
+                -3px 3px 0 #5b5d5e, -4px 4px 0 #5b5d5e, -5px 5px 0 #5b5d5e,
+                -1px -1px 0 #5b5d5e, -2px -2px 0 #5b5d5e, -3px -3px 0 #5b5d5e,
+                -4px -4px 0 #5b5d5e, -5px -5px 0 #5b5d5e;
+            }
+          }
         }
       }
     }
