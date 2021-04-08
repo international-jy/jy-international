@@ -22,7 +22,10 @@
           <p></p>
         </div>
         <div class="environment">
-          <div class="cd-environment" :class="environmentMove?'cd-environment-m':''">
+          <div
+            class="cd-environment"
+            :class="environmentMove ? 'cd-environment-m' : ''"
+          >
             <div class="cd-title">
               <img src="@/assets/img/environment1.jpeg" alt="" />
             </div>
@@ -89,356 +92,11 @@
       <div class="tjb-box">
         <div class="tjb-content">
           <ul>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会招聘模特条件改掉这些习惯</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场模特说话技巧如何打动面试官</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘找不到工作原因不同类型面试</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘选择工作注意着重考察求职者</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘如何获得考官好感注重第一印象</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘管理者自身修养在面试什么</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场模特如何走台步招聘好工作标准</a
-              >
-            </li>
-            <li>
+            <li v-for="(value, index) in newsList" :key="index">
               <a>
-                <img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘面试问题如何面对多位考
-              </a>
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘如何自我介绍要有才艺吗</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘说话禁忌哪些工作机会吃香</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会招聘女模特注重应聘者能力</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘怎么面试好喝完酒后用这些技巧</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场正规职位判断相貌普通可应聘吗</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会招聘应聘概率怎样工作类型</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘高薪模特规范怎么穿衣服好看</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘求职如何打扮形象气质很重要</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />选择模特要掌握技巧客人方面要关注</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场需会说话的女人如何判断职位信息</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘交流很关键模特要具备的品质</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘怎么提高标准坐台时候怎么做</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘要审核才艺工作一般时间多久</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘年龄有没限制遵守规矩很重要</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会招聘面试技巧如何提高竞争力</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘知道的流程要培训多久</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会面试注意事项招聘人员要求</a
-              >
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会招聘模特条件改掉这些习惯</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场模特说话技巧如何打动面试官</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘找不到工作原因不同类型面试</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘选择工作注意着重考察求职者</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘如何获得考官好感注重第一印象</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘管理者自身修养在面试什么</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场模特如何走台步招聘好工作标准</a
-              >
-            </li>
-            <li>
-              <a>
-                <img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘面试问题如何面对多位考
-              </a>
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘如何自我介绍要有才艺吗</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘说话禁忌哪些工作机会吃香</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会招聘女模特注重应聘者能力</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘怎么面试好喝完酒后用这些技巧</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场正规职位判断相貌普通可应聘吗</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会招聘应聘概率怎样工作类型</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘高薪模特规范怎么穿衣服好看</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘求职如何打扮形象气质很重要</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />选择模特要掌握技巧客人方面要关注</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场需会说话的女人如何判断职位信息</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘交流很关键模特要具备的品质</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘怎么提高标准坐台时候怎么做</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘要审核才艺工作一般时间多久</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘年龄有没限制遵守规矩很重要</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会招聘面试技巧如何提高竞争力</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜场招聘知道的流程要培训多久</a
-              >
-            </li>
-            <li>
-              <a
-                ><img
-                  src="@/assets/img/text_list_code_bg.jpg"
-                />夜总会面试注意事项招聘人员要求</a
+                <img src="@/assets/img/text_list_code_bg.jpg" />{{
+                  value.text
+                }}</a
               >
             </li>
           </ul>
@@ -456,14 +114,14 @@
           </router-link>
         </li>
         <li>
-          <a href="javascript:;">
+          <a href="tel:120">
             <i>
               <img src="@/assets/img/btm-fiexd2.png" alt="" />
             </i>
             <p>电话</p>
           </a>
         </li>
-        <li>
+        <li @click="onClickcode">
           <a href="javascript:;">
             <i>
               <img src="@/assets/img/btm-fiexd1.png" alt="" />
@@ -495,6 +153,13 @@
         </div>
       </div>
     </div>
+    <!-- 微信二维码 -->
+    <div class="or-code" :class="flag ? 'dn' : ''" @click="onClickOr">
+      <div class="white">
+        <img src="@/assets/img/code.png" alt="" />
+        <p>长按识别二维码</p>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -502,8 +167,226 @@ export default {
   data() {
     return {
       navFlag: true,
-      environmentMove:false,
-      flag:true
+      environmentMove: false,
+      flag: true,
+      newsList: [
+        {
+          text: "111",
+        },
+        {
+          text: "222",
+        },
+        {
+          text: "3333",
+        },
+        {
+          text: "44444444",
+        },
+        {
+          text: "5555555",
+        },
+        {
+          text: "66666",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "111",
+        },
+        {
+          text: "222",
+        },
+        {
+          text: "3333",
+        },
+        {
+          text: "44444444",
+        },
+        {
+          text: "5555555",
+        },
+        {
+          text: "66666",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+        {
+          text: "夜总会招聘模特条件改掉这些习惯",
+        },
+      ],
     };
   },
   methods: {
@@ -513,20 +396,26 @@ export default {
     onClickTier: function () {
       this.navFlag = !this.navFlag;
     },
-     scrollHandle(e){
-	  let top = e.srcElement.scrollingElement.scrollTop;    // 获取页面滚动高度
-    // var flag = true
-        if(top > 200){
-          if(this.flag){
-            this.environmentMove = !this.environmentMove;
-            this.flag = false;
-          }
+    onClickcode: function () {
+      this.flag = !this.flag;
+    },
+    onClickOr: function () {
+      this.flag = !this.flag;
+    },
+    scrollHandle(e) {
+      let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
+      // var flag = true
+      if (top > 200) {
+        if (this.flag) {
+          this.environmentMove = !this.environmentMove;
+          this.flag = false;
         }
       }
+    },
   },
-  mounted(){
-		  window.addEventListener('scroll',this.scrollHandle);//绑定页面滚动事件
-	  },
+  mounted() {
+    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+  },
 };
 </script>
 
@@ -537,9 +426,18 @@ export default {
     opacity: 0;
     transform: translateY(500px);
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-986 / @vw);
   }
 }
 .nav-box {
@@ -617,11 +515,12 @@ export default {
   }
   .environment {
     padding: 0 (20 / @vw);
-    .cd-title,.cd-title-hd{
+    .cd-title,
+    .cd-title-hd {
       overflow: hidden;
       img {
         display: block;
-        animation: opcityMove 1.4s forwards ;
+        animation: opcityMove 1.4s forwards;
       }
     }
     .environment-bd {
@@ -644,9 +543,9 @@ export default {
       }
     }
     .cd-environment-m {
-        .environment-bd {
-          animation: opcityMove 1.6s forwards;
-        }
+      .environment-bd {
+        animation: opcityMove 1.6s forwards;
+      }
     }
   }
   .phone {
@@ -803,6 +702,8 @@ export default {
     margin-top: (20 / @vw);
     // box-sizing: border-box;
     ul {
+      animation: move 30s linear infinite;
+      transition: all 0.5s;
       li {
         border-bottom: 1px solid #ededed;
         a {
@@ -905,6 +806,37 @@ export default {
           }
         }
       }
+    }
+  }
+}
+
+//微信二维码弹出层
+
+.or-code {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 101;
+  .white {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    // .setwh(400,455);
+    padding: (37 / @vw);
+    background-color: #fff;
+    margin: (-230 / @vw) 0 0 (-200 / @vw);
+    border-radius: (10 / @vw);
+    img {
+      .setwh(327,327);
+      vertical-align: middle;
+      margin-bottom: (30 / @vw);
+    }
+    p {
+      text-align: center;
+      font-size: (22 / @vw);
     }
   }
 }
