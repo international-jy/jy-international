@@ -1,17 +1,20 @@
 <template>
-  <div class="xw-box" v-loading.fullscreen.lock="hide">
-    <div class="box">
+  <div
+    class="xw-box"
+    v-loading.fullscreen.lock="!hide"
+    element-loading-text="拼命加载中"
+    element-loading-background="rgba(255, 255, 255, 0.4)"
+  >
+    <div class="box" v-if="hide">
       <div class="top">
-        <div class="top-lt" @click="go(-1)">
-          <img src="@/assets/img/return.png" />
+        <div class="regard-return" @click="go(-1)">
+          <img src="@/assets/img/jiantou.png" alt="" />
         </div>
-        <div class="top-rt">
-          <div class="tit-icon1" @click="collect">
-            <img src="@/assets/img/tit_icon1.png" />
-          </div>
-          <div class="tit-icon2" @click="share">
-            <img src="@/assets/img/tit_icon2.png" />
-          </div>
+        <div class="regard-dl" @click="collect">
+          <img src="@/assets/img/tit_icon1.png" alt="" />
+        </div>
+        <div class="regard-link" @click="share">
+          <img src="@/assets/img/lianjie.png" alt="" />
         </div>
       </div>
       <div
@@ -37,7 +40,9 @@
       <div class="newsList" v-for="(item, k) in activeDate" :key="k">
         <h2>{{ item.title }}</h2>
         <div class="text">
-          <pre v-html="item.content"></pre>
+          <pre>{{ item.content | upper }}</pre>
+          <img :src="$store.state.domainName + item.image" alt="" />
+          <pre>{{ item.content | lower }}</pre>
         </div>
       </div>
       <div class="text-line"></div>
@@ -78,11 +83,47 @@
         <button @click="goList(id + 1)">下一篇</button>
       </div>
     </div>
+    <div class="pql-btm-fixed">
+      <ul>
+        <li>
+          <router-link to="/home">
+            <i>
+              <img src="@/assets/img/btm-fiexd3.png" alt="" />
+            </i>
+            <p>首页</p>
+          </router-link>
+        </li>
+        <li>
+          <a href="tel:120">
+            <i>
+              <img src="@/assets/img/btm-fiexd2.png" alt="" />
+            </i>
+            <p>电话</p>
+          </a>
+        </li>
+        <li @click="onClickcode">
+          <a href="javascript:;">
+            <i>
+              <img src="@/assets/img/btm-fiexd1.png" alt="" />
+            </i>
+            <p>微信资讯</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- 微信二维码 -->
+    <div class="or-code" :class="flag2 ? 'dn' : ''" @click="onClickOr">
+      <div class="white">
+        <img src="@/assets/img/code.png" alt="" />
+        <p>长按识别二维码</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="less">
 @import "../../assets/less/base.less";
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 
 img {
   width: auto;
@@ -100,36 +141,34 @@ img {
     overflow: hidden;
     z-index: 2;
     .top {
+      width: 100%;
+      height: (100 / @vw);
       position: fixed;
       top: 0;
+      left: 0;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      margin: 0 auto;
-      height: (100 / @vw);
       background: #fafafa;
-      border-bottom: 1px solid #ededed;
-      z-index: 10;
-      .top-lt {
-        position: relative;
-        .setwh(40,44);
-        margin-left: (40 / @vw);
+      box-sizing: border-box;
+      border-top: 1px solid #fafafa;
+      border-bottom: 1px solid #fafafa;
+      padding: (28 / @vw) (30 / @vw) (10 / @vw);
+      .regard-return {
         img {
-          position: absolute;
-          height: 100%;
+          .setwh(40,40);
         }
       }
-      .top-rt {
-        display: flex;
-        align-items: center;
-        .tit-icon1,
-        .tit-icon2 {
-          width: (56 / @vw);
-          margin-right: (40 / @vw);
-          img {
-            width: 100%;
-          }
+      .regard-dl {
+        position: absolute;
+        right: (100 / @vw);
+        top: (28 / @vw);
+        img {
+          .setwh(45,45);
+        }
+      }
+      .regard-link {
+        img {
+          .setwh(50,50);
         }
       }
     }
@@ -206,6 +245,7 @@ img {
       }
       .text {
         margin-bottom: (20 / @vw);
+        text-align: center;
       }
       pre {
         color: rgb(34, 34, 34);
@@ -213,13 +253,11 @@ img {
         font-size: (24 / @vw);
         white-space: pre-wrap;
         line-height: (50 / @vw);
+        text-align: left;
       }
-      .exhibition {
-        text-align: center;
-        img {
-          max-width: 100%;
-          height: auto;
-        }
+      img {
+        max-width: 100% !important;
+        height: auto;
       }
     }
     .text-line {
@@ -296,6 +334,65 @@ img {
       }
     }
   }
+  // 底部公共样式
+  .pql-btm-fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: (100 / @vw);
+    background-color: rgba(0, 0, 0, 0.75);
+
+    ul {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: (10 / @vw) 0;
+        a {
+          font-size: 12px;
+          text-align: center;
+          color: #fff;
+          img {
+            .setwh(40,40);
+          }
+        }
+      }
+    }
+  }
+  .or-code {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 101;
+    .white {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      // .setwh(400,455);
+      padding: (37 / @vw);
+      background-color: #fff;
+      margin: (-230 / @vw) 0 0 (-200 / @vw);
+      border-radius: (10 / @vw);
+      img {
+        .setwh(327,327);
+        vertical-align: middle;
+        margin-bottom: (30 / @vw);
+      }
+      p {
+        text-align: center;
+        font-size: (22 / @vw);
+      }
+    }
+  }
 }
 [v-cloak] {
   display: none;
@@ -310,41 +407,43 @@ export default {
       activeDate: [],
       id: null,
       hide: false,
+      flag2: true,
     };
   },
-  mounted: async function () {
+  mounted: function () {
     let that = this;
     this.id = Number(this.$route.query.id);
-    await this.$axios
+    this.$axios
       .get(
         "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
           that.id
       )
       .then((res) => {
         this.activeDate = res.data;
+        this.hide = true;
       })
       .catch(function (res) {
         console.log(res);
       });
-    this.hide = true;
   },
-  async beforeRouteUpdate(to, from, next) {
+  beforeRouteUpdate(to, from, next) {
+    this.hide = false;
     to, from;
     var that = this;
     console.log(to);
     this.id = Number(to.query.id);
-    await this.$axios
+    this.$axios
       .get(
         "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
           that.id
       )
       .then((res) => {
         this.activeDate = res.data;
+        this.hide = true;
       })
       .catch(function (res) {
         console.log(res);
       });
-    this.hide = true;
     window.scroll(0, 0);
     next();
   },
@@ -367,7 +466,6 @@ export default {
       }
     },
     goList(id) {
-      console.log(id);
       if (id == 0) {
         this.$router.push({
           path: "/news/list",
@@ -379,6 +477,27 @@ export default {
           query: { id: id },
         });
       }
+    },
+    onClickcode: function () {
+      this.flag2 = !this.flag2;
+    },
+    onClickOr: function () {
+      this.flag2 = !this.flag2;
+    },
+  },
+  filters: {
+    upper: function (val) {
+      let arr = [...val];
+      let start = val.indexOf("![输入图片说明]");
+      let str = arr.splice(start);
+      str;
+      return arr.join("");
+    },
+    lower: function (val) {
+      let arr = [...val];
+      let end = val.lastIndexOf(")");
+      let str = arr.splice(end + 1);
+      return str.join("");
     },
   },
 };

@@ -1,10 +1,10 @@
 <template>
   <div class="xjg box">
     <!-- 模特展示2 -->
-    <div class="model" v-for="(value, index) in mdoelInfo" :key="index">
+    <div class="model" v-for="value in modelList" :key="value.id">
       <!-- 头部 开始 -->
       <div class="model-top" ref="modelTop">
-        <div class="back" @click="go(-1)">&lt;</div>
+        <div class="back" @click="onClickBackGo">&lt;</div>
         <div class="dot" @click="onClickRemoveClass2">▪ ▪ ▪</div>
       </div>
       <!-- 滚动后的顶部 -->
@@ -41,16 +41,18 @@
       <div class="cont-mid" @click="onClickRemoveClass3" ref="mid">
         <div class="mid-num">
           <div class="num-img" @click="onClickBigImg">
-            <img src="@/assets/img/img1.jpg" alt="" />
+            <img :src="value.image" alt="" />
           </div>
           <div class="num-money">
-            <p>¥ <span>1500</span></p>
+            <p>
+              ¥ <span>{{ value.price }}</span>
+            </p>
             <div class="recom" @click="onClickRemoveClass">
               <img src="@/assets/img/share.png" alt="" /><br />
               <span>推荐</span>
             </div>
           </div>
-          <h2>成都夜总会模特</h2>
+          <h2>{{ value.title }}</h2>
         </div>
         <!-- 点击图片 放大图片 -->
         <div
@@ -58,18 +60,20 @@
           :class="classFlag3 ? 'dn' : ''"
           @click="onClickBigImg"
         >
-          <img src="@/assets/img/img1.jpg" alt="" />
+          <img :src="value.image" alt="" />
         </div>
         <!-- 点击分享的弹层 开始 -->
         <div class="share-mono" :class="classFlag ? 'dn' : ''">
           <div class="mono-cont">
             <div class="mono-top">
               <div class="mono-img">
-                <img src="@/assets/img/img1.jpg" alt="" />
+                <img :src="value.image" alt="" />
               </div>
               <div class="mono-text">
-                <p>¥ <span>1500.00</span></p>
-                <h3>成都夜总会模特</h3>
+                <p>
+                  ¥ <span>{{ value.price }}</span>
+                </p>
+                <h3>{{ value.title }}</h3>
                 <b @click="onClickSaveImg">点击预览分享图</b>
               </div>
             </div>
@@ -110,7 +114,7 @@
           <span>产品说明</span>
         </div>
         <div class="product-img">
-          <img src="@/assets/img/img1.jpg" alt="" />
+          <img :src="value.image" alt="" />
         </div>
       </div>
       <!-- 产品说明 结束 -->
@@ -121,41 +125,17 @@
           <h3>相关产品</h3>
         </div>
         <ul>
-          <li>
+          <li
+            v-for="item in modelListAll"
+            :key="item.id"
+            @click="getData(item.id)"
+          >
             <div class="li-img">
-              <img src="@/assets/img/model1.jpg" alt="" />
+              <img :src="item.image" alt="" />
             </div>
             <div class="li-text">
-              <h3>成都夜场模特</h3>
-              <p>¥1500</p>
-            </div>
-          </li>
-          <li>
-            <div class="li-img">
-              <img src="@/assets/img/model1.jpg" alt="" />
-            </div>
-            <div class="li-text">
-              <h3>成都夜场模特</h3>
-              <p>¥1500</p>
-            </div>
-          </li>
-
-          <li>
-            <div class="li-img">
-              <img src="@/assets/img/model1.jpg" alt="" />
-            </div>
-            <div class="li-text">
-              <h3>成都夜场模特</h3>
-              <p>¥1500</p>
-            </div>
-          </li>
-          <li>
-            <div class="li-img">
-              <img src="@/assets/img/model1.jpg" alt="" />
-            </div>
-            <div class="li-text">
-              <h3>成都夜场模特</h3>
-              <p>¥1500</p>
+              <h3>{{ item.title }}</h3>
+              <p>¥{{ item.price }}</p>
             </div>
           </li>
         </ul>
@@ -163,34 +143,80 @@
       <!-- 相关产品 结束 -->
 
       <!-- 点击回到顶部 开始 -->
-      <div class="backtop" @click="onClickBackTop">
+      <div
+        class="backtop"
+        @click="onClickBackTop"
+        :class="classFlag5 ? 'dn' : ''"
+      >
         <img src="@/assets/img/gotop.png" alt="" />
       </div>
       <!-- 点击回到顶部 结束 -->
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
     return {
-      mdoelInfo: [
-        {
-          modelImg: "@/assets/img/img1.jpg",
-          modelPrice: 1500,
-          modelName: "成都夜总会模特",
-        },
-      ],
       classFlag: true,
       classFlag2: true,
       classFlag3: true,
       classFlag4: true,
       classFlag5: true,
       classFlag6: true,
+      dataId: null,
+      modelListAll: [],
+      modelList: [],
     };
   },
+
+  created() {
+    this.dataId = Number(this.$route.query.id);
+    console.log(this.dataId);
+    let that = this;
+    this.$axios
+      .get("/index.php/api/models/list?id=" + that.dataId)
+      .then((val) => {
+        // console.log(val.data);
+        that.modelList.push(val.data.find((value) => value.id == that.dataId));
+        val.data.forEach((e) => {
+          if (e.id != that.dataId) {
+            that.modelListAll.push(e);
+          }
+        });
+      });
+    console.log(this.modelListAll);
+  },
+
   methods: {
+    // 点击返回上一个页面
+    onClickBackGo() {
+      this.$router.push("/show");
+    },
+    getData(num) {
+      this.modelListAll.splice(0, this.modelListAll.length);
+      this.$router.push({
+        path: "/show/model",
+        replace: true,
+        query: {
+          id: num,
+        },
+      });
+      this.$router.go(0);
+      this.dataId = Number(this.$route.query.id);
+      console.log(this.dataId);
+      let that = this;
+      this.$axios.get("/index.php/api/models/list?id=" + num).then((val) => {
+        // console.log(val.data);
+        that.modelList.push(val.data.find((value) => value.id == that.dataId));
+        val.data.forEach((e) => {
+          if (e.id != that.dataId) {
+            that.modelListAll.push(e);
+          }
+        });
+      });
+      console.log(this.modelListAll);
+    },
     go(step) {
       console.log(step);
       this.$router.go(step);
@@ -201,6 +227,7 @@ export default {
     },
     onClickRemoveClass2: function () {
       this.classFlag2 = !this.classFlag2;
+      // console.log(111);
     },
     onClickRemoveClass3: function () {
       this.classFlag2 = true;
@@ -213,9 +240,22 @@ export default {
       console.log(111);
       this.classFlag4 = !this.classFlag4;
     },
+
+    // 回到顶部
     onClickBackTop: function () {
-      window.scrollTo(0, 0);
+      let scrollTop = window.pageYOffset;
+      // 每0.01秒向上移动100像素，直到小于或等于0结束
+      let timer = setInterval(() => {
+        scrollTop -= 20;
+        // 为负数，浏览器会不处理得
+        window.scrollTo(0, scrollTop);
+        if (scrollTop <= 0) {
+          clearInterval(timer);
+        }
+      }, 8);
+      // window.scrollTo(0, 0);
     },
+
     onClickTiaoTop: function () {
       var midHeight = this.$refs.mid.offsetHeight;
       var modelHeight = this.$refs.modelTop.offsetHeight;
@@ -224,6 +264,9 @@ export default {
     },
     //滚动监听
     scrollHandle(e) {
+      // console.log(this);
+      // console.log(this.$refs);
+
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
       var modelHeight = this.$refs.modelTop.offsetHeight;
       var midHeight = this.$refs.mid.offsetHeight;
@@ -241,6 +284,9 @@ export default {
   },
   mounted() {
     window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.scrollHandle); //移除页面滚动事件
   },
 };
 </script>
@@ -602,7 +648,7 @@ export default {
   }
   ul {
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
     flex-wrap: wrap;
     li {
       width: 33.3%;
