@@ -22,7 +22,7 @@
               <!-- 跳转新闻详情页链接 -->
               <div class="caption">{{ val.title }}</div>
               <div class="time">
-                <img src="@/assets/img/time.png" alt="" />
+                <img src="@/assets/img/time.png" />
                 <p>{{ val.time }}</p>
               </div>
             </div>
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="mip-lightbox" :class="navFlag ? 'dn' : ''" @click="onClickTier">
-      <div class="lightbox-r">
+      <div class="lightbox-r animate__animated animate__fadeInRight">
         <div class="moresetup">
           <ul>
             <li>
@@ -56,6 +56,7 @@
 </template>
 <style lang="less">
 @import "../../assets/less/base.less";
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 img {
   width: auto;
 }
@@ -139,7 +140,7 @@ img {
         .caption {
           line-height: (48 / @vw);
           max-height: (48 / @vw);
-          font-size: (22 / @vw);
+          font-size: (26 / @vw);
           font-family: "Arial";
           overflow: hidden;
         }
@@ -155,7 +156,7 @@ img {
           }
           p {
             color: #999999;
-            font-size: (20 / @vw);
+            font-size: (24 / @vw);
             padding-left: (10 / @vw);
           }
         }

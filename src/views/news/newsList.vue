@@ -1,5 +1,5 @@
 <template>
-  <div class="xw-box" v-loading.fullscreen.lock="hide">
+  <div class="xw-box" v-loading.fullscreen.lock="!hide">
     <div class="box">
       <div class="top">
         <div class="top-lt" @click="go(-1)">
@@ -37,7 +37,9 @@
       <div class="newsList" v-for="(item, k) in activeDate" :key="k">
         <h2>{{ item.title }}</h2>
         <div class="text">
-          <pre v-html="item.content"></pre>
+          <pre>{{ item.content | upper }}</pre>
+          <img :src="$store.state.domainName + item.image" alt="" />
+          <pre>{{ item.content | lower }}</pre>
         </div>
       </div>
       <div class="text-line"></div>
@@ -83,6 +85,7 @@
 
 <style lang="less">
 @import "../../assets/less/base.less";
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 
 img {
   width: auto;
@@ -206,6 +209,7 @@ img {
       }
       .text {
         margin-bottom: (20 / @vw);
+        text-align: center;
       }
       pre {
         color: rgb(34, 34, 34);
@@ -213,13 +217,11 @@ img {
         font-size: (24 / @vw);
         white-space: pre-wrap;
         line-height: (50 / @vw);
+        text-align: left;
       }
-      .exhibition {
-        text-align: center;
-        img {
-          max-width: 100%;
-          height: auto;
-        }
+      img {
+        max-width: 100% !important;
+        height: auto;
       }
     }
     .text-line {
@@ -312,39 +314,40 @@ export default {
       hide: false,
     };
   },
-  mounted: async function () {
+  mounted: function () {
     let that = this;
     this.id = Number(this.$route.query.id);
-    await this.$axios
+    this.$axios
       .get(
         "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
           that.id
       )
       .then((res) => {
         this.activeDate = res.data;
+        this.hide = true;
       })
       .catch(function (res) {
         console.log(res);
       });
-    this.hide = true;
   },
-  async beforeRouteUpdate(to, from, next) {
+  beforeRouteUpdate(to, from, next) {
+    this.hide = false;
     to, from;
     var that = this;
     console.log(to);
     this.id = Number(to.query.id);
-    await this.$axios
+    this.$axios
       .get(
         "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
           that.id
       )
       .then((res) => {
         this.activeDate = res.data;
+        this.hide = true;
       })
       .catch(function (res) {
         console.log(res);
       });
-    this.hide = true;
     window.scroll(0, 0);
     next();
   },
@@ -379,6 +382,21 @@ export default {
           query: { id: id },
         });
       }
+    },
+  },
+  filters: {
+    upper: function (val) {
+      let arr = [...val];
+      let start = val.indexOf("![输入图片说明]");
+      let str = arr.splice(start);
+      console.log(str);
+      return arr.join("");
+    },
+    lower: function (val) {
+      let arr = [...val];
+      let end = val.lastIndexOf(")");
+      let str = arr.splice(end + 1);
+      return str.join("");
     },
   },
 };
