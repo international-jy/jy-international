@@ -168,7 +168,11 @@ export default {
       navFlag: true,
       environmentMove: false,
       flag: true,
+<<<<<<< HEAD
       scrollFlag:true,
+=======
+      scrollFlag: true,
+>>>>>>> ba78a74a0d4abb3f5c7047eaf3dfb57c06ca465f
       newsList: [
         {
           text: "111",

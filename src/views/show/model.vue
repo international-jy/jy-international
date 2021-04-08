@@ -1,18 +1,22 @@
 <template>
   <div class="xjg box">
     <!-- 模特展示2 -->
-    <div class="model">
+    <div class="model" v-for="(value,index) in mdoelInfo" :key="index">
       <!-- 头部 开始 -->
-      <div class="model-top">
-        <div class="back" @click="go(-1)">&lt;254</div>
-        <div class="dot" @click="onClickRemoveClass">▪ ▪ ▪</div>
+      <div class="model-top" ref="modelTop">
+        <div class="back" @click="go(-1)">&lt;</div>
+        <div class="dot" @click="onClickRemoveClass2">▪ ▪ ▪</div>
       </div>
       <!-- 滚动后的顶部 -->
-      <div class="model-top2">
+      <div class="model-top2" :class="classFlag5 ? 'dn' : ''">
         <div class="back2" @click="go(-1)">&lt;</div>
         <ul>
-          <li class="line">商品</li>
-          <li>详情</li>
+          <li :class="classFlag6 ? 'line' : ''" @click="onClickBackTop">
+            商品
+          </li>
+          <li :class="classFlag6 ? '' : 'line'" @click="onClickTiaoTop">
+            详情
+          </li>
         </ul>
         <div class="dot2" @click="onClickRemoveClass2">▪ ▪ ▪</div>
       </div>
@@ -21,16 +25,20 @@
       <div class="mone-nav" :class="classFlag2 ? 'dn' : ''">
         <div class="trian">◆</div>
         <ul>
-          <li><img src="@/assets/img/home.png" alt="" />首页</li>
+          <li>
+            <a href="/home"> <img src="@/assets/img/home.png" alt="" />首页</a>
+          </li>
           <li><img src="@/assets/img/dot1.png" alt="" class="myimg" />我的</li>
-          <li><img src="@/assets/img/dot.png" alt="" />推荐</li>
+          <li @click="onClickRemoveClass">
+            <img src="@/assets/img/dot.png" alt="" />推荐
+          </li>
           <li><img src="@/assets/img/collection.png" alt="" />收藏</li>
         </ul>
       </div>
       <!-- 头部 结束 -->
 
       <!-- 内容详情 开始 -->
-      <div class="cont-mid">
+      <div class="cont-mid" @click="onClickRemoveClass3" ref="mid">
         <div class="mid-num">
           <div class="num-img" @click="onClickBigImg">
             <img src="@/assets/img/img1.jpg" alt="" />
@@ -53,26 +61,22 @@
           <img src="@/assets/img/img1.jpg" alt="" />
         </div>
         <!-- 点击分享的弹层 开始 -->
-        <div
-          class="share-mono"
-          :class="classFlag ? 'dn' : ''"
-          @click="onClickRemoveClass"
-        >
+        <div class="share-mono" :class="classFlag ? 'dn' : ''">
           <div class="mono-cont">
             <div class="mono-top">
               <div class="mono-img">
-                <img src="@/assets/img/img3.jpg" alt="" />
+                <img src="@/assets/img/img1.jpg" alt="" />
               </div>
               <div class="mono-text">
                 <p>¥ <span>1500.00</span></p>
                 <h3>成都夜总会模特</h3>
-                <b>点击预览分享图</b>
+                <b @click="onClickSaveImg">点击预览分享图</b>
               </div>
             </div>
             <div class="mono-bot">
               <p>保存图片到手机分享给您的好友</p>
               <ul>
-                <li>
+                <li @click="onClickSaveImg">
                   <img src="@/assets/img/save.png" alt="" />
                   <p>保存图片</p>
                 </li>
@@ -81,16 +85,27 @@
                   <p>复制链接</p>
                 </li>
               </ul>
-              <button>取消</button>
+              <button @click="onClickRemoveClass">取消</button>
             </div>
           </div>
         </div>
         <!-- 点击分享的弹层 结束 -->
+
+        <!-- 点击保存图片 弹出图片 开始 -->
+        <div
+          class="saveimg"
+          :class="classFlag4 ? 'dn' : ''"
+          @click="onClickSaveImg"
+        >
+          <p>长按将图片保存至手机</p>
+          <img src="@/assets/img/sharePro_1913406_0.png" alt="" />
+        </div>
+        <!-- 点击保存图片 弹出图片 结束 -->
       </div>
       <!-- 内容详情 结束 -->
 
       <!-- 产品说明 开始 -->
-      <div class="product">
+      <div class="product" ref="productTop">
         <div class="product-text">
           <span>产品说明</span>
         </div>
@@ -148,20 +163,29 @@
       <!-- 相关产品 结束 -->
 
       <!-- 点击回到顶部 开始 -->
-      <div class="backtop">
+      <div class="backtop" @click="onClickBackTop">
         <img src="@/assets/img/gotop.png" alt="" />
       </div>
       <!-- 点击回到顶部 结束 -->
     </div>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
+      mdoelInfo:[{
+        modelImg:'@/assets/img/img1.jpg',
+        modelPrice:1500,
+        modelName:'成都夜总会模特',
+      }],
       classFlag: true,
       classFlag2: true,
       classFlag3: true,
+      classFlag4: true,
+      classFlag5: true,
+      classFlag6: true,
     };
   },
   methods: {
@@ -171,15 +195,50 @@ export default {
     },
     onClickRemoveClass: function () {
       this.classFlag = !this.classFlag;
-      // console.log(111);
+      console.log(111);
     },
     onClickRemoveClass2: function () {
       this.classFlag2 = !this.classFlag2;
+    },
+    onClickRemoveClass3: function () {
+      this.classFlag2 = true;
       // console.log(111);
     },
     onClickBigImg: function () {
       this.classFlag3 = !this.classFlag3;
     },
+    onClickSaveImg: function () {
+      console.log(111);
+      this.classFlag4 = !this.classFlag4;
+    },
+    onClickBackTop: function () {
+      window.scrollTo(0, 0);
+    },
+    onClickTiaoTop: function () {
+      var midHeight = this.$refs.mid.offsetHeight;
+      var modelHeight = this.$refs.modelTop.offsetHeight;
+
+      window.scrollTo(midHeight - modelHeight, midHeight - modelHeight);
+    },
+    //滚动监听
+    scrollHandle(e) {
+      let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
+      var modelHeight = this.$refs.modelTop.offsetHeight;
+      var midHeight = this.$refs.mid.offsetHeight;
+      if (top > modelHeight) {
+        this.classFlag5 = false;
+      } else {
+        this.classFlag5 = true;
+      }
+      if (top > midHeight) {
+        this.classFlag6 = false;
+      } else {
+        this.classFlag6 = true;
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
   },
 };
 </script>
@@ -187,11 +246,18 @@ export default {
 <style lang="less" scope>
 @import "../../assets/less/base.less";
 
+@keyframes opcityTop {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 // 模特展示2
 .model {
   position: relative;
   background-color: rgb(242, 242, 242) !important;
-
   .model-top {
     position: fixed;
     top: 0;
@@ -202,6 +268,8 @@ export default {
     padding: (20 / @vw) (30 / @vw);
     // border: 1px solid red;
     box-sizing: border-box;
+    animation: opcityTop 0.5s linear;
+    transition: 1s all;
     div {
       width: (70 / @vw);
       height: (70 / @vw);
@@ -229,6 +297,8 @@ export default {
     padding: (20 / @vw) (30 / @vw);
     box-sizing: border-box;
     background-color: #fff;
+    animation: opcityTop 0.5s linear;
+    transition: 1s all;
     ul {
       display: flex;
       justify-content: center;
@@ -243,6 +313,8 @@ export default {
       }
     }
     div {
+      width: (70 / @vw);
+      height: (70 / @vw);
       line-height: (70 / @vw);
       text-align: center;
       font-weight: 700;
@@ -256,7 +328,7 @@ export default {
   }
 
   .mone-nav {
-    position: absolute;
+    position: fixed;
     width: 35%;
     background-color: rgba(255, 255, 255, 0.9);
     right: (30 / @vw);
@@ -278,6 +350,9 @@ export default {
         border-bottom: 1px solid #ccc;
         font-size: (28 / @vw);
         color: #666;
+        a {
+          width: 100%;
+        }
         img {
           width: 18%;
           vertical-align: middle;
@@ -364,7 +439,7 @@ export default {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 99;
+  // z-index: 99;
   width: 100%;
   height: 100%;
   padding-top: (80 / @vw);
@@ -375,12 +450,16 @@ export default {
     height: 100%;
     text-align: center;
     .mono-top {
+      position: absolute;
+      left: 12%;
+      bottom: 30%;
       width: 72%;
       padding: (30 / @vw) (20 / @vw) (50 / @vw) (20 / @vw);
       text-align: center;
       background-color: #fff;
       border-radius: (20 / @vw);
       margin: 0 auto;
+      z-index: 99;
       .mono-text {
         text-align: center;
         p {
@@ -415,7 +494,7 @@ export default {
       position: absolute;
       left: 0;
       bottom: 0;
-      z-index: -66;
+      z-index: 88;
       width: 100%;
       background-color: rgb(246, 246, 246);
       padding-top: (80 / @vw);
@@ -452,6 +531,28 @@ export default {
         font-size: (28 / @vw);
       }
     }
+  }
+}
+
+// 点击保存图片 弹出图片
+.saveimg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 99;
+  text-align: center;
+  padding-top: 20%;
+  p {
+    font-size: (25 / @vw);
+    text-align: center;
+    margin: (20 / @vw) 0;
+    color: #666;
+  }
+  img {
+    width: 80%;
   }
 }
 
