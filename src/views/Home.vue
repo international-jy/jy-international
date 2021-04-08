@@ -169,6 +169,7 @@ export default {
       navFlag: true,
       environmentMove: false,
       flag: true,
+      scrollFlag: true,
       newsList: [
         {
           text: "111",
@@ -406,9 +407,9 @@ export default {
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
       // var flag = true
       if (top > 200) {
-        if (this.flag) {
+        if (this.scrollFlag) {
           this.environmentMove = !this.environmentMove;
-          this.flag = false;
+          this.scrollFlag = false;
         }
       }
     },
