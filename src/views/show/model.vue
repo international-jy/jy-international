@@ -1,7 +1,7 @@
 <template>
   <div class="xjg box">
     <!-- 模特展示2 -->
-    <div class="model">
+    <div class="model" v-for="(value,index) in mdoelInfo" :key="index">
       <!-- 头部 开始 -->
       <div class="model-top">
         <div class="back" @click="go(-1)">&lt;254</div>
@@ -166,10 +166,16 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
+      mdoelInfo:[{
+        modelImg:'@/assets/img/img1.jpg',
+        modelPrice:1500,
+        modelName:'成都夜总会模特',
+      }],
       classFlag: true,
       classFlag2: true,
       classFlag3: true,
@@ -187,7 +193,6 @@ export default {
     },
     onClickRemoveClass2: function () {
       this.classFlag2 = !this.classFlag2;
-      // console.log(111);
     },
     onClickBigImg: function () {
       this.classFlag3 = !this.classFlag3;
