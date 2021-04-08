@@ -128,7 +128,7 @@
       </ul>
     </div>
     <div class="mip-lightbox" :class="navFlag ? 'dn' : ''" @click="onClickTier">
-      <div class="lightbox-r">
+      <div class="lightbox-r animate__animated animate__fadeInRight">
         <div class="moresetup">
           <ul>
             <li>
@@ -266,6 +266,7 @@ export default {
 
 <style lang="less" scope>
 @import "../assets/less/base.less";
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 @keyframes opcityMove {
   0% {
     opacity: 0;
