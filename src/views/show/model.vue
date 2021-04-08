@@ -1,7 +1,7 @@
 <template>
   <div class="xjg box">
     <!-- 模特展示2 -->
-    <div class="model" v-for="(value,index) in mdoelInfo" :key="index">
+    <div class="model">
       <!-- 头部 开始 -->
       <div class="model-top" ref="modelTop">
         <div class="back" @click="go(-1)">&lt;</div>
@@ -163,23 +163,17 @@
       <!-- 相关产品 结束 -->
 
       <!-- 点击回到顶部 开始 -->
-      <div class="backtop" @click="onClickBackTop">
+      <div class="backtop" @click="onClickBackTop" :class="classFlag5?'dn':''">
         <img src="@/assets/img/gotop.png" alt="" />
       </div>
       <!-- 点击回到顶部 结束 -->
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
     return {
-      mdoelInfo:[{
-        modelImg:'@/assets/img/img1.jpg',
-        modelPrice:1500,
-        modelName:'成都夜总会模特',
-      }],
       classFlag: true,
       classFlag2: true,
       classFlag3: true,
@@ -199,6 +193,7 @@ export default {
     },
     onClickRemoveClass2: function () {
       this.classFlag2 = !this.classFlag2;
+      // console.log(111);
     },
     onClickRemoveClass3: function () {
       this.classFlag2 = true;
@@ -211,9 +206,22 @@ export default {
       console.log(111);
       this.classFlag4 = !this.classFlag4;
     },
+   
+    // 回到顶部
     onClickBackTop: function () {
-      window.scrollTo(0, 0);
+      let scrollTop = window.pageYOffset;
+      // 每0.01秒向上移动100像素，直到小于或等于0结束
+      let timer = setInterval(() => {
+        scrollTop -= 20;
+        // 为负数，浏览器会不处理得
+        window.scrollTo(0, scrollTop);
+        if (scrollTop <= 0) {
+          clearInterval(timer);
+        }
+      },8);
+      // window.scrollTo(0, 0);
     },
+   
     onClickTiaoTop: function () {
       var midHeight = this.$refs.mid.offsetHeight;
       var modelHeight = this.$refs.modelTop.offsetHeight;
@@ -222,6 +230,8 @@ export default {
     },
     //滚动监听
     scrollHandle(e) {
+      // console.log(this);
+      // console.log(this.$refs);
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
       var modelHeight = this.$refs.modelTop.offsetHeight;
       var midHeight = this.$refs.mid.offsetHeight;
@@ -240,6 +250,10 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
   },
+  destroyed(){
+    window.removeEventListener("scroll", this.scrollHandle) //移除页面滚动事件
+
+  }
 };
 </script>
 
