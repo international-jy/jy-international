@@ -3,16 +3,20 @@
     <!-- 模特展示2 -->
     <div class="model">
       <!-- 头部 开始 -->
-      <div class="model-top">
-        <div class="back" @click="go(-1)">&lt;254</div>
-        <div class="dot" @click="onClickRemoveClass">▪ ▪ ▪</div>
+      <div class="model-top" ref="modelTop">
+        <div class="back" @click="go(-1)">&lt;</div>
+        <div class="dot" @click="onClickRemoveClass2">▪ ▪ ▪</div>
       </div>
       <!-- 滚动后的顶部 -->
-      <div class="model-top2">
+      <div class="model-top2" :class="classFlag5 ? 'dn' : ''">
         <div class="back2" @click="go(-1)">&lt;</div>
         <ul>
-          <li class="line">商品</li>
-          <li>详情</li>
+          <li :class="classFlag6 ? 'line' : ''" @click="onClickBackTop">
+            商品
+          </li>
+          <li :class="classFlag6 ? '' : 'line'" @click="onClickTiaoTop">
+            详情
+          </li>
         </ul>
         <div class="dot2" @click="onClickRemoveClass2">▪ ▪ ▪</div>
       </div>
@@ -22,8 +26,7 @@
         <div class="trian">◆</div>
         <ul>
           <li>
-            <a href="/home"> 
-             <img src="@/assets/img/home.png" alt="" />首页</a>
+            <a href="/home"> <img src="@/assets/img/home.png" alt="" />首页</a>
           </li>
           <li><img src="@/assets/img/dot1.png" alt="" class="myimg" />我的</li>
           <li @click="onClickRemoveClass">
@@ -35,7 +38,7 @@
       <!-- 头部 结束 -->
 
       <!-- 内容详情 开始 -->
-      <div class="cont-mid" @click="onClickRemoveClass2">
+      <div class="cont-mid" @click="onClickRemoveClass3" ref="mid">
         <div class="mid-num">
           <div class="num-img" @click="onClickBigImg">
             <img src="@/assets/img/img1.jpg" alt="" />
@@ -58,10 +61,7 @@
           <img src="@/assets/img/img1.jpg" alt="" />
         </div>
         <!-- 点击分享的弹层 开始 -->
-        <div
-          class="share-mono"
-          :class="classFlag ? 'dn' : ''" 
-        >
+        <div class="share-mono" :class="classFlag ? 'dn' : ''">
           <div class="mono-cont">
             <div class="mono-top">
               <div class="mono-img">
@@ -92,16 +92,20 @@
         <!-- 点击分享的弹层 结束 -->
 
         <!-- 点击保存图片 弹出图片 开始 -->
-        <div class="saveimg" :class="classFlag4?'dn':''" @click="onClickSaveImg">
+        <div
+          class="saveimg"
+          :class="classFlag4 ? 'dn' : ''"
+          @click="onClickSaveImg"
+        >
           <p>长按将图片保存至手机</p>
-          <img src="@/assets/img/sharePro_1913406_0.png" alt="">
+          <img src="@/assets/img/sharePro_1913406_0.png" alt="" />
         </div>
         <!-- 点击保存图片 弹出图片 结束 -->
       </div>
       <!-- 内容详情 结束 -->
 
       <!-- 产品说明 开始 -->
-      <div class="product"  @click="onClickRemoveClass2">
+      <div class="product" ref="productTop">
         <div class="product-text">
           <span>产品说明</span>
         </div>
@@ -174,6 +178,8 @@ export default {
       classFlag2: true,
       classFlag3: true,
       classFlag4: true,
+      classFlag5: true,
+      classFlag6: true,
     };
   },
   methods: {
@@ -189,6 +195,10 @@ export default {
       this.classFlag2 = !this.classFlag2;
       // console.log(111);
     },
+    onClickRemoveClass3: function () {
+      this.classFlag2 = true;
+      // console.log(111);
+    },
     onClickBigImg: function () {
       this.classFlag3 = !this.classFlag3;
     },
@@ -196,9 +206,34 @@ export default {
       console.log(111);
       this.classFlag4 = !this.classFlag4;
     },
-    onClickBackTop:function(){
-      window.scrollTo(0, 0);  
-    }
+    onClickBackTop: function () {
+      window.scrollTo(0, 0);
+    },
+    onClickTiaoTop: function () {
+      var midHeight = this.$refs.mid.offsetHeight;
+      var modelHeight = this.$refs.modelTop.offsetHeight;
+
+      window.scrollTo(midHeight - modelHeight, midHeight - modelHeight);
+    },
+    //滚动监听
+    scrollHandle(e) {
+      let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
+      var modelHeight = this.$refs.modelTop.offsetHeight;
+      var midHeight = this.$refs.mid.offsetHeight;
+      if (top > modelHeight) {
+        this.classFlag5 = false;
+      } else {
+        this.classFlag5 = true;
+      }
+      if (top > midHeight) {
+        this.classFlag6 = false;
+      } else {
+        this.classFlag6 = true;
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
   },
 };
 </script>
@@ -206,11 +241,18 @@ export default {
 <style lang="less" scope>
 @import "../../assets/less/base.less";
 
+@keyframes opcityTop {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 // 模特展示2
 .model {
   position: relative;
   background-color: rgb(242, 242, 242) !important;
-
   .model-top {
     position: fixed;
     top: 0;
@@ -221,6 +263,8 @@ export default {
     padding: (20 / @vw) (30 / @vw);
     // border: 1px solid red;
     box-sizing: border-box;
+    animation: opcityTop 0.5s linear;
+    transition: 1s all;
     div {
       width: (70 / @vw);
       height: (70 / @vw);
@@ -248,6 +292,8 @@ export default {
     padding: (20 / @vw) (30 / @vw);
     box-sizing: border-box;
     background-color: #fff;
+    animation: opcityTop 0.5s linear;
+    transition: 1s all;
     ul {
       display: flex;
       justify-content: center;
@@ -262,6 +308,8 @@ export default {
       }
     }
     div {
+      width: (70 / @vw);
+      height: (70 / @vw);
       line-height: (70 / @vw);
       text-align: center;
       font-weight: 700;
@@ -275,7 +323,7 @@ export default {
   }
 
   .mone-nav {
-    position: absolute;
+    position: fixed;
     width: 35%;
     background-color: rgba(255, 255, 255, 0.9);
     right: (30 / @vw);
@@ -297,7 +345,7 @@ export default {
         border-bottom: 1px solid #ccc;
         font-size: (28 / @vw);
         color: #666;
-        a{
+        a {
           width: 100%;
         }
         img {
@@ -482,7 +530,7 @@ export default {
 }
 
 // 点击保存图片 弹出图片
-.saveimg{
+.saveimg {
   position: fixed;
   left: 0;
   top: 0;
@@ -492,13 +540,13 @@ export default {
   z-index: 99;
   text-align: center;
   padding-top: 20%;
-  p{
+  p {
     font-size: (25 / @vw);
     text-align: center;
     margin: (20 / @vw) 0;
     color: #666;
   }
-  img{
+  img {
     width: 80%;
   }
 }
