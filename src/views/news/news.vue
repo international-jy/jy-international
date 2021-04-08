@@ -54,6 +54,41 @@
         </div>
       </div>
     </div>
+    <div class="pql-btm-fixed">
+      <ul>
+        <li>
+          <router-link to="/home">
+            <i>
+              <img src="@/assets/img/btm-fiexd3.png" alt="" />
+            </i>
+            <p>首页</p>
+          </router-link>
+        </li>
+        <li>
+          <a href="tel:120">
+            <i>
+              <img src="@/assets/img/btm-fiexd2.png" alt="" />
+            </i>
+            <p>电话</p>
+          </a>
+        </li>
+        <li @click="onClickcode">
+          <a href="javascript:;">
+            <i>
+              <img src="@/assets/img/btm-fiexd1.png" alt="" />
+            </i>
+            <p>微信资讯</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- 微信二维码 -->
+    <div class="or-code" :class="flag ? 'dn' : ''" @click="onClickOr">
+      <div class="white">
+        <img src="@/assets/img/code.png" alt="" />
+        <p>长按识别二维码</p>
+      </div>
+    </div>
   </div>
 </template>
 <style lang="less">
@@ -231,6 +266,65 @@ img {
       }
     }
   }
+  // 底部公共样式
+  .pql-btm-fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: (100 / @vw);
+    background-color: rgba(0, 0, 0, 0.75);
+
+    ul {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: (10 / @vw) 0;
+        a {
+          font-size: 12px;
+          text-align: center;
+          color: #fff;
+          img {
+            .setwh(40,40);
+          }
+        }
+      }
+    }
+  }
+  .or-code {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 101;
+    .white {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      // .setwh(400,455);
+      padding: (37 / @vw);
+      background-color: #fff;
+      margin: (-230 / @vw) 0 0 (-200 / @vw);
+      border-radius: (10 / @vw);
+      img {
+        .setwh(327,327);
+        vertical-align: middle;
+        margin-bottom: (30 / @vw);
+      }
+      p {
+        text-align: center;
+        font-size: (22 / @vw);
+      }
+    }
+  }
 }
 </style>
 <script>
@@ -239,6 +333,7 @@ export default {
     return {
       navFlag: true,
       newsList: [],
+      flag: true,
     };
   },
   created() {
@@ -270,6 +365,12 @@ export default {
     },
     onClickTier: function () {
       this.navFlag = !this.navFlag;
+    },
+    onClickcode: function () {
+      this.flag = !this.flag;
+    },
+    onClickOr: function () {
+      this.flag = !this.flag;
     },
   },
 };
