@@ -21,16 +21,21 @@
       <div class="mone-nav" :class="classFlag2 ? 'dn' : ''">
         <div class="trian">◆</div>
         <ul>
-          <li><img src="@/assets/img/home.png" alt="" />首页</li>
+          <li>
+            <a href="/home"> 
+             <img src="@/assets/img/home.png" alt="" />首页</a>
+          </li>
           <li><img src="@/assets/img/dot1.png" alt="" class="myimg" />我的</li>
-          <li><img src="@/assets/img/dot.png" alt="" />推荐</li>
+          <li @click="onClickRemoveClass">
+            <img src="@/assets/img/dot.png" alt="" />推荐
+          </li>
           <li><img src="@/assets/img/collection.png" alt="" />收藏</li>
         </ul>
       </div>
       <!-- 头部 结束 -->
 
       <!-- 内容详情 开始 -->
-      <div class="cont-mid">
+      <div class="cont-mid" @click="onClickRemoveClass2">
         <div class="mid-num">
           <div class="num-img" @click="onClickBigImg">
             <img src="@/assets/img/img1.jpg" alt="" />
@@ -51,24 +56,23 @@
         <!-- 点击分享的弹层 开始 -->
         <div
           class="share-mono"
-          :class="classFlag ? 'dn' : ''"
-          @click="onClickRemoveClass"
+          :class="classFlag ? 'dn' : ''" 
         >
           <div class="mono-cont">
             <div class="mono-top">
               <div class="mono-img">
-                <img src="@/assets/img/img3.jpg" alt="" />
+                <img src="@/assets/img/img1.jpg" alt="" />
               </div>
               <div class="mono-text">
                 <p>¥ <span>1500.00</span></p>
                 <h3>成都夜总会模特</h3>
-                <b>点击预览分享图</b>
+                <b @click="onClickSaveImg">点击预览分享图</b>
               </div>
             </div>
             <div class="mono-bot">
               <p>保存图片到手机分享给您的好友</p>
               <ul>
-                <li>
+                <li @click="onClickSaveImg">
                   <img src="@/assets/img/save.png" alt="" />
                   <p>保存图片</p>
                 </li>
@@ -77,16 +81,23 @@
                   <p>复制链接</p>
                 </li>
               </ul>
-              <button>取消</button>
+              <button @click="onClickRemoveClass">取消</button>
             </div>
           </div>
         </div>
         <!-- 点击分享的弹层 结束 -->
+
+        <!-- 点击保存图片 弹出图片 开始 -->
+        <div class="saveimg" :class="classFlag4?'dn':''" @click="onClickSaveImg">
+          <p>长按将图片保存至手机</p>
+          <img src="@/assets/img/sharePro_1913406_0.png" alt="">
+        </div>
+        <!-- 点击保存图片 弹出图片 结束 -->
       </div>
       <!-- 内容详情 结束 -->
 
       <!-- 产品说明 开始 -->
-      <div class="product">
+      <div class="product"  @click="onClickRemoveClass2">
         <div class="product-text">
           <span>产品说明</span>
         </div>
@@ -144,7 +155,7 @@
       <!-- 相关产品 结束 -->
 
       <!-- 点击回到顶部 开始 -->
-      <div class="backtop">
+      <div class="backtop" @click="onClickBackTop">
         <img src="@/assets/img/gotop.png" alt="" />
       </div>
       <!-- 点击回到顶部 结束 -->
@@ -158,6 +169,7 @@ export default {
       classFlag: true,
       classFlag2: true,
       classFlag3: true,
+      classFlag4: true,
     };
   },
   methods: {
@@ -167,7 +179,7 @@ export default {
     },
     onClickRemoveClass: function () {
       this.classFlag = !this.classFlag;
-      // console.log(111);
+      console.log(111);
     },
      onClickRemoveClass2: function () {
       this.classFlag2 = !this.classFlag2;
@@ -176,6 +188,13 @@ export default {
     onClickBigImg: function () {
       this.classFlag3 = !this.classFlag3;
     },
+    onClickSaveImg: function () {
+      console.log(111);
+      this.classFlag4 = !this.classFlag4;
+    },
+    onClickBackTop:function(){
+      window.scrollTo(0, 0);  
+    }
   },
 };
 </script>
@@ -274,6 +293,9 @@ export default {
         border-bottom: 1px solid #ccc;
         font-size: (28 / @vw);
         color: #666;
+        a{
+          width: 100%;
+        }
         img {
           width: 18%;
           vertical-align: middle;
@@ -361,7 +383,7 @@ export default {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 99;
+  // z-index: 99;
   width: 100%;
   height: 100%;
   padding-top: (80 / @vw);
@@ -372,12 +394,16 @@ export default {
     height: 100%;
     text-align: center;
     .mono-top {
+      position: absolute;
+      left: 12%;
+      bottom: 30%;
       width: 72%;
       padding: (30 / @vw) (20 / @vw) (50 / @vw) (20 / @vw);
       text-align: center;
       background-color: #fff;
       border-radius: (20 / @vw);
       margin: 0 auto;
+      z-index: 99;
       .mono-text {
         text-align: center;
         p {
@@ -412,7 +438,7 @@ export default {
       position: absolute;
       left: 0;
       bottom: 0;
-      z-index: -66;
+      z-index: 88;
       width: 100%;
       background-color: rgb(246, 246, 246);
       padding-top: (80 / @vw);
@@ -449,6 +475,28 @@ export default {
         font-size: (28 / @vw);
       }
     }
+  }
+}
+
+// 点击保存图片 弹出图片
+.saveimg{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 99;
+  text-align: center;
+  padding-top: 20%;
+  p{
+    font-size: (25 / @vw);
+    text-align: center;
+    margin: (20 / @vw) 0;
+    color: #666;
+  }
+  img{
+    width: 80%;
   }
 }
 
