@@ -13,7 +13,7 @@
           </div>
         </div>
       </div>
-      <div class="title" v-show="flag" @click="hide">成都夜场</div>
+      <h3 class="title">成都夜场</h3>
       <!-- 新闻列表 -->
       <div class="list-box">
         <ul class="list">
@@ -67,7 +67,6 @@ img {
   overflow: hidden;
   .box {
     min-width: 320px;
-    max-width: 768px;
     padding: (100 / @vw) 0;
     margin: 0 auto;
     overflow: hidden;
@@ -79,7 +78,6 @@ img {
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      max-width: 768px;
       margin: 0 auto;
       height: (100 / @vw);
       background: #fafafa;
@@ -139,14 +137,11 @@ img {
         overflow: hidden;
         padding: (20 / @vw);
         .caption {
-          a {
-            display: block;
-            line-height: (48 / @vw);
-            max-height: (96 / @vw);
-            font-size: (26 / @vw);
-            font-family: "Arial";
-            overflow: hidden;
-          }
+          line-height: (48 / @vw);
+          max-height: (48 / @vw);
+          font-size: (22 / @vw);
+          font-family: "Arial";
+          overflow: hidden;
         }
         .time {
           display: flex;
@@ -160,7 +155,7 @@ img {
           }
           p {
             color: #999999;
-            font-size: (24 / @vw);
+            font-size: (20 / @vw);
             padding-left: (10 / @vw);
           }
         }
@@ -227,40 +222,29 @@ img {
 export default {
   data() {
     return {
-      flag: true,
       navFlag: true,
-      newsList: [
-        {
-          id: 1,
-          title: "夜总会招聘模特条件改掉这些习惯",
-          time: "2021-04-06",
-        },
-        {
-          id: 2,
-          title: "夜场模特说话技巧如何打动面试官",
-          time: "2021-04-05",
-        },
-        {
-          id: 3,
-          title: "夜场招聘找不到工作原因不同类型面试",
-          time: "2021-04-02",
-        },
-        {
-          id: 4,
-          title: "夜场招聘选择工作注意着重考察求职者",
-          time: "2021-04-01",
-        },
-      ],
+      newsList: [],
     };
+  },
+  created() {
+    this.$axios
+      .get(
+        "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid"
+      )
+      .then((res) => {
+        this.newsList = res.data;
+        console.log(this.newsList);
+      })
+      .catch(function (res) {
+        console.log(res);
+      });
   },
   methods: {
     go(step) {
       this.$router.go(step);
     },
-    hide() {
-      this.flag = false;
-    },
     goList(id) {
+      console.log(id);
       this.$router.push({
         path: "/news/list",
         query: { id: id },

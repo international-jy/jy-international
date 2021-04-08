@@ -30,6 +30,18 @@ const routes = [
         path: "show/model",
         component: () => import("../views/show/model.vue"),
       },
+      {
+        path: "contact/contactgy",
+        component: () => import("../views/contact/conguanyu.vue"),
+      },
+      {
+        path: "contact/contactlx",
+        component: () => import("../views/contact/conlianxi.vue"),
+      },
+      {
+        path: "contact/contactzp",
+        component: () => import("../views/contact/conzhaopin.vue"),
+      },
     ],
   },
 ];

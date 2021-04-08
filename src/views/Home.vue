@@ -16,26 +16,31 @@
       </div>
       <!-- 环境部分 -->
       <div class="environment-box">
-        <div class="nightclub-title">
+        <div class="nightclub-title nightclub-title-t">
           <p>ENVIRONMENTAL<span>DISPLAY</span></p>
           <p>环境/AMBIENT</p>
           <p></p>
         </div>
-        <div class="environment">
-          <div class="cd-environment">
-            <div class="cd-title">
-              <img src="@/assets/img/environment1.jpeg" alt="" />
-            </div>
-            <div class="environment-bd">
-              <h3>成都夜总会</h3>
-              <p>联系人:周经理(夜场资深领队)</p>
-              <p>电话:13688143752(微信同号)</p>
-              <p>地址:成都</p>
+        <div v-for="val in environmentListL" :key="val.id">
+          <div class="environment">
+            <div
+              class="cd-environment"
+              :class="environmentMove ? 'cd-environment-m' : ''"
+            >
+              <div class="cd-title">
+                <img :src="val.image" />
+              </div>
+              <div class="environment-bd">
+                <h3>{{ val.title }}</h3>
+                <p>联系人:{{ val.contacts }}</p>
+                <p>电话：{{ val.phone }}</p>
+                <p>地址:{{ val.address }}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="phone">
-          <div><img src="@/assets/img/phone.png" alt="" /> 联系电话</div>
+          <div class="phone">
+            <div><img src="@/assets/img/phone.png" alt="" /> 联系电话</div>
+          </div>
         </div>
       </div>
       <!-- 招聘部分 -->
@@ -111,7 +116,7 @@
           </router-link>
         </li>
         <li>
-          <a href="tel:18073941390">
+          <a href="tel:120">
             <i>
               <img src="@/assets/img/btm-fiexd2.png" alt="" />
             </i>
@@ -164,7 +169,9 @@ export default {
   data() {
     return {
       navFlag: true,
+      environmentMove: false,
       flag: true,
+      scrollFlag: true,
       newsList: [
         {
           text: "111",
@@ -383,6 +390,7 @@ export default {
           text: "夜总会招聘模特条件改掉这些习惯",
         },
       ],
+      environmentListL: null,
     };
   },
   methods: {
@@ -398,12 +406,47 @@ export default {
     onClickOr: function () {
       this.flag = !this.flag;
     },
+    scrollHandle(e) {
+      let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
+      // var flag = true
+      if (top > 200) {
+        if (this.scrollFlag) {
+          this.environmentMove = !this.environmentMove;
+          this.scrollFlag = false;
+        }
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+  },
+  created() {
+    // this.$axios.get('/index.php/api/journalism/list?pageNumber=0&pageSize=2&journalismtypeid=1,2').then(val => {
+    //   console.log(val);
+    // })
+    this.$axios.get("/index.php/api/ambient/list").then((val) => {
+      val.data.forEach((val) => {
+        val.image = this.$store.state.domainName + val.image;
+      });
+      this.environmentListL = val.data;
+    });
+    // console.log();
   },
 };
 </script>
 
 <style lang="less" scope>
 @import "../assets/less/base.less";
+@keyframes opcityMove {
+  0% {
+    opacity: 0;
+    transform: translateY(500px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 @keyframes move {
   0% {
@@ -413,7 +456,6 @@ export default {
     transform: translateY(-986 / @vw);
   }
 }
-
 .nav-box {
   // position: relative;
   width: 100%;
@@ -431,7 +473,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
     img {
       .setwh(32,32);
     }
@@ -454,6 +495,7 @@ export default {
 .environment-box {
   width: 100%;
   background-color: #ccc;
+  // margin: (20/@vw) 0;
   .nightclub-title {
     display: flex;
     justify-content: center;
@@ -483,11 +525,25 @@ export default {
       }
     }
   }
+  .nightclub-title-t {
+    p {
+      animation: opcityMove 1.2s forwards;
+    }
+  }
+  & > div:nth-child(n + 1) {
+    margin-bottom: (10 / @vw);
+  }
+  & > div:last-of-type {
+    padding-bottom: (20 / @vw);
+  }
   .environment {
     padding: 0 (20 / @vw);
-    .cd-title {
+    .cd-title,
+    .cd-title-hd {
+      overflow: hidden;
       img {
         display: block;
+        animation: opcityMove 1.4s forwards;
       }
     }
     .environment-bd {
@@ -509,13 +565,20 @@ export default {
         color: #585858;
       }
     }
+    .cd-environment-m {
+      .environment-bd {
+        animation: opcityMove 1.6s forwards;
+      }
+    }
   }
   .phone {
     width: 100%;
-    padding: (10 / @vw);
+    // padding: (10 / @vw);
+    padding: (10 / @vw) (10 / @vw) 0;
     box-sizing: border-box;
     div {
       width: 100%;
+      height: (54 / @vw);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -653,6 +716,7 @@ export default {
 .tjb-box {
   width: 100%;
   margin-bottom: (106 / @vw);
+
   box-sizing: border-box;
   // overflow: hidden;
   .tjb-content {
@@ -665,7 +729,6 @@ export default {
     ul {
       animation: move 30s linear infinite;
       transition: all 0.5s;
-      margin-top: -30px;
       li {
         border-bottom: 1px solid #ededed;
         a {
@@ -673,7 +736,7 @@ export default {
           width: 100%;
           padding-left: 6px;
           text-align-last: left;
-          font-size: (26 / @vw);
+          font-size: (22 / @vw);
           color: #7c7b7c;
           img {
             width: 4px;
@@ -694,7 +757,8 @@ export default {
   left: 0;
   width: 100%;
   height: (100 / @vw);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.75);
+
   ul {
     width: 100%;
     height: 100%;
@@ -709,6 +773,7 @@ export default {
       a {
         font-size: 12px;
         text-align: center;
+        color: #fff;
         img {
           .setwh(40,40);
         }
@@ -771,6 +836,8 @@ export default {
     }
   }
 }
+
+//微信二维码弹出层
 
 .or-code {
   position: fixed;

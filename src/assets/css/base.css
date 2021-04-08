@@ -1,5 +1,5 @@
 .dn {
-  display: none;
+  display: none !important;
 }
 img {
   width: 100%;
