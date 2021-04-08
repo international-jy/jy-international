@@ -4,24 +4,34 @@ import VueRouter from "vue-router";
 import contact from "./contact";
 import news from "./news";
 import show from "./show";
-import main from './main';
+import main from "./main";
 
 Vue.use(VueRouter);
-const routes = [{
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err);
+};
+const routes = [
+  {
     path: "/",
-    component: () =>
-        import ('../views/index.vue'),
-    redirect: '/home',
+    component: () => import("../views/index.vue"),
+    redirect: "/home",
     children: [
-        main,
-        news,
-        contact,
-        show
-    ]
-}];
+      main,
+      news,
+      contact,
+      show,
+      {
+        path: "news/list",
+        component: () => import("../views/news/newsList.vue"),
+      },
+    ],
+  },
+];
 
 const router = new VueRouter({
-    routes,
+  routes,
 });
 
 export default router;
