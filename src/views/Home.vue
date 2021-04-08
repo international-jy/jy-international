@@ -21,24 +21,26 @@
           <p>环境/AMBIENT</p>
           <p></p>
         </div>
-        <div class="environment">
-          <div
-            class="cd-environment"
-            :class="environmentMove ? 'cd-environment-m' : ''"
-          >
-            <div class="cd-title">
-              <img src="@/assets/img/environment1.jpeg" alt="" />
-            </div>
-            <div class="environment-bd">
-              <h3>成都夜总会</h3>
-              <p>联系人:周经理(夜场资深领队)</p>
-              <p>电话:13688143752(微信同号)</p>
-              <p>地址:成都</p>
+        <div v-for="val in environmentListL" :key="val.id">
+          <div class="environment">
+            <div
+              class="cd-environment"
+              :class="environmentMove ? 'cd-environment-m' : ''"
+            >
+              <div class="cd-title">
+                <img :src="val.image" />
+              </div>
+              <div class="environment-bd">
+                <h3>{{ val.title }}</h3>
+                <p>联系人:{{ val.contacts }}</p>
+                <p>电话：{{ val.phone }}</p>
+                <p>地址:{{ val.address }}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="phone">
-          <div><img src="@/assets/img/phone.png" alt="" /> 联系电话</div>
+          <div class="phone">
+            <div><img src="@/assets/img/phone.png" alt="" /> 联系电话</div>
+          </div>
         </div>
       </div>
       <!-- 招聘部分 -->
@@ -388,6 +390,7 @@ export default {
           text: "夜总会招聘模特条件改掉这些习惯",
         },
       ],
+      environmentListL: null,
     };
   },
   methods: {
@@ -416,6 +419,18 @@ export default {
   },
   mounted() {
     window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+  },
+  created() {
+    // this.$axios.get('/index.php/api/journalism/list?pageNumber=0&pageSize=2&journalismtypeid=1,2').then(val => {
+    //   console.log(val);
+    // })
+    this.$axios.get("/index.php/api/ambient/list").then((val) => {
+      val.data.forEach((val) => {
+        val.image = this.$store.state.domainName + val.image;
+      });
+      this.environmentListL = val.data;
+    });
+    // console.log();
   },
 };
 </script>
@@ -480,6 +495,7 @@ export default {
 .environment-box {
   width: 100%;
   background-color: #ccc;
+  // margin: (20/@vw) 0;
   .nightclub-title {
     display: flex;
     justify-content: center;
@@ -513,6 +529,12 @@ export default {
     p {
       animation: opcityMove 1.2s forwards;
     }
+  }
+  & > div:nth-child(n + 1) {
+    margin-bottom: (10 / @vw);
+  }
+  & > div:last-of-type {
+    padding-bottom: (20 / @vw);
   }
   .environment {
     padding: 0 (20 / @vw);
@@ -551,10 +573,12 @@ export default {
   }
   .phone {
     width: 100%;
-    padding: (10 / @vw);
+    // padding: (10 / @vw);
+    padding: (10 / @vw) (10 / @vw) 0;
     box-sizing: border-box;
     div {
       width: 100%;
+      height: (54 / @vw);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -733,7 +757,8 @@ export default {
   left: 0;
   width: 100%;
   height: (100 / @vw);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.75);
+
   ul {
     width: 100%;
     height: 100%;
@@ -748,6 +773,7 @@ export default {
       a {
         font-size: 12px;
         text-align: center;
+        color: #fff;
         img {
           .setwh(40,40);
         }

@@ -1,6 +1,6 @@
 module.exports = {
-    publicPath: './',
+    publicPath: "./",
     devServer: {
-        proxy: 'http://49.235.93.38:82/'
-    }
-}
+        proxy: "http://49.235.93.38:82/",
+    },
+};
