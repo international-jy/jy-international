@@ -18,7 +18,7 @@
           <a href="javaScript:;" class="top_user1">
             <img src="@/assets/img/pro_user.png" />
           </a>
-          <a href="javaScript:;" class="top_home1" @click="go(-1)">
+          <a href="/home" class="top_home1" @click="go(-1)">
             <img src="@/assets/img/pro_home.png" />
           </a>
         </div>

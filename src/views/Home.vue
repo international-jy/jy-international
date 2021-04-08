@@ -1,6 +1,11 @@
 <template>
-  <div class="home">
-    <div class="pql-box">
+  <div
+    class="home"
+    v-loading.fullscreen.lock="!hide"
+    element-loading-text="拼命加载中"
+    element-loading-background="rgba(255, 255, 255, 0.4)"
+  >
+    <div class="pql-box" v-if="hide">
       <!-- 头部导航 -->
       <div class="nav-box">
         <img src="@/assets/img/nav.png" alt="" class="nav-title" />
@@ -52,16 +57,20 @@
         </p>
       </div>
       <!-- 模特 -->
-      <div class="high-end" ref="high" :class="highFlag?'high-end-move':''">
+      <div class="high-end" ref="high" :class="highFlag ? 'high-end-move' : ''">
         <a>高端KTV</a>
         <p>High-end KTV News</p>
         <span></span>
       </div>
       <div class="fameal">
         <ul>
-          <li v-for="item in highList" :key="item.id" @click="onClickHigh(item.id)">
+          <li
+            v-for="item in highList"
+            :key="item.id"
+            @click="onClickHigh(item.id)"
+          >
             <img :src="item.image" alt="" />
-            <p>{{item.title}}</p>
+            <p>{{ item.title }}</p>
           </li>
         </ul>
       </div>
@@ -75,10 +84,14 @@
       <div class="tjb-box">
         <div class="tjb-content">
           <ul>
-            <li v-for="(value, index) in newsList" :key="index">
+            <li
+              v-for="(value, index) in newsList"
+              :key="index"
+              @click="onClickSkip(value.id)"
+            >
               <a>
                 <img src="@/assets/img/text_list_code_bg.jpg" />{{
-                  value.text
+                  value.title
                 }}</a
               >
             </li>
@@ -153,227 +166,11 @@ export default {
       environmentMove: false,
       flag: true,
       scrollFlag: true,
-      newsList: [
-        {
-          text: "111",
-        },
-        {
-          text: "222",
-        },
-        {
-          text: "3333",
-        },
-        {
-          text: "44444444",
-        },
-        {
-          text: "5555555",
-        },
-        {
-          text: "66666",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "111",
-        },
-        {
-          text: "222",
-        },
-        {
-          text: "3333",
-        },
-        {
-          text: "44444444",
-        },
-        {
-          text: "5555555",
-        },
-        {
-          text: "66666",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-        {
-          text: "夜总会招聘模特条件改掉这些习惯",
-        },
-      ],
+      newsList: [],
       environmentListL: null,
-      highFlag:false,
-      highList:null
+      highFlag: false,
+      highList: null,
+      hide: false,
     };
   },
   methods: {
@@ -402,7 +199,7 @@ export default {
         }
       }
 
-       if (top > this.$refs.scroll[2].getBoundingClientRect().top) {
+      if (top > this.$refs.scroll[2].getBoundingClientRect().top) {
         if (classFlag) {
           classFlag = false;
           this.environmentListL[2].class = "cd-environment-m";
@@ -416,14 +213,27 @@ export default {
         }
       }
     },
-    onClickHigh:function(num) {
+    onClickHigh: function (num) {
       this.$router.push({
-              path: "/show/model",
-              query: {
-                id: num,
-              },
-            });
-    }
+        path: "/show/model",
+        query: {
+          id: num,
+        },
+      });
+    },
+    onClickSkip: function (id) {
+      console.log(id);
+      this.$axios.get("/index.php/api/journalism/list").then((value) => {
+        value.data.forEach((value) => {
+          this.$router.push({
+            path: "/news/list",
+            query: {
+              id: value.id,
+            },
+          });
+        });
+      });
+    },
   },
   created() {
     this.$axios.get("/index.php/api/ambient/list").then((val) => {
@@ -434,17 +244,23 @@ export default {
       });
       this.environmentListL = val.data;
     });
-    this.$axios.get('/index.php/api/models/list').then(val => {
+    this.$axios.get("/index.php/api/journalism/list").then((value) => {
+      value.data.forEach((value) => {
+        this.newsList.push(value);
+      });
+    });
+    this.$axios.get("/index.php/api/models/list").then((val) => {
       console.log(val);
       this.highList = val.data;
       val.data.forEach((val) => {
         val.image = this.$store.state.domainName + val.image;
       });
-    })
+      this.hide = true;
+    });
   },
   destroyed() {
-       window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
-  }
+    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+  },
 };
 </script>
 
@@ -578,14 +394,13 @@ export default {
       }
     }
     .cd-titleh {
-      div{
-          img {
-            animation: opcityMove 1.4s forwards !important;
+      div {
+        img {
+          animation: opcityMove 1.4s forwards !important;
         }
       }
-      
     }
-   
+
     .environment-bd {
       width: 100%;
       padding: (15 / @vw) (10 / @vw);
@@ -693,10 +508,10 @@ export default {
     animation: movel 1s forwards;
   }
   p {
-     animation: movel 1.2s forwards;
+    animation: movel 1.2s forwards;
   }
   span {
-     animation: movel 1.4s forwards;
+    animation: movel 1.4s forwards;
   }
 }
 //模特
@@ -778,8 +593,8 @@ export default {
     margin-top: (20 / @vw);
     // box-sizing: border-box;
     ul {
-      animation: move 30s linear infinite;
-      transition: all 0.5s;
+      // animation: move 30s linear infinite;
+      // transition: all 0.5s;
       li {
         border-bottom: 1px solid #ededed;
         a {
@@ -889,7 +704,6 @@ export default {
 }
 
 //微信二维码弹出层
-
 .or-code {
   position: fixed;
   left: 0;
