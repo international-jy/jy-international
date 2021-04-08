@@ -16,13 +16,13 @@
       </div>
       <!-- 环境部分 -->
       <div class="environment-box">
-        <div class="nightclub-title">
+        <div class="nightclub-title nightclub-title-t">
           <p>ENVIRONMENTAL<span>DISPLAY</span></p>
           <p>环境/AMBIENT</p>
           <p></p>
         </div>
         <div class="environment">
-          <div class="cd-environment">
+          <div class="cd-environment" :class="environmentMove?'cd-environment-m':''">
             <div class="cd-title">
               <img src="@/assets/img/environment1.jpeg" alt="" />
             </div>
@@ -502,6 +502,8 @@ export default {
   data() {
     return {
       navFlag: true,
+      environmentMove:false,
+      flag:true
     };
   },
   methods: {
@@ -511,13 +513,35 @@ export default {
     onClickTier: function () {
       this.navFlag = !this.navFlag;
     },
+     scrollHandle(e){
+	  let top = e.srcElement.scrollingElement.scrollTop;    // 获取页面滚动高度
+    // var flag = true
+        if(top > 200){
+          if(this.flag){
+            this.environmentMove = !this.environmentMove;
+            this.flag = false;
+          }
+        }
+      }
   },
+  mounted(){
+		  window.addEventListener('scroll',this.scrollHandle);//绑定页面滚动事件
+	  },
 };
 </script>
 
 <style lang="less" scope>
 @import "../assets/less/base.less";
-
+@keyframes opcityMove {
+  0% {
+    opacity: 0;
+    transform: translateY(500px);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .nav-box {
   // position: relative;
   width: 100%;
@@ -586,11 +610,18 @@ export default {
       }
     }
   }
+  .nightclub-title-t {
+    p {
+      animation: opcityMove 1.2s forwards;
+    }
+  }
   .environment {
     padding: 0 (20 / @vw);
-    .cd-title {
+    .cd-title,.cd-title-hd{
+      overflow: hidden;
       img {
         display: block;
+        animation: opcityMove 1.4s forwards ;
       }
     }
     .environment-bd {
@@ -611,6 +642,11 @@ export default {
         font-size: (26 / @vw);
         color: #585858;
       }
+    }
+    .cd-environment-m {
+        .environment-bd {
+          animation: opcityMove 1.6s forwards;
+        }
     }
   }
   .phone {
