@@ -4,10 +4,12 @@
       <!-- 顶部导航栏 -->
       <div class="top">
         <div class="top-lt" @click="go(-1)">
-          <img src="@/assets/img/return.png" alt="" />
+          <img src="@/assets/img/jiantou.png" alt="" />
         </div>
         <div class="top-rt">
-          <div class="user"><img src="@/assets/img/user.png" alt="" /></div>
+          <div class="user">
+            <img src="@/assets/img/tx.png" alt="" />
+          </div>
           <div class="nav-btn" @click="onClickNav">
             <img src="@/assets/img/nav-right.png" alt="" />
           </div>
@@ -22,7 +24,7 @@
               <!-- 跳转新闻详情页链接 -->
               <div class="caption">{{ val.title }}</div>
               <div class="time">
-                <img src="@/assets/img/time.png" alt="" />
+                <img src="@/assets/img/time.png" />
                 <p>{{ val.time }}</p>
               </div>
             </div>
@@ -31,7 +33,7 @@
       </div>
     </div>
     <div class="mip-lightbox" :class="navFlag ? 'dn' : ''" @click="onClickTier">
-      <div class="lightbox-r">
+      <div class="lightbox-r animate__animated animate__fadeInRight">
         <div class="moresetup">
           <ul>
             <li>
@@ -56,6 +58,7 @@
 </template>
 <style lang="less">
 @import "../../assets/less/base.less";
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 img {
   width: auto;
 }
@@ -90,6 +93,18 @@ img {
         img {
           position: absolute;
           height: 100%;
+        }
+      }
+      .top-rt {
+        display: flex;
+        align-items: center;
+        .tit-icon1,
+        .tit-icon2 {
+          width: (56 / @vw);
+          margin-right: (40 / @vw);
+          img {
+            width: 100%;
+          }
         }
       }
     }
@@ -139,7 +154,7 @@ img {
         .caption {
           line-height: (48 / @vw);
           max-height: (48 / @vw);
-          font-size: (22 / @vw);
+          font-size: (26 / @vw);
           font-family: "Arial";
           overflow: hidden;
         }
@@ -155,7 +170,7 @@ img {
           }
           p {
             color: #999999;
-            font-size: (20 / @vw);
+            font-size: (24 / @vw);
             padding-left: (10 / @vw);
           }
         }

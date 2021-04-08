@@ -21,20 +21,21 @@
           <p>环境/AMBIENT</p>
           <p></p>
         </div>
-        <div v-for="val in environmentListL" :key="val.id">
-          <div class="environment">
-            <div
-              class="cd-environment"
-              :class="environmentMove ? 'cd-environment-m' : ''"
-            >
-              <div class="cd-title">
-                <img :src="val.image" />
-              </div>
-              <div class="environment-bd">
-                <h3>{{ val.title }}</h3>
-                <p>联系人:{{ val.contacts }}</p>
-                <p>电话：{{ val.phone }}</p>
-                <p>地址:{{ val.address }}</p>
+        <div v-for="val in environmentListL" :key="val.id" ref="scroll">
+          <div>
+            <div class="environment">
+              <div class="cd-environment" :class="val.class">
+                <div class="cd-title" :class="val.class2">
+                  <div>
+                    <img :src="val.image" />
+                  </div>
+                </div>
+                <div class="environment-bd">
+                  <h3>{{ val.title }}</h3>
+                  <p>联系人:{{ val.contacts }}</p>
+                  <p>电话：{{ val.phone }}</p>
+                  <p>地址:{{ val.address }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -51,7 +52,7 @@
         </p>
       </div>
       <!-- 模特 -->
-      <div class="high-end">
+      <div class="high-end high-end-move">
         <a>高端KTV</a>
         <p>High-end KTV News</p>
         <span></span>
@@ -108,7 +109,7 @@
     <div class="pql-btm-fixed">
       <ul>
         <li>
-          <router-link to="/news">
+          <router-link to="/home">
             <i>
               <img src="@/assets/img/btm-fiexd3.png" alt="" />
             </i>
@@ -408,17 +409,27 @@ export default {
     },
     scrollHandle(e) {
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
-      // var flag = true
-      if (top > 200) {
+      var classFlag = true;
+      // var classFlag2 = true;
+      if (top > this.$refs.scroll[1].getBoundingClientRect().top) {
         if (this.scrollFlag) {
           this.environmentMove = !this.environmentMove;
           this.scrollFlag = false;
+          this.environmentListL[1].class = "cd-environment-m";
+          this.environmentListL[1].class2 = "cd-titleh";
         }
       }
+
+       if (top > this.$refs.scroll[2].getBoundingClientRect().top) {
+        if (classFlag) {
+          this.environmentMove = !this.environmentMove;
+          classFlag = false;
+          this.environmentListL[2].class = "cd-environment-m";
+          this.environmentListL[2].class2 = "cd-titleh";
+        }
+      }
+      // console.log(this.$refs.scroll[1].getBoundingClientRect().top);
     },
-  },
-  mounted() {
-    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
   },
   created() {
     // this.$axios.get('/index.php/api/journalism/list?pageNumber=0&pageSize=2&journalismtypeid=1,2').then(val => {
@@ -427,10 +438,12 @@ export default {
     this.$axios.get("/index.php/api/ambient/list").then((val) => {
       val.data.forEach((val) => {
         val.image = this.$store.state.domainName + val.image;
+        val.class = "";
+        val.class2 = "";
       });
       this.environmentListL = val.data;
+       window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
     });
-    // console.log();
   },
 };
 </script>
@@ -456,6 +469,24 @@ export default {
     transform: translateY(-986 / @vw);
   }
 }
+
+@keyframes movel {
+  0% {
+    transform: translateX(500px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes mover {
+  0% {
+    transform: translateX(500px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
 .nav-box {
   // position: relative;
   width: 100%;
@@ -473,6 +504,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 10;
     img {
       .setwh(32,32);
     }
@@ -543,9 +575,17 @@ export default {
       overflow: hidden;
       img {
         display: block;
-        animation: opcityMove 1.4s forwards;
       }
     }
+    .cd-titleh {
+      div{
+          img {
+            animation: opcityMove 1.4s forwards !important;
+        }
+      }
+      
+    }
+   
     .environment-bd {
       width: 100%;
       padding: (15 / @vw) (10 / @vw);
@@ -623,6 +663,7 @@ export default {
   text-align: center;
   background-color: #fff;
   height: (140 / @vw);
+  overflow: hidden;
   a {
     display: block;
     padding-top: (30 / @vw);
@@ -647,7 +688,17 @@ export default {
     text-align: center;
   }
 }
-
+.high-end-move {
+  a {
+    animation: movel 1s forwards;
+  }
+  p {
+     animation: movel 1.2s forwards;
+  }
+  span {
+     animation: movel 1.4s forwards;
+  }
+}
 //模特
 
 .fameal {

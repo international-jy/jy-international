@@ -3,13 +3,13 @@
     <div class="cc-lianxi">
       <div class="icon">
         <div class="regard-return" @click="$router.go(-1)">
-          <img src="@/assets/img/jinatou.png.png" alt="" />
+          <img src="@/assets/img/jiantou.png" alt="" />
         </div>
         <div class="regard-dl">
           <img src="@/assets/img/tx.png" alt="" />
         </div>
         <div class="regard-link" @click="addClass">
-          <img src="@/assets/img/lianjie.png.png" alt="" />
+          <img src="@/assets/img/lianjie.png" alt="" />
         </div>
       </div>
       <div class="articleArea">
@@ -23,9 +23,15 @@
       </div>
       <div class="thickness" :class="dnClass ? 'dn' : ''" @click="addClass">
         <div class="thickness-logo">
-          <span class="space"></span>
-          <span class="microblog"></span>
-          <span class="bean"></span>
+          <a href="https://qzone.qq.com/">
+            <span class="space"></span>
+          </a>
+          <a href="https://weibo.com/">
+            <span class="microblog"></span>
+          </a>
+          <a href="https://douban.com">
+            <span class="bean"></span>
+          </a>
         </div>
       </div>
     </div>
@@ -46,6 +52,7 @@
   background-color: #f8f8f8;
   .icon {
     width: 100%;
+    height: (100 / @vw);
     position: fixed;
     top: 0;
     left: 0;
@@ -55,7 +62,7 @@
     box-sizing: border-box;
     border-top: 1px solid #fafafa;
     border-bottom: 1px solid #fafafa;
-    padding: (20 / @vw) (30 / @vw) (10 / @vw);
+    padding: (28 / @vw) (30 / @vw) (10 / @vw);
     .regard-return {
       img {
         .setwh(40,40);
@@ -64,14 +71,14 @@
     .regard-dl {
       position: absolute;
       right: (100 / @vw);
-      top: (15 / @vw);
+      top: (28 / @vw);
       img {
-        .setwh(45,40);
+        .setwh(45,45);
       }
     }
     .regard-link {
       img {
-        .setwh(40,40);
+        .setwh(50,50);
       }
     }
   }
