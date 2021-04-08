@@ -26,6 +26,10 @@ const routes = [
         path: "news/list",
         component: () => import("../views/news/newsList.vue"),
       },
+      {
+        path: "show/model",
+        component: () => import("../views/show/model.vue"),
+      },
     ],
   },
 ];
