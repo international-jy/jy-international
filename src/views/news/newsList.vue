@@ -1,17 +1,20 @@
 <template>
-  <div class="xw-box" v-loading.fullscreen.lock="!hide">
-    <div class="box">
+  <div
+    class="xw-box"
+    v-loading.fullscreen.lock="!hide"
+    element-loading-text="拼命加载中"
+    element-loading-background="rgba(255, 255, 255, 0.4)"
+  >
+    <div class="box" v-if="hide">
       <div class="top">
-        <div class="top-lt" @click="go(-1)">
-          <img src="@/assets/img/return.png" />
+        <div class="regard-return" @click="go(-1)">
+          <img src="@/assets/img/jiantou.png" alt="" />
         </div>
-        <div class="top-rt">
-          <div class="tit-icon1" @click="collect">
-            <img src="@/assets/img/tit_icon1.png" />
-          </div>
-          <div class="tit-icon2" @click="share">
-            <img src="@/assets/img/tit_icon2.png" />
-          </div>
+        <div class="regard-dl" @click="collect">
+          <img src="@/assets/img/tit_icon1.png" alt="" />
+        </div>
+        <div class="regard-link" @click="share">
+          <img src="@/assets/img/lianjie.png" alt="" />
         </div>
       </div>
       <div
@@ -103,36 +106,34 @@ img {
     overflow: hidden;
     z-index: 2;
     .top {
+      width: 100%;
+      height: (100 / @vw);
       position: fixed;
       top: 0;
+      left: 0;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      margin: 0 auto;
-      height: (100 / @vw);
       background: #fafafa;
-      border-bottom: 1px solid #ededed;
-      z-index: 10;
-      .top-lt {
-        position: relative;
-        .setwh(40,44);
-        margin-left: (40 / @vw);
+      box-sizing: border-box;
+      border-top: 1px solid #fafafa;
+      border-bottom: 1px solid #fafafa;
+      padding: (28 / @vw) (30 / @vw) (10 / @vw);
+      .regard-return {
         img {
-          position: absolute;
-          height: 100%;
+          .setwh(40,40);
         }
       }
-      .top-rt {
-        display: flex;
-        align-items: center;
-        .tit-icon1,
-        .tit-icon2 {
-          width: (56 / @vw);
-          margin-right: (40 / @vw);
-          img {
-            width: 100%;
-          }
+      .regard-dl {
+        position: absolute;
+        right: (100 / @vw);
+        top: (28 / @vw);
+        img {
+          .setwh(45,45);
+        }
+      }
+      .regard-link {
+        img {
+          .setwh(50,50);
         }
       }
     }
@@ -370,7 +371,6 @@ export default {
       }
     },
     goList(id) {
-      console.log(id);
       if (id == 0) {
         this.$router.push({
           path: "/news/list",
@@ -389,7 +389,7 @@ export default {
       let arr = [...val];
       let start = val.indexOf("![输入图片说明]");
       let str = arr.splice(start);
-      console.log(str);
+      str;
       return arr.join("");
     },
     lower: function (val) {

@@ -4,10 +4,12 @@
       <!-- 顶部导航栏 -->
       <div class="top">
         <div class="top-lt" @click="go(-1)">
-          <img src="@/assets/img/return.png" alt="" />
+          <img src="@/assets/img/jiantou.png" alt="" />
         </div>
         <div class="top-rt">
-          <div class="user"><img src="@/assets/img/user.png" alt="" /></div>
+          <div class="user">
+            <img src="@/assets/img/tx.png" alt="" />
+          </div>
           <div class="nav-btn" @click="onClickNav">
             <img src="@/assets/img/nav-right.png" alt="" />
           </div>
@@ -91,6 +93,18 @@ img {
         img {
           position: absolute;
           height: 100%;
+        }
+      }
+      .top-rt {
+        display: flex;
+        align-items: center;
+        .tit-icon1,
+        .tit-icon2 {
+          width: (56 / @vw);
+          margin-right: (40 / @vw);
+          img {
+            width: 100%;
+          }
         }
       }
     }
