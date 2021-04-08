@@ -50,7 +50,11 @@
           <h2>成都夜总会模特</h2>
         </div>
         <!-- 点击图片 放大图片 -->
-        <div class="bigimg" :class="classFlag3 ? 'dn' : ''" @click="onClickBigImg">
+        <div
+          class="bigimg"
+          :class="classFlag3 ? 'dn' : ''"
+          @click="onClickBigImg"
+        >
           <img src="@/assets/img/img1.jpg" alt="" />
         </div>
         <!-- 点击分享的弹层 开始 -->
@@ -181,7 +185,7 @@ export default {
       this.classFlag = !this.classFlag;
       console.log(111);
     },
-     onClickRemoveClass2: function () {
+    onClickRemoveClass2: function () {
       this.classFlag2 = !this.classFlag2;
       // console.log(111);
     },
@@ -359,24 +363,23 @@ export default {
       color: #000;
     }
   }
-  
 }
 // 点击图片 放大图片
-.bigimg{
-    position:fixed;
-    left: 0;
-    top: 0;
+.bigimg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  text-align: center;
+  z-index: 99;
+  img {
     width: 100%;
-    height: 100%;
-    background-color: rgb(0, 0, 0);
-    text-align: center;
-    z-index: 99;
-    img{
-      width: 100%;
-      // height:80%;
-     margin-top: 30%;
-    }
+    // height:80%;
+    margin-top: 30%;
   }
+}
 // 点击分享弹层
 .share-mono {
   position: relative;

@@ -16,13 +16,16 @@
       </div>
       <!-- 环境部分 -->
       <div class="environment-box">
-        <div class="nightclub-title">
+        <div class="nightclub-title nightclub-title-t">
           <p>ENVIRONMENTAL<span>DISPLAY</span></p>
           <p>环境/AMBIENT</p>
           <p></p>
         </div>
         <div class="environment">
-          <div class="cd-environment">
+          <div
+            class="cd-environment"
+            :class="environmentMove ? 'cd-environment-m' : ''"
+          >
             <div class="cd-title">
               <img src="@/assets/img/environment1.jpeg" alt="" />
             </div>
@@ -111,7 +114,7 @@
           </router-link>
         </li>
         <li>
-          <a href="tel:18073941390">
+          <a href="tel:120">
             <i>
               <img src="@/assets/img/btm-fiexd2.png" alt="" />
             </i>
@@ -164,6 +167,7 @@ export default {
   data() {
     return {
       navFlag: true,
+      environmentMove: false,
       flag: true,
       newsList: [
         {
@@ -398,12 +402,35 @@ export default {
     onClickOr: function () {
       this.flag = !this.flag;
     },
+    scrollHandle(e) {
+      let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
+      // var flag = true
+      if (top > 200) {
+        if (this.flag) {
+          this.environmentMove = !this.environmentMove;
+          this.flag = false;
+        }
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
   },
 };
 </script>
 
 <style lang="less" scope>
 @import "../assets/less/base.less";
+@keyframes opcityMove {
+  0% {
+    opacity: 0;
+    transform: translateY(500px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 @keyframes move {
   0% {
@@ -413,7 +440,6 @@ export default {
     transform: translateY(-986 / @vw);
   }
 }
-
 .nav-box {
   // position: relative;
   width: 100%;
@@ -431,7 +457,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
     img {
       .setwh(32,32);
     }
@@ -483,11 +508,19 @@ export default {
       }
     }
   }
+  .nightclub-title-t {
+    p {
+      animation: opcityMove 1.2s forwards;
+    }
+  }
   .environment {
     padding: 0 (20 / @vw);
-    .cd-title {
+    .cd-title,
+    .cd-title-hd {
+      overflow: hidden;
       img {
         display: block;
+        animation: opcityMove 1.4s forwards;
       }
     }
     .environment-bd {
@@ -507,6 +540,11 @@ export default {
         text-align: center;
         font-size: (26 / @vw);
         color: #585858;
+      }
+    }
+    .cd-environment-m {
+      .environment-bd {
+        animation: opcityMove 1.6s forwards;
       }
     }
   }
@@ -653,6 +691,7 @@ export default {
 .tjb-box {
   width: 100%;
   margin-bottom: (106 / @vw);
+
   box-sizing: border-box;
   // overflow: hidden;
   .tjb-content {
@@ -665,7 +704,6 @@ export default {
     ul {
       animation: move 30s linear infinite;
       transition: all 0.5s;
-      margin-top: -30px;
       li {
         border-bottom: 1px solid #ededed;
         a {
@@ -673,7 +711,7 @@ export default {
           width: 100%;
           padding-left: 6px;
           text-align-last: left;
-          font-size: (26 / @vw);
+          font-size: (22 / @vw);
           color: #7c7b7c;
           img {
             width: 4px;
@@ -771,6 +809,8 @@ export default {
     }
   }
 }
+
+//微信二维码弹出层
 
 .or-code {
   position: fixed;
