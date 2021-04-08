@@ -4,24 +4,29 @@ import VueRouter from "vue-router";
 import contact from "./contact";
 import news from "./news";
 import show from "./show";
-import main from './main';
+import main from "./main";
 
 Vue.use(VueRouter);
-const routes = [{
+const routes = [
+  {
     path: "/",
-    component: () =>
-        import ('../views/index.vue'),
-    redirect: '/home',
+    component: () => import("../views/index.vue"),
+    redirect: "/home",
     children: [
-        main,
-        news,
-        contact,
-        show
-    ]
-}];
+      main,
+      news,
+      contact,
+      show,
+      {
+        path: "show/model",
+        component: () => import("../views/show/model.vue"),
+      },
+    ],
+  },
+];
 
 const router = new VueRouter({
-    routes,
+  routes,
 });
 
 export default router;
