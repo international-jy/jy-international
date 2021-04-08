@@ -4,29 +4,30 @@
       <!-- 顶部 开始 -->
       <div class="top">
         <div class="top-t">
-          <a href="javaScript:;">＜</a>
-          <div class="top-btn">
+          <a href="javaScript:;" @click="go(-1)">＜</a>
+          <div class="top-btn" @click="pop">
             <div class="inputm">
               <img src="@/assets/img/seek.png" />
               <input type="text" placeholder="请输入您要搜索的内容" />
             </div>
           </div>
           <div class="top-icon">
-            <a href="javaScript:;" class="top_share1">
+            <a href="javaScript:;" class="top_share1" @click="share">
               <img src="@/assets/img/share.png" />
             </a>
             <a href="javaScript:;" class="top_user1">
               <img src="@/assets/img/pro_user.png" />
             </a>
-            <a href="javaScript:;" class="top_home1">
+            <a href="javaScript:;" class="top_home1" @click="go(-1)">
               <img src="@/assets/img/pro_home.png" />
             </a>
           </div>
         </div>
         <!-- 搜索弹窗 开始 -->
-        <div class="pop-up">
+        <div class="pop-up" :class="popClass ? 'dn' : ''">
+          <div class="pop" @click="pop"></div>
           <div class="pop-up-l">
-            <div class="pop-up-t">
+            <div class="pop-up-t animate__animated animate__backInLeft">
               <img src="@/assets/img/seek.png" />
               <input type="text" placeholder="请输入您要搜索的内容" />
             </div>
@@ -35,7 +36,7 @@
         <!-- 搜索弹窗 结束 -->
 
         <!-- 分享弹窗 开始 -->
-        <div class="thickness">
+        <div class="thickness" :class="shareClass ? 'dn' : ''" @click="share">
           <div class="thickness-logo">
             <span class="space"></span>
             <span class="microblog"></span>
@@ -45,10 +46,11 @@
         <!-- 分享弹窗 开始 -->
       </div>
       <!-- 顶部 结束 -->
-
       <!-- 高端模特 开始 -->
       <div class="high-end">
-        <a href="javaScript:;">高端模特</a>
+        <a href="javaScript:;" @click="high" :class="blueClass ? '' : 'hight'"
+          >高端模特</a
+        >
       </div>
       <!-- 高端模特 结束 -->
 
@@ -67,38 +69,8 @@
               <span>￥{{ value.money }}元</span>
             </div>
           </li>
-          <!-- <li>
-                    <div class="details-con">
-                        <a href="javaScript:;" style="margin-bottom: 5px;">成都夜场模特</a>
-                        <span>￥1500元</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="details-con">
-                        <a href="javaScript:;" style="margin-bottom: 5px;">成都酒吧模特</a>
-                        <span>￥1500元</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="details-con">
-                        <a href="javaScript:;" style="margin-bottom: 5px;">成都夜总会模特</a>
-                        <span>￥1500元</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="details-con">
-                        <a href="javaScript:;" style="margin-bottom: 5px;">成都夜场模特</a>
-                        <span>￥1500元</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="details-con">
-                        <a href="javaScript:;" style="margin-bottom: 5px;">成都酒吧模特</a>
-                        <span>￥1500元</span>
-                    </div>
-                </li> -->
         </ul>
-        <div class="details-btn">
+        <div class="details-btn" :class="detailsList ? 'dn' : ''">
           <a href="javaScript:;">
             <img src="@/assets/img/return_top1.png" class="return_top1" />
           </a>
@@ -111,6 +83,7 @@
 
 <style lang="less">
 @import "../../assets/less/base.less";
+@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 .box {
   width: 100%;
   overflow: hidden;
@@ -186,28 +159,30 @@
       }
     }
     .pop-up {
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: none;
+      .pop {
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        position: fixed;
+        top: 0;
+        left: 0;
+      }
       .pop-up-l {
+        position: absolute;
+        top: 0;
+        left: 0;
         max-width: (768 / @vw);
         background: #fff;
-        height: (60 / @vw);
-        padding: (12 / @vw) (10 / @vw);
+        width: 100%;
+        height: (80 / @vw);
+        padding: (9 / @vw) (10 / @vw);
         display: flex;
-        transition: all 0.5s;
-        transform: translateX(0);
-        opacity: 1;
+        z-index: 99;
+        box-sizing: border-box;
         .pop-up-t {
           height: 100%;
           flex: 1;
-          border-radius: 5em;
+          border-radius: (30 / @vw);
           background: #f2f2f2;
           display: flex;
           align-items: center;
@@ -230,7 +205,6 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
-      display: none;
       .thickness-logo {
         width: (400 / @vw);
         background-color: rgba(0, 0, 0, 0.8);
@@ -249,15 +223,15 @@
           margin: (10 / @vw);
         }
         .space {
-          background-image: url(/img/share_but.png);
+          background-image: url(../../assets/img/share_but.png);
           background-position: 0 (-73 / @vw);
         }
         .microblog {
-          background-image: url(/img/share_but.png);
+          background-image: url(../../assets/img/share_but.png);
           background-position: 0 0;
         }
         .bean {
-          background-image: url(/img/share_but.png);
+          background-image: url(../../assets/img/share_but.png);
           background-position: 0 (-222 / @vw);
         }
       }
@@ -270,6 +244,9 @@
     height: (80 / @vw);
     background-color: #fff;
     margin-bottom: (10 / @vw);
+    .hight {
+      color: #1e91ff;
+    }
     a {
       color: #525252;
       padding-left: (90 / @vw);
@@ -360,11 +337,27 @@ export default {
           money: 1500,
         },
       ],
+      blueClass: true,
+      shareClass: true,
+      popClass: true,
+      detailsList: true,
     };
   },
   methods: {
     onClickModel: function () {
       this.$router.push({ path: "/show/model" });
+    },
+    go(step) {
+      this.$router.go(step);
+    },
+    high() {
+      this.blueClass = !this.blueClass;
+    },
+    share() {
+      this.shareClass = !this.shareClass;
+    },
+    pop() {
+      this.popClass = !this.popClass;
     },
   },
 };
