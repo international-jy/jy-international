@@ -455,7 +455,7 @@ export default {
   created() {
     let that = this;
     this.$axios.get("/index.php/api/models/list").then((val) => {
-      console.log(val.data);
+      // console.log(val.data);
       that.modelList = val.data;
     });
   },
