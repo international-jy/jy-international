@@ -52,36 +52,16 @@
         </p>
       </div>
       <!-- 模特 -->
-      <div class="high-end high-end-move">
+      <div class="high-end" ref="high" :class="highFlag?'high-end-move':''">
         <a>高端KTV</a>
         <p>High-end KTV News</p>
         <span></span>
       </div>
       <div class="fameal">
         <ul>
-          <li>
-            <img src="@/assets/img/img1.jpg" alt="" />
-            <p>成都夜总会模特</p>
-          </li>
-          <li>
-            <img src="@/assets/img/img2.jpg" alt="" />
-            <p>成都夜场模特</p>
-          </li>
-          <li>
-            <img src="@/assets/img/img3.jpg" alt="" />
-            <p>成都酒吧模特</p>
-          </li>
-          <li>
-            <img src="@/assets/img/img4.jpg" alt="" />
-            <p>成都夜总会模特</p>
-          </li>
-          <li>
-            <img src="@/assets/img/img5.jpg" alt="" />
-            <p>成都夜场模特</p>
-          </li>
-          <li>
-            <img src="@/assets/img/img6.jpg" alt="" />
-            <p>成都酒吧模特</p>
+          <li v-for="item in highList" :key="item.id" @click="onClickHigh(item.id)">
+            <img :src="item.image" alt="" />
+            <p>{{item.title}}</p>
           </li>
         </ul>
       </div>
@@ -392,6 +372,8 @@ export default {
         },
       ],
       environmentListL: null,
+      highFlag:false,
+      highList:null
     };
   },
   methods: {
@@ -410,10 +392,10 @@ export default {
     scrollHandle(e) {
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
       var classFlag = true;
+      var classFlag2 = true;
       // var classFlag2 = true;
       if (top > this.$refs.scroll[1].getBoundingClientRect().top) {
         if (this.scrollFlag) {
-          this.environmentMove = !this.environmentMove;
           this.scrollFlag = false;
           this.environmentListL[1].class = "cd-environment-m";
           this.environmentListL[1].class2 = "cd-titleh";
@@ -422,19 +404,28 @@ export default {
 
        if (top > this.$refs.scroll[2].getBoundingClientRect().top) {
         if (classFlag) {
-          this.environmentMove = !this.environmentMove;
           classFlag = false;
           this.environmentListL[2].class = "cd-environment-m";
           this.environmentListL[2].class2 = "cd-titleh";
         }
       }
-      // console.log(this.$refs.scroll[1].getBoundingClientRect().top);
+      if (top > this.$refs.high.getBoundingClientRect().top) {
+        if (classFlag2) {
+          classFlag2 = false;
+          this.highFlag = true;
+        }
+      }
     },
+    onClickHigh:function(num) {
+      this.$router.push({
+              path: "/show/model",
+              query: {
+                id: num,
+              },
+            });
+    }
   },
   created() {
-    // this.$axios.get('/index.php/api/journalism/list?pageNumber=0&pageSize=2&journalismtypeid=1,2').then(val => {
-    //   console.log(val);
-    // })
     this.$axios.get("/index.php/api/ambient/list").then((val) => {
       val.data.forEach((val) => {
         val.image = this.$store.state.domainName + val.image;
@@ -442,9 +433,18 @@ export default {
         val.class2 = "";
       });
       this.environmentListL = val.data;
-       window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
     });
+    this.$axios.get('/index.php/api/models/list').then(val => {
+      console.log(val);
+      this.highList = val.data;
+      val.data.forEach((val) => {
+        val.image = this.$store.state.domainName + val.image;
+      });
+    })
   },
+  destroyed() {
+       window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+  }
 };
 </script>
 
