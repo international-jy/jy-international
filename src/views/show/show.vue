@@ -1,31 +1,35 @@
 <template>
-  <div>
-    <div class="thn box">
-      <!-- 顶部 开始 -->
-      <div class="top">
-        <div class="top-t">
-          <a href="javaScript:;" @click="go(-1)">＜</a>
-          <div class="top-btn" @click="pop">
-            <div class="inputm">
-              <img src="@/assets/img/seek.png" />
-              <input type="text" placeholder="请输入您要搜索的内容" />
-            </div>
-          </div>
-          <div class="top-icon">
-            <a href="javaScript:;" class="top_share1" @click="share">
-              <img src="@/assets/img/share.png" />
-            </a>
-            <a href="javaScript:;" class="top_user1">
-              <img src="@/assets/img/pro_user.png" />
-            </a>
-            <a href="javaScript:;" class="top_home1" @click="go(-1)">
-              <img src="@/assets/img/pro_home.png" />
-            </a>
+  <div class="thn box">
+    <!-- 顶部 开始 -->
+    <div class="top">
+      <div class="top-t">
+        <!-- <a href="javaScript:;" @click="go(-1)">＜</a> -->
+        <img src="@/assets/img/fh.png" class="fh" />
+        <div class="top-btn" @click="pop">
+          <div class="inputm">
+            <img src="@/assets/img/seek.png" />
+            <input type="text" placeholder="请输入您要搜索的内容" />
           </div>
         </div>
-        <!-- 搜索弹窗 开始 -->
-        <div class="pop-up" :class="popClass ? 'dn' : ''">
-          <div class="pop" @click="pop"></div>
+        <div class="top-icon">
+          <a href="javaScript:;" class="top_share1" @click="share">
+            <img src="@/assets/img/share.png" />
+          </a>
+          <a href="javaScript:;" class="top_user1">
+            <img src="@/assets/img/pro_user.png" />
+          </a>
+          <a href="javaScript:;" class="top_home1" @click="go(-1)">
+            <img src="@/assets/img/pro_home.png" />
+          </a>
+        </div>
+        <div class="nav-btn" @click="onClickNav">
+          <img src="@/assets/img/nav-right.png" alt="" />
+        </div>
+      </div>
+      <!-- 搜索弹窗 开始 -->
+      <div class="pop-up" :class="popClass ? 'dn' : ''">
+        <div class="pop" @click="pop"></div>
+        <div class="bgff">
           <div class="pop-up-l">
             <div class="pop-up-t animate__animated animate__backInLeft">
               <img src="@/assets/img/seek.png" />
@@ -33,19 +37,52 @@
             </div>
           </div>
         </div>
-        <!-- 搜索弹窗 结束 -->
-
-        <!-- 分享弹窗 开始 -->
-        <div class="thickness" :class="shareClass ? 'dn' : ''" @click="share">
-          <div class="thickness-logo">
-            <span class="space"></span>
-            <span class="microblog"></span>
-            <span class="bean"></span>
-          </div>
-        </div>
-        <!-- 分享弹窗 开始 -->
       </div>
-      <!-- 顶部 结束 -->
+      <!-- 搜索弹窗 结束 -->
+
+      <!-- 分享弹窗 开始 -->
+      <div class="thickness" :class="shareClass ? 'dn' : ''" @click="share">
+        <div class="thickness-logo">
+          <a href="https://mail.qq.com/">
+            <span class="space"></span>
+          </a>
+          <a href="https://weibo.com/">
+            <span class="microblog"></span>
+          </a>
+          <a href="https://www.douban.com/">
+            <span class="bean"></span>
+          </a>
+        </div>
+      </div>
+      <!-- 分享弹窗 开始 -->
+    </div>
+    <!-- 顶部 结束 -->
+    <!-- 侧边栏 开始 -->
+    <div class="mip-lightbox" :class="navFlag ? 'dn' : ''" @click="onClickTier">
+      <div class="lightbox-r">
+        <div class="moresetup">
+          <ul>
+            <li>
+              <router-link to="/home">首页</router-link>
+            </li>
+            <li>
+              <router-link to="/news">夜场新闻</router-link>
+            </li>
+            <li>
+              <!-- <a href="">联系我们</a> -->
+              <router-link to="/contact">联系我们</router-link>
+            </li>
+            <li>
+              <!-- <a href="">模特展示</a> -->
+              <router-link to="/show">模特展示</router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- 侧边栏 结束 -->
+
+    <div ref="backTopBox" class="backbox">
       <!-- 高端模特 开始 -->
       <div class="high-end">
         <a href="javaScript:;" @click="high" :class="blueClass ? '' : 'hight'"
@@ -60,17 +97,21 @@
           <li
             v-for="(value, index) in modelList"
             :key="index"
-            @click="onClickModel"
+            @click="onClickModel(value.id)"
           >
             <div class="details-con">
               <a href="javaScript:;" style="margin-bottom: 5px">{{
                 value.title
               }}</a>
-              <span>￥{{ value.money }}元</span>
+              <span>￥{{ value.price }}元</span>
             </div>
           </li>
         </ul>
-        <div class="details-btn" :class="detailsList ? 'dn' : ''">
+        <div
+          class="details-btn"
+          :class="classFlag5 ? 'dn' : ''"
+          @click="onClickBackTop"
+        >
           <a href="javaScript:;">
             <img src="@/assets/img/return_top1.png" class="return_top1" />
           </a>
@@ -84,12 +125,16 @@
 <style lang="less">
 @import "../../assets/less/base.less";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+body {
+  height: 100%;
+}
 .box {
   width: 100%;
-  overflow: hidden;
+  // overflow: hidden;
   margin: auto;
   top: 0;
   left: 0;
+  height: 100%;
   // 顶部
   .top {
     position: fixed;
@@ -105,13 +150,17 @@
       height: (60 / @vw);
       display: flex;
       align-items: center;
-      a {
-        font-size: (50 / @vw);
-        padding-left: (5 / @vw);
+      // a {
+      //   font-size: (50 / @vw);
+      //   padding-left: (5 / @vw);
+      // }
+      .fh {
+        .setwh(40,40);
+        padding: (10 / @vw) 0 0 (5 / @vw);
       }
       .top-btn {
         height: 100%;
-        margin: (12 / @vw) (25 / @vw) 0;
+        margin: (14 / @vw) (10 / @vw) 0;
         background-color: #f2f2f2;
         border-radius: (100 / @vw);
         position: relative;
@@ -137,6 +186,7 @@
       .top-icon {
         display: flex;
         flex: none;
+        margin-right: (80 / @vw);
         a {
           background-size: (22 / @vw);
           width: (22 / @vw);
@@ -157,43 +207,67 @@
           height: (44 / @vw);
         }
       }
+      .nav-btn {
+        position: fixed;
+        top: (15 / @vw);
+        right: (10 / @vw);
+        .setwh(60,60);
+        border-radius: 50%;
+        border: 1px solid #1296db;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+        img {
+          .setwh(32,32);
+        }
+      }
     }
     .pop-up {
+      position: absolute;
+      top: (5 / @vw);
+      left: 0;
+      width: 100%;
+      height: (100 / @vw);
+      z-index: 99;
       .pop {
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8);
         position: fixed;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
       }
-      .pop-up-l {
-        position: absolute;
+      .bgff {
+        position: fixed;
         top: 0;
         left: 0;
-        max-width: (768 / @vw);
-        background: #fff;
         width: 100%;
         height: (80 / @vw);
-        padding: (9 / @vw) (10 / @vw);
-        display: flex;
-        z-index: 99;
-        box-sizing: border-box;
-        .pop-up-t {
-          height: 100%;
-          flex: 1;
-          border-radius: (30 / @vw);
-          background: #f2f2f2;
+        background-color: #fff;
+        z-index: 100;
+        .pop-up-l {
+          width: 80%;
+          height: (80 / @vw);
+          padding: (9 / @vw) (10 / @vw);
           display: flex;
-          align-items: center;
-          img {
-            width: (40 / @vw);
-            height: (40 / @vw);
-            padding: 0 (30 / @vw);
-          }
-          input {
-            border: none !important;
-            outline: none;
+          box-sizing: border-box;
+          .pop-up-t {
+            height: 100%;
+            flex: 1;
+            border-radius: (30 / @vw);
+            background: #f2f2f2;
+            display: flex;
+            align-items: center;
+            img {
+              width: (40 / @vw);
+              height: (40 / @vw);
+              padding: 0 (30 / @vw);
+            }
+            input {
+              border: none !important;
+              outline: none;
+            }
           }
         }
       }
@@ -233,6 +307,65 @@
         .bean {
           background-image: url(../../assets/img/share_but.png);
           background-position: 0 (-222 / @vw);
+        }
+      }
+    }
+  }
+
+  .backbox {
+    height: 110%;
+  }
+
+  .mip-lightbox {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    .lightbox-r {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 60%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.1);
+      z-index: 99;
+      box-shadow: -2px 0 5px #000;
+      .moresetup {
+        width: 100%;
+        ul {
+          width: 100%;
+          li {
+            position: relative;
+            border-bottom: 2px solid #45494c;
+            margin: (28 / @vw);
+            &:last-child {
+              border: none;
+            }
+            a {
+              display: block;
+              color: #fff;
+              font-size: (31 / @vw);
+              padding: (10 / @vw) 0 (10 / @vw) (46 / @vw);
+              box-sizing: border-box;
+              &::before {
+                content: "";
+                position: absolute;
+                left: (-6 / @vw);
+                top: 50%;
+                background-color: #5b5d5e;
+                height: 1px;
+                width: 4px;
+                margin-left: (26 / @vw);
+                box-shadow: -1px 1px 0 #5b5d5e, -2px 2px 0 #5b5d5e,
+                  -3px 3px 0 #5b5d5e, -4px 4px 0 #5b5d5e, -5px 5px 0 #5b5d5e,
+                  -1px -1px 0 #5b5d5e, -2px -2px 0 #5b5d5e, -3px -3px 0 #5b5d5e,
+                  -4px -4px 0 #5b5d5e, -5px -5px 0 #5b5d5e;
+              }
+            }
+          }
         }
       }
     }
@@ -292,14 +425,13 @@
     }
     .details-btn {
       width: 100%;
-      // display: none;
       a {
         position: fixed;
         right: 3%;
-        bottom: 8%;
+        bottom: 16%;
         .return_top1 {
-          width: (100 / @vw);
-          height: (100 / @vw);
+          width: (80 / @vw);
+          height: (80 / @vw);
         }
       }
     }
@@ -311,41 +443,33 @@
 export default {
   data() {
     return {
-      modelList: [
-        {
-          title: "成都夜总会模特",
-          money: 1500,
-        },
-        {
-          title: "成都夜场模特",
-          money: 1500,
-        },
-        {
-          title: "成都酒吧模特",
-          money: 1500,
-        },
-        {
-          title: "成都夜总会模特",
-          money: 1500,
-        },
-        {
-          title: "成都夜场模特",
-          money: 1500,
-        },
-        {
-          title: "成都酒吧模特",
-          money: 1500,
-        },
-      ],
+      modelList: [],
       blueClass: true,
       shareClass: true,
       popClass: true,
-      detailsList: true,
+      navFlag: true,
+      classFlag5: true,
+      dataId: null,
     };
   },
+  created() {
+    let that = this;
+    this.$axios.get("/index.php/api/models/list").then((val) => {
+      console.log(val.data);
+      that.modelList = val.data;
+    });
+  },
+
   methods: {
-    onClickModel: function () {
-      this.$router.push({ path: "/show/model" });
+    onClickModel: function (id) {
+      this.$router.push({
+        path: "/show/model",
+        query: {
+          id: id,
+        },
+      });
+
+      //  console.log(this.dataId);
     },
     go(step) {
       this.$router.go(step);
@@ -359,6 +483,48 @@ export default {
     pop() {
       this.popClass = !this.popClass;
     },
+    onClickNav: function () {
+      this.navFlag = !this.navFlag;
+    },
+    onClickTier: function () {
+      this.navFlag = !this.navFlag;
+    },
+
+    // 点击回到顶部事件
+    onClickBackTop() {
+      let scrollTop = window.pageYOffset;
+      // 每0.01秒向上移动100像素，直到小于或等于0结束
+      let timer = setInterval(() => {
+        scrollTop -= 10;
+        // 为负数，浏览器会不处理得
+        window.scrollTo(0, scrollTop);
+        if (scrollTop <= 0) {
+          clearInterval(timer);
+        }
+      }, 30);
+    },
+
+    //滚动监听
+    scrollHandle(e) {
+      // console.log(this);
+      // console.log(this.$refs);
+      // console.log(111);
+      let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
+      // var backTop = this.$refs.backTop.offsetHeight;
+      // console.log(top,backTop);
+      if (top > 10) {
+        this.classFlag5 = false;
+      } else {
+        // console.log(111);
+        this.classFlag5 = true;
+      }
+    },
+  },
+
+  mounted() {
+    // console.log(this.$refs.backTopBox);
+    // this.$refs.backTopBox.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
   },
 };
 </script>
