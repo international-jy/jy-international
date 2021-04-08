@@ -1,25 +1,24 @@
 <template>
   <div class="xjg box">
-    5242
     <!-- 模特展示2 -->
     <div class="model">
       <!-- 头部 开始 -->
       <div class="model-top">
-        <div class="back">&lt;</div>
-        <div class="dot">▪ ▪ ▪</div>
+        <div class="back" @click="go(-1)">&lt;254</div>
+        <div class="dot" @click="onClickRemoveClass">▪ ▪ ▪</div>
       </div>
       <!-- 滚动后的顶部 -->
       <div class="model-top2">
-        <div class="back2">&lt;</div>
+        <div class="back2" @click="go(-1)">&lt;</div>
         <ul>
           <li class="line">商品</li>
           <li>详情</li>
         </ul>
-        <div class="dot2">▪ ▪ ▪</div>
+        <div class="dot2" @click="onClickRemoveClass2">▪ ▪ ▪</div>
       </div>
 
       <!-- 右边按钮点击后 导航显示 -->
-      <div class="mone-nav dn">
+      <div class="mone-nav" :class="classFlag2 ? 'dn' : ''">
         <div class="trian">◆</div>
         <ul>
           <li><img src="@/assets/img/home.png" alt="" />首页</li>
@@ -33,25 +32,36 @@
       <!-- 内容详情 开始 -->
       <div class="cont-mid">
         <div class="mid-num">
-          <div class="num-img">
-            <img src="@/assets/img/model.jpg" alt="" />
+          <div class="num-img" @click="onClickBigImg">
+            <img src="@/assets/img/img1.jpg" alt="" />
           </div>
           <div class="num-money">
             <p>¥ <span>1500</span></p>
-            <div class="recom">
+            <div class="recom" @click="onClickRemoveClass">
               <img src="@/assets/img/share.png" alt="" /><br />
               <span>推荐</span>
             </div>
           </div>
           <h2>成都夜总会模特</h2>
         </div>
-
+        <!-- 点击图片 放大图片 -->
+        <div
+          class="bigimg"
+          :class="classFlag3 ? 'dn' : ''"
+          @click="onClickBigImg"
+        >
+          <img src="@/assets/img/img1.jpg" alt="" />
+        </div>
         <!-- 点击分享的弹层 开始 -->
-        <div class="share-mono dn">
+        <div
+          class="share-mono"
+          :class="classFlag ? 'dn' : ''"
+          @click="onClickRemoveClass"
+        >
           <div class="mono-cont">
             <div class="mono-top">
               <div class="mono-img">
-                <img src="@/assets/img/model.jpg" alt="" />
+                <img src="@/assets/img/img3.jpg" alt="" />
               </div>
               <div class="mono-text">
                 <p>¥ <span>1500.00</span></p>
@@ -85,7 +95,7 @@
           <span>产品说明</span>
         </div>
         <div class="product-img">
-          <img src="@/assets/img/model.jpg" alt="" />
+          <img src="@/assets/img/img1.jpg" alt="" />
         </div>
       </div>
       <!-- 产品说明 结束 -->
@@ -145,12 +155,37 @@
     </div>
   </div>
 </template>
-
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      classFlag: true,
+      classFlag2: true,
+      classFlag3: true,
+    };
+  },
+  methods: {
+    go(step) {
+      console.log(step);
+      this.$router.go(step);
+    },
+    onClickRemoveClass: function () {
+      this.classFlag = !this.classFlag;
+      // console.log(111);
+    },
+    onClickRemoveClass2: function () {
+      this.classFlag2 = !this.classFlag2;
+      // console.log(111);
+    },
+    onClickBigImg: function () {
+      this.classFlag3 = !this.classFlag3;
+    },
+  },
+};
 </script>
+
 <style lang="less" scope>
-@import "../assets/less/base.less";
+@import "../../assets/less/base.less";
 
 // 模特展示2
 .model {
@@ -266,6 +301,7 @@ export default {};
   padding-bottom: (50 / @vw);
   // border: 1px solid red;
   margin-bottom: (30 / @vw);
+  box-sizing: border-box;
   .mid-num {
     .num-img {
       img {
@@ -306,7 +342,22 @@ export default {};
     }
   }
 }
-
+// 点击图片 放大图片
+.bigimg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  text-align: center;
+  z-index: 99;
+  img {
+    width: 100%;
+    // height:80%;
+    margin-top: 30%;
+  }
+}
 // 点击分享弹层
 .share-mono {
   position: relative;
@@ -316,14 +367,15 @@ export default {};
   z-index: 99;
   width: 100%;
   height: 100%;
-  padding-top: (60 / @vw);
+  padding-top: (80 / @vw);
   background-color: rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
   .mono-cont {
     width: 100%;
+    height: 100%;
     text-align: center;
     .mono-top {
       width: 72%;
-      // height: 90%;
       padding: (30 / @vw) (20 / @vw) (50 / @vw) (20 / @vw);
       text-align: center;
       background-color: #fff;
@@ -335,7 +387,7 @@ export default {};
           text-align: left;
           font-size: (25 / @vw);
           color: rgb(250, 35, 10);
-          margin: (15 / @vw) 0;
+          margin: (30 / @vw) 0;
           span {
             font-size: (30 / @vw);
           }
@@ -362,7 +414,7 @@ export default {};
     .mono-bot {
       position: absolute;
       left: 0;
-      top: 60%;
+      bottom: 0;
       z-index: -66;
       width: 100%;
       background-color: rgb(246, 246, 246);
@@ -372,7 +424,7 @@ export default {};
         color: #777;
         text-align: center;
         font-size: (24 / @vw);
-        margin: (35 / @vw);
+        margin: (40 / @vw) 0;
       }
       ul {
         display: flex;
