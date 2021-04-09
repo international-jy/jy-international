@@ -133,7 +133,7 @@ img {
   background-position: left top;
   background-size: 100% auto;
   background-color: #f5f5f5;
-  overflow: hidden;
+  overflow: auto;
   .box {
     min-width: 320px;
     padding: (100 / @vw) 0;
@@ -421,9 +421,6 @@ export default {
       .then((res) => {
         this.activeDate = res.data;
         this.hide = true;
-      })
-      .catch(function (res) {
-        console.log(res);
       });
   },
   beforeRouteUpdate(to, from, next) {
