@@ -172,7 +172,6 @@ export default {
 
   created() {
     this.dataId = Number(this.$route.query.id);
-    console.log(this.dataId);
     let that = this;
     this.$axios
       .get("/index.php/api/models/list?id=" + that.dataId)
@@ -185,7 +184,6 @@ export default {
           }
         });
       });
-    console.log(this.modelListAll);
   },
 
   methods: {
@@ -204,7 +202,6 @@ export default {
       });
       this.$router.go(0);
       this.dataId = Number(this.$route.query.id);
-      console.log(this.dataId);
       let that = this;
       this.$axios.get("/index.php/api/models/list?id=" + num).then((val) => {
         // console.log(val.data);
@@ -215,29 +212,23 @@ export default {
           }
         });
       });
-      console.log(this.modelListAll);
     },
     go(step) {
-      console.log(step);
       this.$router.go(step);
     },
     onClickRemoveClass: function () {
       this.classFlag = !this.classFlag;
-      console.log(111);
     },
     onClickRemoveClass2: function () {
       this.classFlag2 = !this.classFlag2;
-      // console.log(111);
     },
     onClickRemoveClass3: function () {
       this.classFlag2 = true;
-      // console.log(111);
     },
     onClickBigImg: function () {
       this.classFlag3 = !this.classFlag3;
     },
     onClickSaveImg: function () {
-      console.log(111);
       this.classFlag4 = !this.classFlag4;
     },
 

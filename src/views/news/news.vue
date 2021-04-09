@@ -343,10 +343,6 @@ export default {
       )
       .then((res) => {
         this.newsList = res.data;
-        console.log(this.newsList);
-      })
-      .catch(function (res) {
-        console.log(res);
       });
   },
   methods: {
@@ -354,7 +350,6 @@ export default {
       this.$router.go(step);
     },
     goList(id) {
-      console.log(id);
       this.$router.push({
         path: "/news/list",
         query: { id: id },

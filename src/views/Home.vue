@@ -63,7 +63,7 @@
         <span></span>
       </div>
       <div class="fameal">
-        <ul>
+        <ul :class="famealFlag ? 'fameal-move' : ''" ref="fameal">
           <li
             v-for="item in highList"
             :key="item.id"
@@ -75,7 +75,7 @@
         </ul>
       </div>
       <!-- ktv新闻 -->
-      <div class="news">
+      <div class="news" ref="news" :class="newsFlag ? 'news-move' : ''">
         <a>高端KTV新闻</a>
         <p>High-end KTV News</p>
         <span></span>
@@ -171,6 +171,8 @@ export default {
       highFlag: false,
       highList: null,
       hide: false,
+      famealFlag: false,
+      newsFlag: false,
     };
   },
   methods: {
@@ -190,6 +192,8 @@ export default {
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
       var classFlag = true;
       var classFlag2 = true;
+      var classFlag3 = true;
+      var classFlag4 = true;
       // var classFlag2 = true;
       if (top > this.$refs.scroll[1].getBoundingClientRect().top) {
         if (this.scrollFlag) {
@@ -206,10 +210,22 @@ export default {
           this.environmentListL[2].class2 = "cd-titleh";
         }
       }
-      if (top > this.$refs.high.getBoundingClientRect().top) {
+      if (top > this.$refs.high.getBoundingClientRect().top + 100) {
         if (classFlag2) {
           classFlag2 = false;
           this.highFlag = true;
+        }
+      }
+      if (top > this.$refs.fameal.getBoundingClientRect().top + 160) {
+        if (classFlag3) {
+          classFlag3 = false;
+          this.famealFlag = true;
+        }
+      }
+      if (top > this.$refs.news.getBoundingClientRect().top + 160) {
+        if (classFlag4) {
+          classFlag4 = false;
+          this.newsFlag = true;
         }
       }
     },
@@ -223,7 +239,7 @@ export default {
     },
     onClickSkip: function (id) {
       console.log(id);
-      this.$axios.get("/index.php/api/journalism/list").then((value) => {
+      this.$axios.get("index.php/api/journalism/list").then((value) => {
         value.data.forEach((value) => {
           this.$router.push({
             path: "/news/list",
@@ -236,7 +252,7 @@ export default {
     },
   },
   created() {
-    this.$axios.get("/index.php/api/ambient/list").then((val) => {
+    this.$axios.get("index.php/api/ambient/list").then((val) => {
       val.data.forEach((val) => {
         val.image = this.$store.state.domainName + val.image;
         val.class = "";
@@ -244,13 +260,12 @@ export default {
       });
       this.environmentListL = val.data;
     });
-    this.$axios.get("/index.php/api/journalism/list").then((value) => {
+    this.$axios.get("index.php/api/journalism/list").then((value) => {
       value.data.forEach((value) => {
         this.newsList.push(value);
       });
     });
-    this.$axios.get("/index.php/api/models/list").then((val) => {
-      console.log(val);
+    this.$axios.get("index.php/api/models/list").then((val) => {
       this.highList = val.data;
       val.data.forEach((val) => {
         val.image = this.$store.state.domainName + val.image;
@@ -258,8 +273,12 @@ export default {
       this.hide = true;
     });
   },
+  mounted() {
+    //绑定页面滚动事件
+    window.addEventListener("scroll", this.scrollHandle);
+  },
   destroyed() {
-    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+    window.removeEventListener("scroll", this.scrollHandle);
   },
 };
 </script>
@@ -289,21 +308,26 @@ export default {
 
 @keyframes movel {
   0% {
+    opacity: 0;
     transform: translateX(500px);
   }
   100% {
+    opacity: 1;
     transform: translateX(0);
   }
 }
 
 @keyframes mover {
   0% {
-    transform: translateX(500px);
+    opacity: 0;
+    transform: translateX(-500px);
   }
   100% {
+    opacity: 1;
     transform: translateX(0);
   }
 }
+
 .nav-box {
   // position: relative;
   width: 100%;
@@ -350,6 +374,7 @@ export default {
     justify-content: center;
     flex-wrap: wrap;
     p {
+      opacity: 0;
       text-align: center;
       width: 100%;
       &:nth-of-type(1) {
@@ -403,6 +428,7 @@ export default {
     }
 
     .environment-bd {
+      // opacity: 0;
       width: 100%;
       padding: (15 / @vw) (10 / @vw);
       box-sizing: border-box;
@@ -481,11 +507,13 @@ export default {
   height: (140 / @vw);
   overflow: hidden;
   a {
+    opacity: 0;
     display: block;
     padding-top: (30 / @vw);
     font-size: (36 / @vw);
   }
   p {
+    opacity: 0;
     width: 100%;
     height: (52 / @vw);
     line-height: (52 / @vw);
@@ -493,6 +521,7 @@ export default {
     font-size: (26 / @vw);
   }
   span {
+    opacity: 0;
     position: absolute;
     left: 45%;
     bottom: 0;
@@ -506,13 +535,13 @@ export default {
 }
 .high-end-move {
   a {
-    animation: movel 1s forwards;
+    animation: movel 1s 0.5s forwards;
   }
   p {
-    animation: movel 1.2s forwards;
+    animation: movel 1.2s 0.5s forwards;
   }
   span {
-    animation: movel 1.4s forwards;
+    animation: movel 1.4s 0.5s forwards;
   }
 }
 //模特
@@ -529,6 +558,7 @@ export default {
     padding: 0 (20 / @vw) 0 (20 / @vw);
     box-sizing: border-box;
     li {
+      opacity: 0;
       padding: (40 / @vw) 0 0 0;
       img {
         .setwh(348,300);
@@ -543,6 +573,26 @@ export default {
         color: #555;
         font-size: (28 / @vw);
       }
+    }
+  }
+  .fameal-move {
+    li:nth-of-type(1) {
+      animation: mover 1s 0.8s forwards;
+    }
+    li:nth-of-type(2) {
+      animation: movel 1s 1s forwards;
+    }
+    li:nth-of-type(3) {
+      animation: mover 1s 1.2s forwards;
+    }
+    li:nth-of-type(4) {
+      animation: movel 1s 1.4s forwards;
+    }
+    li:nth-of-type(5) {
+      animation: mover 1s 1.6s forwards;
+    }
+    li:nth-of-type(6) {
+      animation: movel 1s 1.8s forwards;
     }
   }
 }
@@ -578,7 +628,17 @@ export default {
     text-align: center;
   }
 }
-
+.news-move {
+  a {
+    animation: mover 1s 0.6s forwards;
+  }
+  p {
+    animation: mover 1s 0.8s forwards;
+  }
+  span {
+    animation: mover 1s 1s forwards;
+  }
+}
 // 新闻列表
 .tjb-box {
   width: 100%;
