@@ -16,8 +16,9 @@
       <!-- 活动部分 -->
       <div class="activity">
         <a href="javascript:;">
-          <img src="@/assets/img/activity.jpg" alt="" />
+          <img :src="bannerSrc" alt="" />
         </a>
+        <span class="banner-text">{{ bannerTxt }}</span>
       </div>
       <!-- 环境部分 -->
       <div class="environment-box">
@@ -44,7 +45,7 @@
               </div>
             </div>
           </div>
-          <div class="phone">
+          <div class="phone" :class="val.class3">
             <div><img src="@/assets/img/phone.png" alt="" /> 联系电话</div>
           </div>
         </div>
@@ -162,6 +163,7 @@
 export default {
   data() {
     return {
+      bannerSrc: "",
       navFlag: true,
       environmentMove: false,
       flag: true,
@@ -173,6 +175,7 @@ export default {
       hide: false,
       famealFlag: false,
       newsFlag: false,
+      bannerTxt: "",
     };
   },
   methods: {
@@ -195,11 +198,12 @@ export default {
       var classFlag3 = true;
       var classFlag4 = true;
       // var classFlag2 = true;
-      if (top > this.$refs.scroll[1].getBoundingClientRect().top) {
+      if (top > this.$refs.scroll[1].getBoundingClientRect().top - 60) {
         if (this.scrollFlag) {
           this.scrollFlag = false;
           this.environmentListL[1].class = "cd-environment-m";
           this.environmentListL[1].class2 = "cd-titleh";
+          this.environmentListL[1].class3 = "phone-move";
         }
       }
 
@@ -208,6 +212,7 @@ export default {
           classFlag = false;
           this.environmentListL[2].class = "cd-environment-m";
           this.environmentListL[2].class2 = "cd-titleh";
+          this.environmentListL[2].class3 = "phone-move";
         }
       }
       if (top > this.$refs.high.getBoundingClientRect().top + 100) {
@@ -222,7 +227,7 @@ export default {
           this.famealFlag = true;
         }
       }
-      if (top > this.$refs.news.getBoundingClientRect().top + 160) {
+      if (top > this.$refs.news.getBoundingClientRect().top + 280) {
         if (classFlag4) {
           classFlag4 = false;
           this.newsFlag = true;
@@ -252,6 +257,13 @@ export default {
     },
   },
   created() {
+    this.$axios.get("index.php/api/carousel_map/list").then((val) => {
+      val.data.forEach((val) => {
+        val.image = this.$store.state.domainName + val.image;
+      });
+      this.bannerSrc = val.data[0].image;
+      this.bannerTxt = val.data[0].content;
+    });
     this.$axios.get("index.php/api/ambient/list").then((val) => {
       val.data.forEach((val) => {
         val.image = this.$store.state.domainName + val.image;
@@ -271,6 +283,9 @@ export default {
         val.image = this.$store.state.domainName + val.image;
       });
       this.hide = true;
+      this.environmentListL[0].class = "cd-environment-m";
+      this.environmentListL[0].class2 = "cd-titleh";
+      this.environmentListL[0].class3 = "phone-move";
     });
   },
   mounted() {
@@ -278,6 +293,7 @@ export default {
     window.addEventListener("scroll", this.scrollHandle);
   },
   destroyed() {
+    // 移出页面滚动事件
     window.removeEventListener("scroll", this.scrollHandle);
   },
 };
@@ -354,6 +370,7 @@ export default {
 
 // 活动部分
 .activity {
+  position: relative;
   width: 100%;
   overflow: hidden;
   a {
@@ -361,7 +378,24 @@ export default {
     img {
       display: block;
       width: 100%;
+      height: (400 / @vw);
     }
+  }
+  .banner-text {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 30%;
+    background-color: rgba(102, 0, 0, 0.75);
+    transform: translateY(-50%);
+    font-size: (22 / @vw);
+    color: #fff;
+    text-align: left;
+    text-indent: 1.5rem;
+    line-height: (36 / @vw);
+    padding: 0 (130 / @vw);
+    box-sizing: border-box;
   }
 }
 // 环境部分
@@ -416,6 +450,7 @@ export default {
     .cd-title-hd {
       overflow: hidden;
       img {
+        opacity: 0;
         display: block;
       }
     }
@@ -426,9 +461,8 @@ export default {
         }
       }
     }
-
     .environment-bd {
-      // opacity: 0;
+      opacity: 0;
       width: 100%;
       padding: (15 / @vw) (10 / @vw);
       box-sizing: border-box;
@@ -449,7 +483,7 @@ export default {
     }
     .cd-environment-m {
       .environment-bd {
-        animation: opcityMove 1.6s forwards;
+        animation: opcityMove 1.4s forwards;
       }
     }
   }
@@ -459,6 +493,7 @@ export default {
     padding: (10 / @vw) (10 / @vw) 0;
     box-sizing: border-box;
     div {
+      opacity: 0;
       width: 100%;
       height: (54 / @vw);
       display: flex;
@@ -472,6 +507,11 @@ export default {
         .setwh(32,32);
         margin-right: (10 / @vw);
       }
+    }
+  }
+  .phone-move {
+    div {
+      animation: opcityMove 1.8s forwards;
     }
   }
 }
@@ -577,22 +617,22 @@ export default {
   }
   .fameal-move {
     li:nth-of-type(1) {
-      animation: mover 1s 0.8s forwards;
+      animation: mover 1s 1s forwards;
     }
     li:nth-of-type(2) {
-      animation: movel 1s 1s forwards;
+      animation: movel 1s 1.3s forwards;
     }
     li:nth-of-type(3) {
-      animation: mover 1s 1.2s forwards;
-    }
-    li:nth-of-type(4) {
-      animation: movel 1s 1.4s forwards;
-    }
-    li:nth-of-type(5) {
       animation: mover 1s 1.6s forwards;
     }
+    li:nth-of-type(4) {
+      animation: movel 1s 1.9s forwards;
+    }
+    li:nth-of-type(5) {
+      animation: mover 1s 2.1s forwards;
+    }
     li:nth-of-type(6) {
-      animation: movel 1s 1.8s forwards;
+      animation: movel 1s 2.4s forwards;
     }
   }
 }
@@ -605,11 +645,13 @@ export default {
   background-color: #fff;
   height: (140 / @vw);
   a {
+    opacity: 0;
     display: block;
     padding-top: (30 / @vw);
     font-size: (36 / @vw);
   }
   p {
+    opacity: 0;
     width: 100%;
     height: (52 / @vw);
     line-height: (52 / @vw);
@@ -617,6 +659,7 @@ export default {
     font-size: (26 / @vw);
   }
   span {
+    opacity: 0;
     position: absolute;
     left: 45%;
     bottom: 0;
@@ -630,13 +673,13 @@ export default {
 }
 .news-move {
   a {
-    animation: mover 1s 0.6s forwards;
+    animation: mover 1s 1.8s forwards;
   }
   p {
-    animation: mover 1s 0.8s forwards;
+    animation: mover 1s 2s forwards;
   }
   span {
-    animation: mover 1s 1s forwards;
+    animation: mover 1s 2.2s forwards;
   }
 }
 // 新闻列表
