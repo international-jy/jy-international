@@ -99,10 +99,13 @@
         <div
           class="saveimg"
           :class="classFlag4 ? 'dn' : ''"
-          @click="onClickSaveImg"
-        >
+          @click="onClickSaveImg">
           <p>长按将图片保存至手机</p>
-          <img src="@/assets/img/sharePro_1913406_0.png" alt="" />
+          <img :src="value.image" alt="">
+          <div class="saveimg-model">
+            <p>¥{{value.price}}</p>
+            <h3>{{value.title}}</h3>
+          </div>
         </div>
         <!-- 点击保存图片 弹出图片 结束 -->
       </div>
@@ -592,15 +595,29 @@ export default {
   background-color: #fff;
   z-index: 99;
   text-align: center;
-  padding-top: 20%;
+  padding-top: 15%;
   p {
     font-size: (25 / @vw);
     text-align: center;
-    margin: (20 / @vw) 0;
+    margin: (30 / @vw) 0;
     color: #666;
   }
   img {
-    width: 80%;
+    width: 65%;
+  }
+  .saveimg-model{
+    padding-left: 18%;
+    text-align: left;
+    p{
+    text-align: left;
+    font-size: (24 / @vw);
+    color:  rgb(250, 35, 10);
+    
+    }
+    h3{
+      font-size: (28 / @vw);
+      color: #333;
+    }
   }
 }
 
