@@ -1,5 +1,5 @@
 <template>
-  <div class="xw-box">
+  <div class="xw-box" ref="box">
     <div class="box">
       <!-- 顶部导航栏 -->
       <div class="top">
@@ -17,9 +17,20 @@
       </div>
       <h3 class="title">成都夜场</h3>
       <!-- 新闻列表 -->
-      <div class="list-box">
+      <div
+        class="list-box infinite-list"
+        ref="scroll"
+        :style="scrollH"
+        v-infinite-scroll="load"
+        style="overflow: auto"
+      >
         <ul class="list">
-          <li v-for="val in newsList" :key="val.id" @click="goList(val.id)">
+          <li
+            v-for="val in newsList"
+            :key="val.id"
+            class="infinite-list-item"
+            @click="goList(val.id)"
+          >
             <div class="content">
               <!-- 跳转新闻详情页链接 -->
               <div class="caption">{{ val.title }}</div>
@@ -54,7 +65,7 @@
         </div>
       </div>
     </div>
-    <div class="pql-btm-fixed">
+    <div class="pql-btm-fixed" ref="footer">
       <ul>
         <li>
           <router-link to="/home">
@@ -98,6 +109,7 @@ img {
   width: auto;
 }
 .xw-box {
+  height: 100%;
   background-repeat: repeat-y;
   background-position: left top;
   background-size: 100% auto;
@@ -168,15 +180,21 @@ img {
     }
   }
   .title {
-    margin: (10 / @vw);
+    padding: (12 / @vw) 0;
+    margin: (5 / @vw) 0 (10 / @vw);
     text-align: center;
     line-height: (60 / @vw);
     font-size: (30 / @vw);
     background-color: #fff;
     color: #525252;
   }
+  .list-box {
+    margin-bottom: (100 / @vw);
+  }
   .list {
-    margin: (10 / @vw);
+    height: 100%;
+    margin: (10 / @vw) 0;
+    overflow-y: auto;
     li {
       overflow: hidden;
       position: relative;
@@ -334,16 +352,24 @@ export default {
       navFlag: true,
       newsList: [],
       flag: true,
+      scrollH: { height: null },
+      num: 0,
     };
   },
-  created() {
+  mounted() {
+    let that = this;
     this.$axios
       .get(
-        "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid"
+        "/index.php/api/journalism/list?pageNumber=" +
+          that.num +
+          "&pageSize=10&journalismtypeid"
       )
       .then((res) => {
         this.newsList = res.data;
       });
+    let footer = this.$refs.footer.offsetHeight;
+    let boxH = this.$refs.box.offsetHeight;
+    this.scrollH.height = boxH - footer - this.$refs.scroll.offsetTop + "px";
   },
   methods: {
     go(step) {
@@ -366,6 +392,25 @@ export default {
     },
     onClickOr: function () {
       this.flag = !this.flag;
+    },
+    load() {
+      let that = this;
+      this.num++;
+      this.$axios
+        .get(
+          "/index.php/api/journalism/list?pageNumber=" +
+            that.num +
+            "&pageSize=10&journalismtypeid"
+        )
+        .then((res) => {
+          console.log(
+            "/index.php/api/journalism/list?pageNumber=" +
+              that.num +
+              "&pageSize=10&journalismtypeid"
+          );
+          this.newsList.push(...res.data);
+          console.log(this.newsList);
+        });
     },
   },
 };

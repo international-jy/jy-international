@@ -133,7 +133,7 @@ img {
   background-position: left top;
   background-size: 100% auto;
   background-color: #f5f5f5;
-  overflow: hidden;
+  overflow: auto;
   .box {
     min-width: 320px;
     padding: (100 / @vw) 0;
