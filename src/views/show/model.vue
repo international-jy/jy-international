@@ -84,7 +84,7 @@
                   <img src="@/assets/img/save.png" alt="" />
                   <p>保存图片</p>
                 </li>
-                <li>
+                 <li @click="onCopy('http://localhost:8080/home#/show/model?id=' + value.id)">
                   <img src="@/assets/img/link.png" alt="" />
                   <p>复制链接</p>
                 </li>
@@ -99,10 +99,13 @@
         <div
           class="saveimg"
           :class="classFlag4 ? 'dn' : ''"
-          @click="onClickSaveImg"
-        >
+          @click="onClickSaveImg">
           <p>长按将图片保存至手机</p>
-          <img src="@/assets/img/sharePro_1913406_0.png" alt="" />
+          <img :src="value.image" alt="">
+          <div class="saveimg-model">
+            <p>¥{{value.price}}</p>
+            <h3>{{value.title}}</h3>
+          </div>
         </div>
         <!-- 点击保存图片 弹出图片 结束 -->
       </div>
@@ -257,10 +260,28 @@ export default {
     },
 
     onClickTiaoTop: function () {
-      var midHeight = this.$refs.mid.offsetHeight;
-      var modelHeight = this.$refs.modelTop.offsetHeight;
+      var midHeight = this.$refs.mid[0].offsetHeight;
+      var modelHeight = this.$refs.modelTop[0].offsetHeight;
 
-      window.scrollTo(midHeight - modelHeight, midHeight - modelHeight);
+      window.scrollTo(0 , midHeight - modelHeight);
+    },
+
+     //点击复制链接
+    onCopy: function (url) {
+      this.CopyUrl(url);
+    },
+    CopyUrl(data) {
+      var Url2 = data;
+      var oInput = document.createElement("input");
+      oInput.value = Url2;
+      document.body.appendChild(oInput);
+      oInput.select(); // 选择对象
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      oInput.style.display = "none";
+      this.$message({
+        message: "复制成功!",
+        type: "success",
+      });
     },
     //滚动监听
     scrollHandle(e) {
@@ -268,14 +289,14 @@ export default {
       // console.log(this.$refs);
 
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
-      var modelHeight = this.$refs.modelTop.offsetHeight;
-      var midHeight = this.$refs.mid.offsetHeight;
+      var modelHeight = this.$refs.modelTop[0].offsetHeight;
+      var midHeight = this.$refs.mid[0].offsetHeight;
       if (top > modelHeight) {
         this.classFlag5 = false;
       } else {
         this.classFlag5 = true;
       }
-      if (top > midHeight) {
+      if (top >= midHeight-modelHeight) {
         this.classFlag6 = false;
       } else {
         this.classFlag6 = true;
@@ -592,15 +613,29 @@ export default {
   background-color: #fff;
   z-index: 99;
   text-align: center;
-  padding-top: 20%;
+  padding-top: 15%;
   p {
     font-size: (25 / @vw);
     text-align: center;
-    margin: (20 / @vw) 0;
+    margin: (30 / @vw) 0;
     color: #666;
   }
   img {
-    width: 80%;
+    width: 65%;
+  }
+  .saveimg-model{
+    padding-left: 18%;
+    text-align: left;
+    p{
+    text-align: left;
+    font-size: (24 / @vw);
+    color:  rgb(250, 35, 10);
+    
+    }
+    h3{
+      font-size: (28 / @vw);
+      color: #333;
+    }
   }
 }
 
