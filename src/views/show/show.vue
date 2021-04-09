@@ -4,7 +4,7 @@
     <div class="top">
       <div class="top-t">
         <!-- <a href="javaScript:;" @click="go(-1)">＜</a> -->
-        <img src="@/assets/img/fh.png" @click="go(-1)" class="fh" />
+        <div @click="go(-1)"><img src="@/assets/img/fh.png" class="fh" /></div>
         <div class="top-btn" @click="pop">
           <div class="inputm">
             <img src="@/assets/img/seek.png" />
