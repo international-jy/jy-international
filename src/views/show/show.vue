@@ -168,7 +168,7 @@
   </div>
 </template>
 
-<style lang="less">
+<style lang="less" scope>
 @import "../../assets/less/base.less";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 body {
@@ -191,6 +191,7 @@ body {
     top: 0;
     left: 0;
     padding: (10 / @vw) 0;
+    z-index: 10;
     .top-t {
       width: 100%;
       height: (60 / @vw);
@@ -496,9 +497,14 @@ body {
       color: #1e91ff;
     }
     a {
+      display: block;
+      width: 100%;
+      line-height: (80 / @vw) !important;
+      padding-top: 0 !important;
       color: #525252;
-      padding-left: (90 / @vw);
       font-size: (13 / @vw);
+      text-align: center;
+      opacity: 1 !important;
     }
   }
 
