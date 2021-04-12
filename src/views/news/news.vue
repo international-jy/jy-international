@@ -1,8 +1,14 @@
 <template>
-  <div class="xw-box">
+  <div
+    class="xw-box"
+    ref="box"
+    v-loading.fullscreen.lock="!hide"
+    element-loading-text="拼命加载中"
+    element-loading-background="rgba(255, 255, 255, 0.4)"
+  >
     <div class="box">
       <!-- 顶部导航栏 -->
-      <div class="top">
+      <div class="top" v-if="hide">
         <div class="top-lt" @click="go(-1)">
           <img src="@/assets/img/jiantou.png" alt="" />
         </div>
@@ -15,11 +21,22 @@
           </div>
         </div>
       </div>
-      <h3 class="title">成都夜场</h3>
+      <h3 class="title" v-if="hide">成都夜场</h3>
       <!-- 新闻列表 -->
-      <div class="list-box">
+      <div
+        class="list-box infinite-list"
+        ref="scroll"
+        :style="scrollH"
+        v-infinite-scroll="load"
+        style="overflow: auto"
+      >
         <ul class="list">
-          <li v-for="val in newsList" :key="val.id" @click="goList(val.id)">
+          <li
+            v-for="val in newsList"
+            :key="val.id"
+            class="infinite-list-item"
+            @click="goList(val.id)"
+          >
             <div class="content">
               <!-- 跳转新闻详情页链接 -->
               <div class="caption">{{ val.title }}</div>
@@ -54,7 +71,7 @@
         </div>
       </div>
     </div>
-    <div class="pql-btm-fixed">
+    <div class="pql-btm-fixed" ref="footer">
       <ul>
         <li>
           <router-link to="/home">
@@ -91,18 +108,18 @@
     </div>
   </div>
 </template>
-<style lang="less">
+<style lang="less" scope>
 @import "../../assets/less/base.less";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 img {
   width: auto;
 }
 .xw-box {
+  height: 100%;
   background-repeat: repeat-y;
   background-position: left top;
   background-size: 100% auto;
   background-color: #f5f5f5;
-  overflow: hidden;
   .box {
     min-width: 320px;
     padding: (100 / @vw) 0;
@@ -168,15 +185,21 @@ img {
     }
   }
   .title {
-    margin: (10 / @vw);
+    padding: (12 / @vw) 0;
+    margin: (5 / @vw) 0 (10 / @vw);
     text-align: center;
     line-height: (60 / @vw);
     font-size: (30 / @vw);
     background-color: #fff;
     color: #525252;
   }
+  .list-box {
+    margin-bottom: (100 / @vw);
+  }
   .list {
-    margin: (10 / @vw);
+    height: 100%;
+    margin: (10 / @vw) 0;
+    overflow-y: auto;
     li {
       overflow: hidden;
       position: relative;
@@ -334,30 +357,36 @@ export default {
       navFlag: true,
       newsList: [],
       flag: true,
+      scrollH: { height: null },
+      num: 1,
+      hide: false,
     };
   },
-  created() {
+  mounted() {
+    let that = this;
     this.$axios
       .get(
-        "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid"
+        "/index.php/api/journalism/list?pageNumber=" +
+          that.num +
+          "&pageSize=10&journalismtypeid"
       )
       .then((res) => {
         this.newsList = res.data;
-        console.log(this.newsList);
-      })
-      .catch(function (res) {
-        console.log(res);
+        this.hide = true;
       });
+    let footer = this.$refs.footer.offsetHeight;
+    let boxH = this.$refs.box.offsetHeight;
+    this.scrollH.height = boxH - footer - this.$refs.scroll.offsetTop + "px";
   },
   methods: {
     go(step) {
       this.$router.go(step);
     },
     goList(id) {
-      console.log(id);
+      let that = this;
       this.$router.push({
         path: "/news/list",
-        query: { id: id },
+        query: { id: id, pageNum: that.num },
       });
     },
     onClickNav: function () {
@@ -371,6 +400,19 @@ export default {
     },
     onClickOr: function () {
       this.flag = !this.flag;
+    },
+    load() {
+      let that = this;
+      this.num++;
+      this.$axios
+        .get(
+          "/index.php/api/journalism/list?pageNumber=" +
+            that.num +
+            "&pageSize=10&journalismtypeid"
+        )
+        .then((res) => {
+          this.newsList.push(...res.data);
+        });
     },
   },
 };

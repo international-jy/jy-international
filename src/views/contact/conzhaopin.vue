@@ -68,7 +68,7 @@
     </div>
   </div>
 </template>
-<style lang="less">
+<style lang="less" scope>
 @import "../../assets/less/base.less";
 // 招聘信息
 .invite-pre {

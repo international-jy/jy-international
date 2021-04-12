@@ -69,7 +69,7 @@
     </div>
   </div>
 </template>
-<style lang="less">
+<style lang="less" scope>
 @import "../../assets/less/base.less";
 // 关于我们
 .regard-pre {

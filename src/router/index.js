@@ -42,6 +42,14 @@ const routes = [
         path: "contact/3",
         component: () => import("../views/contact/conzhaopin.vue"),
       },
+      {
+        path: "show/search",
+        component: () => import("../views/show/search.vue"),
+      },
+      {
+        path: "show/search2",
+        component: () => import("../views/show/seachN"),
+      },
     ],
   },
 ];

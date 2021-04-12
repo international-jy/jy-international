@@ -1,5 +1,11 @@
 <template>
-  <div class="xjg box">
+  <div
+    class="xjg box"
+    v-loading.fullscreen.lock="!hide"
+    element-loading-text="拼命加载中"
+    element-loading-background="rgba(255, 255, 255, 0.4)"
+    v-if="hide"
+  >
     <!-- 模特展示2 -->
     <div class="model" v-for="value in modelList" :key="value.id">
       <!-- 头部 开始 -->
@@ -84,7 +90,13 @@
                   <img src="@/assets/img/save.png" alt="" />
                   <p>保存图片</p>
                 </li>
-                <li>
+                <li
+                  @click="
+                    onCopy(
+                      'http://localhost:8080/home#/show/model?id=' + value.id
+                    )
+                  "
+                >
                   <img src="@/assets/img/link.png" alt="" />
                   <p>复制链接</p>
                 </li>
@@ -102,7 +114,11 @@
           @click="onClickSaveImg"
         >
           <p>长按将图片保存至手机</p>
-          <img src="@/assets/img/sharePro_1913406_0.png" alt="" />
+          <img :src="value.image" alt="" />
+          <div class="saveimg-model">
+            <p>¥{{ value.price }}</p>
+            <h3>{{ value.title }}</h3>
+          </div>
         </div>
         <!-- 点击保存图片 弹出图片 结束 -->
       </div>
@@ -167,35 +183,41 @@ export default {
       dataId: null,
       modelListAll: [],
       modelList: [],
+      hide: false,
     };
   },
 
-  created() {
+  async created() {
     this.dataId = Number(this.$route.query.id);
-    console.log(this.dataId);
+    // console.log(this.dataId);
     let that = this;
-    this.$axios
+    await this.$axios
       .get("/index.php/api/models/list?id=" + that.dataId)
       .then((val) => {
         // console.log(val.data);
+        val.data.forEach((val) => {
+          val.image = this.$store.state.domainName + val.image;
+        });
+
         that.modelList.push(val.data.find((value) => value.id == that.dataId));
         val.data.forEach((e) => {
           if (e.id != that.dataId) {
             that.modelListAll.push(e);
           }
         });
-      });
-    console.log(this.modelListAll);
-  },
+        this.hide = true;
 
+        window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+      });
+  },
   methods: {
     // 点击返回上一个页面
     onClickBackGo() {
       this.$router.push("/show");
     },
-    getData(num) {
+    async getData(num) {
       this.modelListAll.splice(0, this.modelListAll.length);
-      this.$router.push({
+      await this.$router.push({
         path: "/show/model",
         replace: true,
         query: {
@@ -204,40 +226,41 @@ export default {
       });
       this.$router.go(0);
       this.dataId = Number(this.$route.query.id);
-      console.log(this.dataId);
       let that = this;
-      this.$axios.get("/index.php/api/models/list?id=" + num).then((val) => {
-        // console.log(val.data);
-        that.modelList.push(val.data.find((value) => value.id == that.dataId));
-        val.data.forEach((e) => {
-          if (e.id != that.dataId) {
-            that.modelListAll.push(e);
-          }
+      await this.$axios
+        .get("/index.php/api/models/list?id=" + num)
+        .then((val) => {
+          // console.log(val.data);
+          val.data.forEach((val) => {
+            val.image = this.$store.state.domainName + val.image;
+          });
+          that.modelList.push(
+            val.data.find((value) => value.id == that.dataId)
+          );
+          val.data.forEach((e) => {
+            if (e.id != that.dataId) {
+              that.modelListAll.push(e);
+            }
+          });
+          this.hide = true;
         });
-      });
-      console.log(this.modelListAll);
     },
     go(step) {
-      console.log(step);
       this.$router.go(step);
     },
     onClickRemoveClass: function () {
       this.classFlag = !this.classFlag;
-      console.log(111);
     },
     onClickRemoveClass2: function () {
       this.classFlag2 = !this.classFlag2;
-      // console.log(111);
     },
     onClickRemoveClass3: function () {
       this.classFlag2 = true;
-      // console.log(111);
     },
     onClickBigImg: function () {
       this.classFlag3 = !this.classFlag3;
     },
     onClickSaveImg: function () {
-      console.log(111);
       this.classFlag4 = !this.classFlag4;
     },
 
@@ -257,41 +280,56 @@ export default {
     },
 
     onClickTiaoTop: function () {
-      var midHeight = this.$refs.mid.offsetHeight;
-      var modelHeight = this.$refs.modelTop.offsetHeight;
+      var midHeight = this.$refs.mid[0].offsetHeight;
+      var modelHeight = this.$refs.modelTop[0].offsetHeight;
 
-      window.scrollTo(midHeight - modelHeight, midHeight - modelHeight);
+      window.scrollTo(0, midHeight - modelHeight);
     },
+
+    //点击复制链接
+    onCopy: function (url) {
+      this.CopyUrl(url);
+    },
+
+    CopyUrl(data) {
+      var Url2 = data;
+      var oInput = document.createElement("input");
+      oInput.value = Url2;
+      document.body.appendChild(oInput);
+      oInput.select(); // 选择对象
+      document.execCommand("Copy"); // 执行浏览器复制命令
+      oInput.style.display = "none";
+      this.$message({
+        message: "复制成功!",
+        type: "success",
+      });
+    },
+
     //滚动监听
     scrollHandle(e) {
-      // console.log(this);
-      // console.log(this.$refs);
-
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
-      var modelHeight = this.$refs.modelTop.offsetHeight;
-      var midHeight = this.$refs.mid.offsetHeight;
+      var modelHeight = this.$refs.modelTop[0].offsetHeight;
+      var midHeight = this.$refs.mid[0].offsetHeight;
       if (top > modelHeight) {
         this.classFlag5 = false;
       } else {
         this.classFlag5 = true;
       }
-      if (top > midHeight) {
+      if (top >= midHeight - modelHeight) {
         this.classFlag6 = false;
       } else {
         this.classFlag6 = true;
       }
     },
   },
-  mounted() {
-    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
-  },
+  mounted() {},
   destroyed() {
     window.removeEventListener("scroll", this.scrollHandle); //移除页面滚动事件
   },
 };
 </script>
 
-<style lang="less" scope>
+<style lang="less">
 @import "../../assets/less/base.less";
 
 @keyframes opcityTop {
@@ -493,6 +531,7 @@ export default {
   padding-top: (80 / @vw);
   background-color: rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
+  z-index: 22;
   .mono-cont {
     width: 100%;
     height: 100%;
@@ -501,11 +540,11 @@ export default {
       position: absolute;
       left: 12%;
       bottom: 30%;
-      width: 72%;
+      width: 70%;
       padding: (30 / @vw) (20 / @vw) (50 / @vw) (20 / @vw);
       text-align: center;
       background-color: #fff;
-      border-radius: (20 / @vw);
+      border-radius: (30 / @vw);
       margin: 0 auto;
       z-index: 99;
       .mono-text {
@@ -592,15 +631,28 @@ export default {
   background-color: #fff;
   z-index: 99;
   text-align: center;
-  padding-top: 20%;
+  padding-top: 10%;
   p {
     font-size: (25 / @vw);
     text-align: center;
-    margin: (20 / @vw) 0;
+    margin: (10 / @vw) 0 (30 / @vw);
     color: #666;
   }
   img {
-    width: 80%;
+    width: 65%;
+  }
+  .saveimg-model {
+    padding-left: 18%;
+    text-align: left;
+    p {
+      text-align: left;
+      font-size: (24 / @vw);
+      color: rgb(250, 35, 10);
+    }
+    h3 {
+      font-size: (28 / @vw);
+      color: #333;
+    }
   }
 }
 
@@ -669,6 +721,7 @@ export default {
         }
         p {
           // text-align: left;
+          font-size: (25 / @vw);
           font-weight: 700;
           color: rgb(250, 35, 10);
         }

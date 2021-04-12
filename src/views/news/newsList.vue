@@ -7,7 +7,7 @@
   >
     <div class="box" v-if="hide">
       <div class="top">
-        <div class="regard-return" @click="go(-1)">
+        <div class="regard-return" @click="goNews">
           <img src="@/assets/img/jiantou.png" alt="" />
         </div>
         <div class="regard-dl" @click="collect">
@@ -26,9 +26,9 @@
         <div :class="{ icon1: num == 1, dn: num != 1 }">
           <p>收藏失败,您还没有登录,登录后请您重新收藏</p>
           <div class="btn">
-            <a href="#">登录</a>
-            <a href="#">注册</a>
-            <a href="###" class="close" @click="closeMask(num + 1)">关闭</a>
+            <span>登录</span>
+            <span>注册</span>
+            <span class="close" @click="closeMask(num + 1)">关闭</span>
           </div>
         </div>
         <div :class="{ icon2: num == 2, dn: num != 2 }">
@@ -121,7 +121,7 @@
   </div>
 </template>
 
-<style lang="less">
+<style lang="less" scope>
 @import "../../assets/less/base.less";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 
@@ -133,7 +133,7 @@ img {
   background-position: left top;
   background-size: 100% auto;
   background-color: #f5f5f5;
-  overflow: hidden;
+  overflow: auto;
   .box {
     min-width: 320px;
     padding: (100 / @vw) 0;
@@ -201,7 +201,7 @@ img {
           display: flex;
           justify-content: space-evenly;
           line-height: (60 / @vw);
-          a {
+          span {
             color: #ccc;
           }
         }
@@ -408,41 +408,41 @@ export default {
       id: null,
       hide: false,
       flag2: true,
+      pageNum: 0,
     };
   },
   mounted: function () {
     let that = this;
     this.id = Number(this.$route.query.id);
+    this.pageNumnum = Number(this.$route.query.num);
     this.$axios
       .get(
-        "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
+        "/index.php/api/journalism/list?pageNumber=" +
+          that.pageNumnum +
+          "&pageSize=10&journalismtypeid=" +
           that.id
       )
       .then((res) => {
         this.activeDate = res.data;
         this.hide = true;
-      })
-      .catch(function (res) {
-        console.log(res);
       });
   },
   beforeRouteUpdate(to, from, next) {
     this.hide = false;
     to, from;
     var that = this;
-    console.log(to);
     this.id = Number(to.query.id);
+    this.pageNumnum = Number(to.query.num);
     this.$axios
       .get(
-        "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
+        "/index.php/api/journalism/list?pageNumber=" +
+          that.pageNumnum +
+          "&pageSize=10&journalismtypeid=" +
           that.id
       )
       .then((res) => {
         this.activeDate = res.data;
         this.hide = true;
-      })
-      .catch(function (res) {
-        console.log(res);
       });
     window.scroll(0, 0);
     next();
@@ -483,6 +483,11 @@ export default {
     },
     onClickOr: function () {
       this.flag2 = !this.flag2;
+    },
+    goNews: function () {
+      this.$router.push({
+        path: "/news",
+      });
     },
   },
   filters: {
