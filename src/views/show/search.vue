@@ -24,7 +24,7 @@
       >
         <div class="search-content">
           <div class="search-list-l">
-            <img :src="value.image" />
+            <img :src="domeImage + value.image" />
           </div>
           <div class="search-list-r">
             <p class="s-l-t">{{ value.title }}</p>
@@ -69,7 +69,7 @@
     <!-- 微信二维码 -->
     <div class="or-code" :class="flag ? 'dn' : ''" @click="onClickOr">
       <div class="white">
-        <img src="@/assets/img/code.png" alt="" />
+        <img :src="footerImage" alt="" />
         <p>长按识别二维码</p>
       </div>
     </div>
@@ -238,16 +238,23 @@ export default {
       seachName: "",
       titles: null,
       seachFlag: true,
+      domeImage: null,
+      footerImage: "",
     };
   },
   created() {
     this.title = this.$route.query.titleName;
+    this.domeImage = this.$store.state.domainName;
     this.$axios.get("/index.php/api/models/list").then((val) => {
       val.data.forEach((value) => {
         if (value.title.indexOf(this.title) != -1) {
           this.modelList.push(value);
         }
       });
+    });
+    this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
     });
   },
   methods: {
@@ -262,9 +269,6 @@ export default {
     },
     onClickSetName: function () {
       this.getName();
-    },
-    go(step) {
-      this.$router.go(step);
     },
     onClickModel: function (id) {
       this.$router.push({
