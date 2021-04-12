@@ -46,7 +46,11 @@
             </div>
           </div>
           <div class="phone" :class="val.class3">
-            <div><img src="@/assets/img/phone.png" alt="" /> 联系电话</div>
+            <div>
+              <a :href="'tel:' + val.phone"
+                ><img src="@/assets/img/phone.png" alt="" /> 联系电话</a
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -261,15 +265,13 @@ export default {
     },
   },
   async created() {
-    await this.$axios
-      .get("index.php/api/carousel_map/list?pageNumber=1&pageSize=6")
-      .then((val) => {
-        val.data.forEach((val) => {
-          val.image = this.$store.state.domainName + val.image;
-        });
-        this.bannerSrc = val.data[0].image;
-        this.bannerTxt = val.data[0].content;
+    await this.$axios.get("index.php/api/carousel_map/list").then((val) => {
+      val.data.forEach((val) => {
+        val.image = this.$store.state.domainName + val.image;
       });
+      this.bannerSrc = val.data[0].image;
+      this.bannerTxt = val.data[0].content;
+    });
     await this.$axios
       .get("index.php/api/ambient/list?pageNumber=1&pageSize=6")
       .then((val) => {
@@ -514,12 +516,14 @@ export default {
       justify-content: center;
       align-items: center;
       background-color: #c00;
-      color: #fff;
-      font-size: (32 / @vw);
       border-radius: (5 / @vw);
-      img {
-        .setwh(32,32);
-        margin-right: (10 / @vw);
+      a {
+        color: #fff;
+        font-size: (32 / @vw);
+        img {
+          .setwh(32,32);
+          margin-right: (10 / @vw);
+        }
       }
     }
   }

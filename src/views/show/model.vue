@@ -9,13 +9,13 @@
     <!-- 模特展示2 -->
     <div class="model" v-for="value in modelList" :key="value.id">
       <!-- 头部 开始 -->
-      <div class="model-top" ref="modelTop">
+      <div class="model-top" ref="modelTop" :class="classFlag5 ? '' : 'dn'">
         <div class="back" @click="onClickBackGo">&lt;</div>
         <div class="dot" @click="onClickRemoveClass2">▪ ▪ ▪</div>
       </div>
       <!-- 滚动后的顶部 -->
       <div class="model-top2" :class="classFlag5 ? 'dn' : ''">
-        <div class="back2" @click="go(-1)">&lt;</div>
+        <div class="back2" @click="onClickBackGo">&lt;</div>
         <ul>
           <li :class="classFlag6 ? 'line' : ''" @click="onClickBackTop">
             商品
