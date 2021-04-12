@@ -111,7 +111,7 @@
           </router-link>
         </li>
         <li>
-          <a href="tel:120">
+          <a :href="'tel:' + footerTel">
             <i>
               <img src="@/assets/img/btm-fiexd2.png" alt="" />
             </i>
@@ -176,6 +176,8 @@ export default {
       famealFlag: false,
       newsFlag: false,
       bannerTxt: "",
+      footerTel: "",
+      footerImage: "",
     };
   },
   methods: {
@@ -297,6 +299,10 @@ export default {
         this.environmentListL[0].class2 = "cd-titleh";
         this.environmentListL[0].class3 = "phone-move";
       });
+    await this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = val.data.image;
+    });
   },
   mounted() {
     //绑定页面滚动事件
