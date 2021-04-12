@@ -131,6 +131,7 @@
 }
 // 内容
 .search-list {
+  padding-bottom: (88 / @vw);
   li {
     margin-bottom: 10px;
     overflow: hidden;
@@ -285,22 +286,27 @@ export default {
       this.flag = !this.flag;
     },
     getName: function () {
-      if (!this.titles) {
-        this.modelList.forEach((val) => {
-          if (val.title.indexOf(this.seachName) != -1) {
-            this.titles = this.seachName;
-          }
-        });
-      }
-      if (this.titles) {
-        this.$router.push({
-          path: "/show/search",
-          query: {
-            titleName: this.title,
-          },
-        });
-      } else {
-        this.$router.push({ path: "/show/search2" });
+      if (this.seachName) {
+        if (!this.titles) {
+          this.modelList.forEach((val) => {
+            if (val.title.indexOf(this.seachName) != -1) {
+              this.titles = this.seachName;
+            } else {
+              this.titles = "";
+            }
+          });
+        }
+        if (this.titles) {
+          this.$router.push({
+            path: "/show/search",
+            query: {
+              titleName: this.title,
+            },
+          });
+          this.titles = "";
+        } else {
+          this.$router.push({ path: "/show/search2" });
+        }
       }
     },
   },

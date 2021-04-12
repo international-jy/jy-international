@@ -43,22 +43,24 @@ export default {
       }
     },
     getName: function () {
-      if (!this.title) {
-        this.modelList.forEach((val) => {
-          if (val.title.indexOf(this.seachName) != -1) {
-            this.title = this.seachName;
-          }
-        });
-      }
-      if (this.title) {
-        this.$router.push({
-          path: "/show/search",
-          query: {
-            titleName: this.title,
-          },
-        });
-      } else {
-        this.$router.push({ path: "/show/search2" });
+      if (this.seachName) {
+        if (!this.title) {
+          this.modelList.forEach((val) => {
+            if (val.title.indexOf(this.seachName) != -1) {
+              this.title = this.seachName;
+            }
+          });
+        }
+        if (this.title) {
+          this.$router.push({
+            path: "/show/search",
+            query: {
+              titleName: this.title,
+            },
+          });
+        } else {
+          this.$router.push({ path: "/show/search2" });
+        }
       }
     },
     onClickSetName: function () {

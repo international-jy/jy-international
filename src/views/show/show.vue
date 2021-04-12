@@ -33,6 +33,7 @@
             <div class="pop-up-t animate__animated animate__backInLeft">
               <img src="@/assets/img/seek.png" />
               <input
+                name="searchStr"
                 type="text"
                 placeholder="请输入您要搜索的内容"
                 @keydown.enter="getName"
@@ -609,25 +610,27 @@ export default {
     getName: function () {
       // console.log(1111);
       // var title = '';
-      if (!this.title) {
-        this.modelList.forEach((val) => {
-          // console.log();
-          if (val.title.indexOf(this.seachName) != -1) {
-            this.title = this.seachName;
-          }
-        });
-        // console.log(111);
-      }
-      if (this.title) {
-        //  console.log(111);
-        this.$router.push({
-          path: "/show/search",
-          query: {
-            titleName: this.title,
-          },
-        });
-      } else {
-        this.$router.push({ path: "/show/search2" });
+      if (this.seachName) {
+        if (!this.title) {
+          this.modelList.forEach((val) => {
+            // console.log();
+            if (val.title.indexOf(this.seachName) != -1) {
+              this.title = this.seachName;
+            }
+          });
+          // console.log(111);
+        }
+        if (this.title) {
+          //  console.log(111);
+          this.$router.push({
+            path: "/show/search",
+            query: {
+              titleName: this.title,
+            },
+          });
+        } else {
+          this.$router.push({ path: "/show/search2" });
+        }
       }
     },
     onClickModel: function (id) {
