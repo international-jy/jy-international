@@ -134,6 +134,7 @@ img {
   background-size: 100% auto;
   background-color: #f5f5f5;
   overflow: auto;
+  height: auto;
   .box {
     min-width: 320px;
     padding: (100 / @vw) 0;
@@ -403,7 +404,7 @@ export default {
   data() {
     return {
       flag: false,
-      num: 0,
+      num: 1,
       activeDate: [],
       id: null,
       hide: false,
@@ -411,11 +412,11 @@ export default {
     };
   },
   mounted: function () {
-    let that = this;
     this.id = Number(this.$route.query.id);
+    let that = this;
     this.$axios
       .get(
-        "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
+        "/index.php/api/journalism/list?pageNumber=1&pageSize=6&journalismtypeid=" +
           that.id
       )
       .then((res) => {
@@ -430,7 +431,7 @@ export default {
     this.id = Number(to.query.id);
     this.$axios
       .get(
-        "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
+        "/index.php/api/journalism/list?pageNumber=1&pageSize=6&journalismtypeid=" +
           that.id
       )
       .then((res) => {

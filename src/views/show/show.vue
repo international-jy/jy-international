@@ -502,6 +502,7 @@ body {
       line-height: (80 / @vw) !important;
       padding-top: 0 !important;
       color: #525252;
+      //  padding-left: (90 / @vw);
       font-size: (13 / @vw);
       text-align: center;
       opacity: 1 !important;

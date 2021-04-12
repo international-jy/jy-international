@@ -114,7 +114,7 @@ img {
   background-position: left top;
   background-size: 100% auto;
   background-color: #f5f5f5;
-  overflow: hidden;
+  // overflow: hidden;
   .box {
     min-width: 320px;
     padding: (100 / @vw) 0;
@@ -353,7 +353,7 @@ export default {
       newsList: [],
       flag: true,
       scrollH: { height: null },
-      num: 0,
+      num: 1,
     };
   },
   mounted() {
@@ -409,7 +409,6 @@ export default {
               "&pageSize=10&journalismtypeid"
           );
           this.newsList.push(...res.data);
-          console.log(this.newsList);
         });
     },
   },

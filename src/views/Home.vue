@@ -242,51 +242,61 @@ export default {
         },
       });
     },
-    onClickSkip: function (id) {
-      console.log(id);
-      this.$axios.get("index.php/api/journalism/list").then((value) => {
-        value.data.forEach((value) => {
-          this.$router.push({
-            path: "/news/list",
-            query: {
-              id: value.id,
-            },
+    onClickSkip: function () {
+      // console.log(id);
+      this.$axios
+        .get("index.php/api/journalism/list?pageNumber=1&pageSize=6")
+        .then((value) => {
+          value.data.forEach((value) => {
+            this.$router.push({
+              path: "/news/list",
+              query: {
+                id: value.id,
+              },
+            });
           });
         });
-      });
     },
   },
-  created() {
-    this.$axios.get("index.php/api/carousel_map/list").then((val) => {
-      val.data.forEach((val) => {
-        val.image = this.$store.state.domainName + val.image;
+  async created() {
+    await this.$axios
+      .get("index.php/api/carousel_map/list?pageNumber=1&pageSize=6")
+      .then((val) => {
+        val.data.forEach((val) => {
+          val.image = this.$store.state.domainName + val.image;
+        });
+        this.bannerSrc = val.data[0].image;
+        this.bannerTxt = val.data[0].content;
       });
-      this.bannerSrc = val.data[0].image;
-      this.bannerTxt = val.data[0].content;
-    });
-    this.$axios.get("index.php/api/ambient/list").then((val) => {
-      val.data.forEach((val) => {
-        val.image = this.$store.state.domainName + val.image;
-        val.class = "";
-        val.class2 = "";
+    await this.$axios
+      .get("index.php/api/ambient/list?pageNumber=1&pageSize=6")
+      .then((val) => {
+        val.data.forEach((val) => {
+          val.image = this.$store.state.domainName + val.image;
+          val.class = "";
+          val.class2 = "";
+        });
+        this.environmentListL = val.data;
       });
-      this.environmentListL = val.data;
-    });
-    this.$axios.get("index.php/api/journalism/list").then((value) => {
-      value.data.forEach((value) => {
-        this.newsList.push(value);
+    await this.$axios
+      .get("index.php/api/journalism/list?pageNumber=1&pageSize=6")
+      .then((value) => {
+        value.data.forEach((value) => {
+          this.newsList.push(value);
+        });
       });
-    });
-    this.$axios.get("index.php/api/models/list").then((val) => {
-      this.highList = val.data;
-      val.data.forEach((val) => {
-        val.image = this.$store.state.domainName + val.image;
+    await this.$axios
+      .get("index.php/api/models/list?pageNumber=1&pageSize=6")
+      .then((val) => {
+        this.highList = val.data;
+        val.data.forEach((val) => {
+          val.image = this.$store.state.domainName + val.image;
+        });
+        this.hide = true;
+        this.environmentListL[0].class = "cd-environment-m";
+        this.environmentListL[0].class2 = "cd-titleh";
+        this.environmentListL[0].class3 = "phone-move";
       });
-      this.hide = true;
-      this.environmentListL[0].class = "cd-environment-m";
-      this.environmentListL[0].class2 = "cd-titleh";
-      this.environmentListL[0].class3 = "phone-move";
-    });
   },
   mounted() {
     //绑定页面滚动事件
