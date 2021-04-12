@@ -189,6 +189,7 @@ export default {
 
   async created() {
     this.dataId = Number(this.$route.query.id);
+    // console.log(this.dataId);
     let that = this;
     await this.$axios
       .get("/index.php/api/models/list?id=" + that.dataId)
@@ -289,6 +290,7 @@ export default {
     onCopy: function (url) {
       this.CopyUrl(url);
     },
+
     CopyUrl(data) {
       var Url2 = data;
       var oInput = document.createElement("input");
@@ -302,6 +304,7 @@ export default {
         type: "success",
       });
     },
+
     //滚动监听
     scrollHandle(e) {
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
@@ -537,11 +540,11 @@ export default {
       position: absolute;
       left: 12%;
       bottom: 30%;
-      width: 72%;
+      width: 70%;
       padding: (30 / @vw) (20 / @vw) (50 / @vw) (20 / @vw);
       text-align: center;
       background-color: #fff;
-      border-radius: (20 / @vw);
+      border-radius: (30 / @vw);
       margin: 0 auto;
       z-index: 99;
       .mono-text {
@@ -628,16 +631,25 @@ export default {
   background-color: #fff;
   z-index: 99;
   text-align: center;
-  padding-top: 15%;
+  padding-top: 10%;
   p {
     font-size: (25 / @vw);
     text-align: center;
-    margin: (30 / @vw) 0;
+    margin: (10 / @vw) 0 (30 / @vw);
     color: #666;
   }
   img {
     width: 65%;
   }
+<<<<<<< HEAD
+  .saveimg-model{
+    // padding-left: 18%;
+    // text-align: left;
+    p{
+    // text-align: left;
+    font-size: (25 / @vw);
+    color:  rgb(250, 35, 10);
+=======
   .saveimg-model {
     padding-left: 18%;
     text-align: left;
@@ -645,6 +657,7 @@ export default {
       text-align: left;
       font-size: (24 / @vw);
       color: rgb(250, 35, 10);
+>>>>>>> 1cc4a4abc6f8a93c17895955dbf6d88600f4d496
     }
     h3 {
       font-size: (28 / @vw);
@@ -718,6 +731,7 @@ export default {
         }
         p {
           // text-align: left;
+           font-size: (25 / @vw);
           font-weight: 700;
           color: rgb(250, 35, 10);
         }
