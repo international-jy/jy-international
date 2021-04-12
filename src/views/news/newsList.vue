@@ -138,7 +138,7 @@ img {
     min-width: 320px;
     padding: (100 / @vw) 0;
     margin: 0 auto;
-    overflow: hidden;
+    // overflow: hidden;
     z-index: 2;
     .top {
       width: 100%;
