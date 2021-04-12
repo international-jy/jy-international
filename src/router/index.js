@@ -31,15 +31,15 @@ const routes = [
         component: () => import("../views/show/model.vue"),
       },
       {
-        path: "contact/contactgy",
+        path: "contact/1",
         component: () => import("../views/contact/conguanyu.vue"),
       },
       {
-        path: "contact/contactlx",
+        path: "contact/2",
         component: () => import("../views/contact/conlianxi.vue"),
       },
       {
-        path: "contact/contactzp",
+        path: "contact/3",
         component: () => import("../views/contact/conzhaopin.vue"),
       },
       {

@@ -4,7 +4,7 @@
     <div class="cc-box">
       <!-- 顶部导航栏 -->
       <div class="top">
-        <div class="top-lt" @click="go(-1)">
+        <div class="top-lt" @click="onClickGo">
           <img src="@/assets/img/jiantou.png" alt="" />
         </div>
         <div class="top-rt">
@@ -18,15 +18,15 @@
       </div>
       <!-- 列表页 -->
       <ul class="contact-list">
-        <li>
-          <router-link to="/contact/contactgy">关于我们</router-link>
+        <li v-for="value in lineArr" :key="value.id">
+          <div @click="gos(value.id)">{{ value.title }}</div>
         </li>
-        <li>
+        <!-- <li>
           <router-link to="/contact/contactlx">联系我们</router-link>
         </li>
         <li>
           <router-link to="/contact/contactzp">招聘要求</router-link>
-        </li>
+        </li> -->
       </ul>
     </div>
     <div class="pql-btm-fixed">
@@ -290,7 +290,16 @@ export default {
     return {
       navFlag: true,
       flag: true,
+      lineArr: {},
     };
+  },
+  created() {
+    var that = this;
+    this.$axios.get("/index.php/api/about_us/list").then((val) => {
+      that.lineArr = val.data;
+      // console.log(val.data);
+    });
+    // console.log(this.lineArr);
   },
   methods: {
     onClickNav: function () {
@@ -307,6 +316,17 @@ export default {
     },
     onClickOr: function () {
       this.flag = !this.flag;
+    },
+    gos: function (id) {
+      this.$router.push({
+        path: "contact/" + id,
+      });
+      // console.log('contact/'+id);
+    },
+    onClickGo: function () {
+      this.$router.push({
+        path: "/home",
+      });
     },
   },
 };
