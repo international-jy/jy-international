@@ -38,8 +38,29 @@
           <li @click="onClickRemoveClass">
             <img src="@/assets/img/dot.png" alt="" />推荐
           </li>
-          <li><img src="@/assets/img/collection.png" alt="" />收藏</li>
+          <li @click="collect"><img src="@/assets/img/collection.png" alt="" />收藏</li>
         </ul>
+
+        <div
+        :class="{ mask: flag, dn: !flag }"
+        @touchmove.prevent
+        @mousewheel.prevent
+        @click="closeMask(num)"
+      >
+        <div :class="{ icon1: num == 1, dn: num != 1 }">
+          <p>收藏失败,您还没有登录,登录后请您重新收藏</p>
+          <div class="btn">
+            <span>登录</span>
+            <span>注册</span>
+            <span class="close" @click="closeMask(num + 1)">关闭</span>
+          </div>
+        </div>
+        <div :class="{ icon2: num == 2, dn: num != 2 }">
+          <a href="https://qzone.qq.com/"></a>
+          <a href="https://weibo.com/"></a>
+          <a href="https://www.douban.com/"></a>
+        </div>
+      </div>
       </div>
       <!-- 头部 结束 -->
 
@@ -186,6 +207,8 @@ export default {
       modelList: [],
       hide: false,
       footerImage: "",
+      flag:false,
+       num: 0,
     };
   },
 
@@ -216,6 +239,17 @@ export default {
     });
   },
   methods: {
+      closeMask: function (num) {
+      if (num == 2) {
+        this.flag = false;
+        this.num = 0;
+      }
+    },
+
+     collect: function () {
+      this.flag = true;
+      this.num = 1;
+    },
     // 点击返回上一个页面
     onClickBackGo() {
       this.$router.push("/show");
@@ -759,4 +793,66 @@ export default {
   height: (80 / @vw);
 }
 //  点击回到顶部 结束
+
+
+// 收藏弹层
+.mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 20;
+      .icon1 {
+        .cl(430);
+        top: 50%;
+        width: (430 / @vw);
+        padding: (10 / @vw) 0;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        text-align: center;
+        font-size: (20 / @vw);
+        border-radius: (20 / @vw);
+        p {
+          line-height: (60 / @vw);
+          padding-bottom: (10 / @vw);
+          border-bottom: 1px solid #ccc;
+          font-size: (20 / @vw);
+        }
+        .btn {
+          display: flex;
+          justify-content: space-evenly;
+          line-height: (60 / @vw);
+          span {
+            color: #ccc;
+          }
+        }
+      }
+      .icon2 {
+        display: flex;
+        justify-content: space-evenly;
+        position: absolute;
+        top: 20%;
+        .cl(300);
+        width: (300 / @vw);
+        padding: (10 / @vw);
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: (10 / @vw);
+        a {
+          .setwh(80,74);
+          margin: (10 / @vw);
+          background: url(../../assets/img/share_but.png) no-repeat 0
+            (-74 / @vw);
+          background-size: (76 / @vw) (444 / @vw);
+        }
+        a:nth-child(2) {
+          background-position: 0 0;
+        }
+        a:nth-child(3) {
+          background-position: 0 (-222 / @vw);
+        }
+      }
+    }
 </style>
