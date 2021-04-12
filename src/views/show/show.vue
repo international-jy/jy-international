@@ -138,12 +138,17 @@
       <!-- 高端模特 结束 -->
 
       <!-- 内容 开始 -->
-      <div class="details">
+      <div
+        class="details infinite-list"
+        v-infinite-scroll="load"
+        style="overflow: auto"
+      >
         <ul class="details-top">
           <li
             v-for="(value, index) in modelList"
             :key="index"
             @click="onClickModel(value.id)"
+            class="infinite-list-item"
           >
             <div class="details-con">
               <a href="javaScript:;" style="margin-bottom: 5px">{{
@@ -515,23 +520,23 @@ body {
     .details-top {
       background-color: #fff;
       width: 100%;
-      overflow: hidden;
+      // overflow: hidden;
       margin: auto;
       li {
-        overflow: hidden;
+        // overflow: hidden;
         border-bottom: (4 / @vw) solid #eee;
         list-style: none;
         margin-left: (10 / @vw);
         padding-right: (10 / @vw);
         .details-con {
-          overflow: hidden;
+          // overflow: hidden;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           padding-left: (10 / @vw);
           a {
             height: (80 / @vw);
-            overflow: hidden;
+            // overflow: hidden;
             font-size: (18 / @vw);
             line-height: (80 / @vw);
             flex: none;
@@ -576,14 +581,21 @@ export default {
       seachName: "",
       seachList: [],
       title: "",
+      num: 1,
     };
   },
   created() {
     let that = this;
-    this.$axios.get("/index.php/api/models/list").then((val) => {
-      that.modelList = val.data;
-      console.log(val);
-    });
+    this.$axios
+      .get(
+        "/index.php/api/models/list?pageNumber=" +
+          that.num +
+          "&pageSize=10&typeid=1,2"
+      )
+      .then((val) => {
+        that.modelList = val.data;
+        console.log(val);
+      });
   },
   methods: {
     onClickSetName: function () {
@@ -647,9 +659,20 @@ export default {
     onClickOr: function () {
       this.flag = !this.flag;
     },
-    // onClickenter:function(){
-
-    // },
+    load() {
+      let that = this;
+      this.num++;
+      this.$axios
+        .get(
+          "/index.php/api/models/list?pageNumber=" +
+            that.num +
+            "&pageSize=10&typeid=1,2"
+        )
+        .then((val) => {
+          that.modelList.push(...val.data);
+          console.log(val);
+        });
+    },
 
     // 点击回到顶部事件
     onClickBackTop() {
@@ -662,7 +685,7 @@ export default {
         if (scrollTop <= 0) {
           clearInterval(timer);
         }
-      }, 30);
+      }, 15);
     },
     //滚动监听
     scrollHandle(e) {
