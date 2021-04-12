@@ -26,9 +26,9 @@
         <div :class="{ icon1: num == 1, dn: num != 1 }">
           <p>收藏失败,您还没有登录,登录后请您重新收藏</p>
           <div class="btn">
-            <a href="#">登录</a>
-            <a href="#">注册</a>
-            <a href="###" class="close" @click="closeMask(num + 1)">关闭</a>
+            <span>登录</span>
+            <span>注册</span>
+            <span class="close" @click="closeMask(num + 1)">关闭</span>
           </div>
         </div>
         <div :class="{ icon2: num == 2, dn: num != 2 }">
@@ -121,7 +121,7 @@
   </div>
 </template>
 
-<style lang="less">
+<style lang="less" scope>
 @import "../../assets/less/base.less";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 
@@ -201,7 +201,7 @@ img {
           display: flex;
           justify-content: space-evenly;
           line-height: (60 / @vw);
-          a {
+          span {
             color: #ccc;
           }
         }

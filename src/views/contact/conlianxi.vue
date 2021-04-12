@@ -72,7 +72,7 @@
     </div>
   </div>
 </template>
-<style lang="less">
+<style lang="less" scope>
 @import "../../assets/less/base.less";
 //联系我们
 .dn {
