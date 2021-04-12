@@ -711,7 +711,8 @@ export default {
     width: 100%;
     overflow: hidden;
     background-color: #fff;
-    height: (986 / @vw);
+    // height: (986 / @vw);
+    min-height: (400 / @vw);
     margin-top: (20 / @vw);
     // box-sizing: border-box;
     ul {
