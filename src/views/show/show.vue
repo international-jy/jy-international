@@ -3,8 +3,7 @@
     <!-- 顶部 开始 -->
     <div class="top">
       <div class="top-t">
-        <!-- <a href="javaScript:;" @click="go(-1)">＜</a> -->
-        <div @click="go(-1)"><img src="@/assets/img/fh.png" class="fh" /></div>
+        <div @click="go"><img src="@/assets/img/fh.png" class="fh" /></div>
         <div class="top-btn" @click="pop">
           <div class="inputm">
             <img src="@/assets/img/seek.png" />
@@ -18,7 +17,7 @@
           <a href="javaScript:;" class="top_user1">
             <img src="@/assets/img/pro_user.png" />
           </a>
-          <a href="/home" class="top_home1" @click="go(-1)">
+          <a href="/home" class="top_home1" @click="go">
             <img src="@/assets/img/pro_home.png" />
           </a>
         </div>
@@ -642,8 +641,10 @@ export default {
 
       //  console.log(this.dataId);
     },
-    go(step) {
-      this.$router.go(step);
+    go() {
+      this.$router.push({
+        path: "/home",
+      });
     },
     high() {
       this.blueClass = !this.blueClass;
