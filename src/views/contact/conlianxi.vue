@@ -33,7 +33,7 @@
     <div class="pql-btm-fixed">
       <ul>
         <li>
-          <router-link to="/news">
+          <router-link to="/home">
             <i>
               <img src="@/assets/img/btm-fiexd3.png" alt="" />
             </i>
@@ -41,7 +41,7 @@
           </router-link>
         </li>
         <li>
-          <a href="tel:120">
+          <a :href="'tel:' + footerTel">
             <i>
               <img src="@/assets/img/btm-fiexd2.png" alt="" />
             </i>
@@ -61,7 +61,7 @@
     <!-- 微信二维码 -->
     <div class="or-code" :class="flag ? 'dn' : ''" @click="onClickOr">
       <div class="white">
-        <img src="@/assets/img/code.png" alt="" />
+        <img :src="footerImage" alt="" />
         <p>长按识别二维码</p>
       </div>
     </div>
@@ -76,6 +76,11 @@
   // padding: 0 (40/@vw);
   box-sizing: border-box;
   overflow: hidden;
+  img {
+    width: 80%;
+    height: auto;
+    margin: 0 auto;
+  }
 }
 .pre {
   padding-top: (150 / @vw);
@@ -237,6 +242,8 @@ export default {
       lxcontent: [],
       urlimg: null,
       arr1: [],
+      footerTel: "",
+      footerImage: "",
     };
   },
   created() {
@@ -254,6 +261,10 @@ export default {
       let str2 = str.splice(urlStart + 1, num - 3);
       that.urlimg = str2.join("");
       that.lxcontent.push(arr);
+    });
+    this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
     });
   },
   methods: {

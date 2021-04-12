@@ -94,7 +94,7 @@
           </router-link>
         </li>
         <li>
-          <a href="tel:120">
+          <a :href="'tel:' + footerTel">
             <i>
               <img src="@/assets/img/btm-fiexd2.png" alt="" />
             </i>
@@ -114,7 +114,7 @@
     <!-- 微信二维码 -->
     <div class="or-code" :class="flag2 ? 'dn' : ''" @click="onClickOr">
       <div class="white">
-        <img src="@/assets/img/code.png" alt="" />
+        <img :src="footerImage" alt="" />
         <p>长按识别二维码</p>
       </div>
     </div>
@@ -409,6 +409,8 @@ export default {
       hide: false,
       flag2: true,
       pageNum: 0,
+      footerTel: "",
+      footerImage: "",
     };
   },
   mounted: function () {
@@ -426,6 +428,10 @@ export default {
         this.activeDate = res.data;
         this.hide = true;
       });
+    this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
+    });
   },
   beforeRouteUpdate(to, from, next) {
     this.hide = false;

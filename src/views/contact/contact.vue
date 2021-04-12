@@ -32,7 +32,7 @@
     <div class="pql-btm-fixed">
       <ul>
         <li>
-          <router-link to="/news">
+          <router-link to="/home">
             <i>
               <img src="@/assets/img/btm-fiexd3.png" alt="" />
             </i>
@@ -40,7 +40,7 @@
           </router-link>
         </li>
         <li>
-          <a href="tel:120">
+          <a :href="'tel:' + footerTel">
             <i>
               <img src="@/assets/img/btm-fiexd2.png" alt="" />
             </i>
@@ -60,7 +60,7 @@
     <!-- 微信二维码 -->
     <div class="or-code" :class="flag ? 'dn' : ''" @click="onClickOr">
       <div class="white">
-        <img src="@/assets/img/code.png" alt="" />
+        <img :src="footerImage" alt="" />
         <p>长按识别二维码</p>
       </div>
     </div>

@@ -33,7 +33,7 @@
       <div class="pql-btm-fixed">
         <ul>
           <li>
-            <router-link to="/news">
+            <router-link to="/home">
               <i>
                 <img src="@/assets/img/btm-fiexd3.png" alt="" />
               </i>
@@ -41,7 +41,7 @@
             </router-link>
           </li>
           <li>
-            <a href="tel:120">
+            <a :href="'tel:' + footerTel">
               <i>
                 <img src="@/assets/img/btm-fiexd2.png" alt="" />
               </i>
@@ -61,7 +61,7 @@
       <!-- 微信二维码 -->
       <div class="or-code" :class="flag ? 'dn' : ''" @click="onClickOr">
         <div class="white">
-          <img src="@/assets/img/code.png" alt="" />
+          <img :src="footerImage" alt="" />
           <p>长按识别二维码</p>
         </div>
       </div>
@@ -231,6 +231,8 @@ export default {
       flag: true,
       dataId: null,
       zpcontent: [],
+      footerTel: "",
+      footerImage: "",
     };
   },
   created() {
@@ -238,10 +240,12 @@ export default {
     let that = this;
     this.$axios.get("/index.php/api/about_us/list").then((val) => {
       let arr = val.data.find((val) => val.id == 3);
-      // console.log(arr);
       that.zpcontent.push(arr);
     });
-    // console.log(this.zpcontent);
+    this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
+    });
   },
   methods: {
     addClass: function () {

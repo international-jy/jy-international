@@ -76,7 +76,7 @@
           </router-link>
         </li>
         <li>
-          <a href="tel:120">
+          <a :href="'tel:' + footerTel">
             <i>
               <img src="@/assets/img/btm-fiexd2.png" alt="" />
             </i>
@@ -98,7 +98,7 @@
     <!-- 微信二维码 -->
     <div class="or-code" :class="flag ? 'dn' : ''" @click="onClickOr">
       <div class="white">
-        <img src="@/assets/img/code.png" alt="" />
+        <img :src="footerImage" alt="" />
         <p>长按识别二维码</p>
       </div>
     </div>
@@ -582,6 +582,8 @@ export default {
       seachList: [],
       title: "",
       num: 1,
+      footerTel: "",
+      footerImage: "",
     };
   },
   created() {
@@ -596,6 +598,11 @@ export default {
         that.modelList = val.data;
         console.log(val);
       });
+
+    this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
+    });
   },
   methods: {
     onClickSetName: function () {

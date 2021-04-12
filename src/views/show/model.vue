@@ -114,10 +114,11 @@
           @click="onClickSaveImg"
         >
           <p>长按将图片保存至手机</p>
-          <img :src="value.image" alt="" />
           <div class="saveimg-model">
+            <img :src="value.image" alt="" class="userImg" />
             <p>¥{{ value.price }}</p>
             <h3>{{ value.title }}</h3>
+            <img :src="footerImage" alt="" />
           </div>
         </div>
         <!-- 点击保存图片 弹出图片 结束 -->
@@ -184,6 +185,7 @@ export default {
       modelListAll: [],
       modelList: [],
       hide: false,
+      footerImage: "",
     };
   },
 
@@ -209,6 +211,9 @@ export default {
 
         window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
       });
+    await this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerImage = this.$store.state.domainName + val.data.image;
+    });
   },
   methods: {
     // 点击返回上一个页面
@@ -632,26 +637,39 @@ export default {
   z-index: 99;
   text-align: center;
   padding-top: 10%;
+
   p {
     font-size: (25 / @vw);
     text-align: center;
     margin: (10 / @vw) 0 (30 / @vw);
     color: #666;
   }
-  img {
-    width: 65%;
-  }
+
   .saveimg-model {
-    padding-left: 18%;
-    text-align: left;
+    // padding-left: 18%;
+    width: 80%;
+    height: auto;
+    margin: 0 auto;
+    // border: 1px solid red;
+    text-align: center;
+    box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.1);
+    .userImg {
+      width: 65%;
+      margin-top: (20 / @vw);
+    }
     p {
-      text-align: left;
+      text-align: center;
       font-size: (24 / @vw);
       color: rgb(250, 35, 10);
     }
     h3 {
       font-size: (28 / @vw);
       color: #333;
+    }
+    img {
+      width: 50%;
+      height: auto;
+      margin: 0 auto;
     }
   }
 }
