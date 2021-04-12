@@ -7,7 +7,7 @@
   >
     <div class="box" v-if="hide">
       <div class="top">
-        <div class="regard-return" @click="go(-1)">
+        <div class="regard-return" @click="goNews">
           <img src="@/assets/img/jiantou.png" alt="" />
         </div>
         <div class="regard-dl" @click="collect">
@@ -408,14 +408,18 @@ export default {
       id: null,
       hide: false,
       flag2: true,
+      pageNum: 0,
     };
   },
   mounted: function () {
     let that = this;
     this.id = Number(this.$route.query.id);
+    this.pageNumnum = Number(this.$route.query.num);
     this.$axios
       .get(
-        "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
+        "/index.php/api/journalism/list?pageNumber=" +
+          that.pageNumnum +
+          "&pageSize=10&journalismtypeid=" +
           that.id
       )
       .then((res) => {
@@ -428,9 +432,12 @@ export default {
     to, from;
     var that = this;
     this.id = Number(to.query.id);
+    this.pageNumnum = Number(to.query.num);
     this.$axios
       .get(
-        "/index.php/api/journalism/list?pageNumber&pageSize&journalismtypeid=" +
+        "/index.php/api/journalism/list?pageNumber=" +
+          that.pageNumnum +
+          "&pageSize=10&journalismtypeid=" +
           that.id
       )
       .then((res) => {
@@ -476,6 +483,11 @@ export default {
     },
     onClickOr: function () {
       this.flag2 = !this.flag2;
+    },
+    goNews: function () {
+      this.$router.push({
+        path: "/news",
+      });
     },
   },
   filters: {

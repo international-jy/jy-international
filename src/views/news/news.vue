@@ -1,8 +1,14 @@
 <template>
-  <div class="xw-box" ref="box">
+  <div
+    class="xw-box"
+    ref="box"
+    v-loading.fullscreen.lock="!hide"
+    element-loading-text="拼命加载中"
+    element-loading-background="rgba(255, 255, 255, 0.4)"
+  >
     <div class="box">
       <!-- 顶部导航栏 -->
-      <div class="top">
+      <div class="top" v-if="hide">
         <div class="top-lt" @click="go(-1)">
           <img src="@/assets/img/jiantou.png" alt="" />
         </div>
@@ -15,7 +21,7 @@
           </div>
         </div>
       </div>
-      <h3 class="title">成都夜场</h3>
+      <h3 class="title" v-if="hide">成都夜场</h3>
       <!-- 新闻列表 -->
       <div
         class="list-box infinite-list"
@@ -114,7 +120,6 @@ img {
   background-position: left top;
   background-size: 100% auto;
   background-color: #f5f5f5;
-  overflow: hidden;
   .box {
     min-width: 320px;
     padding: (100 / @vw) 0;
@@ -353,7 +358,8 @@ export default {
       newsList: [],
       flag: true,
       scrollH: { height: null },
-      num: 0,
+      num: 1,
+      hide: false,
     };
   },
   mounted() {
@@ -366,6 +372,7 @@ export default {
       )
       .then((res) => {
         this.newsList = res.data;
+        this.hide = true;
       });
     let footer = this.$refs.footer.offsetHeight;
     let boxH = this.$refs.box.offsetHeight;
@@ -376,9 +383,10 @@ export default {
       this.$router.go(step);
     },
     goList(id) {
+      let that = this;
       this.$router.push({
         path: "/news/list",
-        query: { id: id },
+        query: { id: id, pageNum: that.num },
       });
     },
     onClickNav: function () {
@@ -403,13 +411,7 @@ export default {
             "&pageSize=10&journalismtypeid"
         )
         .then((res) => {
-          console.log(
-            "/index.php/api/journalism/list?pageNumber=" +
-              that.num +
-              "&pageSize=10&journalismtypeid"
-          );
           this.newsList.push(...res.data);
-          console.log(this.newsList);
         });
     },
   },

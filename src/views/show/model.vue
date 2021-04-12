@@ -1,5 +1,11 @@
 <template>
-  <div class="xjg box">
+  <div
+    class="xjg box"
+    v-loading.fullscreen.lock="!hide"
+    element-loading-text="拼命加载中"
+    element-loading-background="rgba(255, 255, 255, 0.4)"
+    v-if="hide"
+  >
     <!-- 模特展示2 -->
     <div class="model" v-for="value in modelList" :key="value.id">
       <!-- 头部 开始 -->
@@ -177,23 +183,29 @@ export default {
       dataId: null,
       modelListAll: [],
       modelList: [],
+      hide: false,
     };
   },
 
-  created() {
+  async created() {
     this.dataId = Number(this.$route.query.id);
     // console.log(this.dataId);
     let that = this;
-    this.$axios
+    await this.$axios
       .get("/index.php/api/models/list?id=" + that.dataId)
       .then((val) => {
         // console.log(val.data);
+        val.data.forEach((val) => {
+          val.image = this.$store.state.domainName + val.image;
+        });
+
         that.modelList.push(val.data.find((value) => value.id == that.dataId));
         val.data.forEach((e) => {
           if (e.id != that.dataId) {
             that.modelListAll.push(e);
           }
         });
+        this.hide = true;
       });
   },
 
@@ -202,9 +214,9 @@ export default {
     onClickBackGo() {
       this.$router.push("/show");
     },
-    getData(num) {
+    async getData(num) {
       this.modelListAll.splice(0, this.modelListAll.length);
-      this.$router.push({
+      await this.$router.push({
         path: "/show/model",
         replace: true,
         query: {
@@ -214,15 +226,23 @@ export default {
       this.$router.go(0);
       this.dataId = Number(this.$route.query.id);
       let that = this;
-      this.$axios.get("/index.php/api/models/list?id=" + num).then((val) => {
-        // console.log(val.data);
-        that.modelList.push(val.data.find((value) => value.id == that.dataId));
-        val.data.forEach((e) => {
-          if (e.id != that.dataId) {
-            that.modelListAll.push(e);
-          }
+      await this.$axios
+        .get("/index.php/api/models/list?id=" + num)
+        .then((val) => {
+          // console.log(val.data);
+          val.data.forEach((val) => {
+            val.image = this.$store.state.domainName + val.image;
+          });
+          that.modelList.push(
+            val.data.find((value) => value.id == that.dataId)
+          );
+          val.data.forEach((e) => {
+            if (e.id != that.dataId) {
+              that.modelListAll.push(e);
+            }
+          });
+          this.hide = true;
         });
-      });
     },
     go(step) {
       this.$router.go(step);
@@ -310,7 +330,7 @@ export default {
 };
 </script>
 
-<style lang="less" scope>
+<style lang="less">
 @import "../../assets/less/base.less";
 
 @keyframes opcityTop {
@@ -512,6 +532,7 @@ export default {
   padding-top: (80 / @vw);
   background-color: rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
+  z-index: 22;
   .mono-cont {
     width: 100%;
     height: 100%;
