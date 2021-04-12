@@ -641,15 +641,6 @@ export default {
   img {
     width: 65%;
   }
-<<<<<<< HEAD
-  .saveimg-model{
-    // padding-left: 18%;
-    // text-align: left;
-    p{
-    // text-align: left;
-    font-size: (25 / @vw);
-    color:  rgb(250, 35, 10);
-=======
   .saveimg-model {
     padding-left: 18%;
     text-align: left;
@@ -657,7 +648,6 @@ export default {
       text-align: left;
       font-size: (24 / @vw);
       color: rgb(250, 35, 10);
->>>>>>> 1cc4a4abc6f8a93c17895955dbf6d88600f4d496
     }
     h3 {
       font-size: (28 / @vw);
@@ -731,7 +721,7 @@ export default {
         }
         p {
           // text-align: left;
-           font-size: (25 / @vw);
+          font-size: (25 / @vw);
           font-weight: 700;
           color: rgb(250, 35, 10);
         }
