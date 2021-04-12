@@ -291,6 +291,8 @@ export default {
       navFlag: true,
       flag: true,
       lineArr: {},
+      footerTel: "",
+      footerImage: "",
     };
   },
   created() {
@@ -298,6 +300,10 @@ export default {
     this.$axios.get("/index.php/api/about_us/list").then((val) => {
       that.lineArr = val.data;
       // console.log(val.data);
+    });
+    this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
     });
     // console.log(this.lineArr);
   },
