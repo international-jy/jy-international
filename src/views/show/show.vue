@@ -4,7 +4,7 @@
     <div class="top">
       <div class="top-t">
         <!-- <a href="javaScript:;" @click="go(-1)">＜</a> -->
-        <img src="@/assets/img/fh.png" class="fh" />
+        <div @click="go(-1)"><img src="@/assets/img/fh.png" class="fh" /></div>
         <div class="top-btn" @click="pop">
           <div class="inputm">
             <img src="@/assets/img/seek.png" />
@@ -33,8 +33,14 @@
           <div class="pop-up-l">
             <div class="pop-up-t animate__animated animate__backInLeft">
               <img src="@/assets/img/seek.png" />
-              <input type="text" placeholder="请输入您要搜索的内容" />
+              <input
+                type="text"
+                placeholder="请输入您要搜索的内容"
+                @keydown.enter="getName"
+                v-model="seachName"
+              />
             </div>
+            <p class="hunt" @click="onClickSetName">搜索</p>
           </div>
         </div>
       </div>
@@ -43,7 +49,7 @@
       <!-- 分享弹窗 开始 -->
       <div class="thickness" :class="shareClass ? 'dn' : ''" @click="share">
         <div class="thickness-logo">
-          <a href="https://mail.qq.com/">
+          <a href="https://www.qq.com/">
             <span class="space"></span>
           </a>
           <a href="https://weibo.com/">
@@ -57,6 +63,7 @@
       <!-- 分享弹窗 开始 -->
     </div>
     <!-- 顶部 结束 -->
+
     <!-- 底部 开始 -->
     <div class="pql-btm-fixed">
       <ul>
@@ -87,6 +94,7 @@
       </ul>
     </div>
     <!-- 底部 结束 -->
+
     <!-- 微信二维码 -->
     <div class="or-code" :class="flag ? 'dn' : ''" @click="onClickOr">
       <div class="white">
@@ -94,6 +102,7 @@
         <p>长按识别二维码</p>
       </div>
     </div>
+
     <!-- 侧边栏 开始 -->
     <div class="mip-lightbox" :class="navFlag ? 'dn' : ''" @click="onClickTier">
       <div class="lightbox-r animate__animated animate__fadeInRight">
@@ -159,7 +168,7 @@
   </div>
 </template>
 
-<style lang="less">
+<style lang="less" scope>
 @import "../../assets/less/base.less";
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 body {
@@ -182,6 +191,7 @@ body {
     top: 0;
     left: 0;
     padding: (10 / @vw) 0;
+    z-index: 10;
     .top-t {
       width: 100%;
       height: (60 / @vw);
@@ -284,7 +294,7 @@ body {
         background-color: #fff;
         z-index: 100;
         .pop-up-l {
-          width: 80%;
+          width: 90%;
           height: (80 / @vw);
           padding: (9 / @vw) (10 / @vw);
           display: flex;
@@ -305,6 +315,12 @@ body {
               border: none !important;
               outline: none;
             }
+          }
+          .hunt {
+            line-height: (60 / @vw);
+            margin-left: (40 / @vw);
+            font-size: (30 / @vw);
+            color: #999;
           }
         }
       }
@@ -349,9 +365,9 @@ body {
     }
   }
 
-  .backbox {
-    height: 110%;
-  }
+  // .backbox {
+  //   height: 110%;
+  // }
 
   //底部
   .pql-btm-fixed {
@@ -442,7 +458,6 @@ body {
   }
 
   //微信二维码弹出层
-
   .or-code {
     position: fixed;
     left: 0;
@@ -482,9 +497,14 @@ body {
       color: #1e91ff;
     }
     a {
+      display: block;
+      width: 100%;
+      line-height: (80 / @vw) !important;
+      padding-top: 0 !important;
       color: #525252;
-      padding-left: (90 / @vw);
       font-size: (13 / @vw);
+      text-align: center;
+      opacity: 1 !important;
     }
   }
 
@@ -552,16 +572,46 @@ export default {
       classFlag5: true,
       dataId: null,
       flag: true,
+      seachName: "",
+      seachList: [],
+      title: "",
     };
   },
   created() {
     let that = this;
     this.$axios.get("/index.php/api/models/list").then((val) => {
       that.modelList = val.data;
+      console.log(val);
     });
   },
-
   methods: {
+    onClickSetName: function () {
+      this.getName();
+    },
+    getName: function () {
+      // console.log(1111);
+      // var title = '';
+      if (!this.title) {
+        this.modelList.forEach((val) => {
+          // console.log();
+          if (val.title.indexOf(this.seachName) != -1) {
+            this.title = this.seachName;
+          }
+        });
+        // console.log(111);
+      }
+      if (this.title) {
+        //  console.log(111);
+        this.$router.push({
+          path: "/show/search",
+          query: {
+            titleName: this.title,
+          },
+        });
+      } else {
+        this.$router.push({ path: "/show/search2" });
+      }
+    },
     onClickModel: function (id) {
       this.$router.push({
         path: "/show/model",
@@ -596,6 +646,9 @@ export default {
     onClickOr: function () {
       this.flag = !this.flag;
     },
+    // onClickenter:function(){
+
+    // },
 
     // 点击回到顶部事件
     onClickBackTop() {
@@ -610,7 +663,6 @@ export default {
         }
       }, 30);
     },
-
     //滚动监听
     scrollHandle(e) {
       // console.log(this);
@@ -627,7 +679,6 @@ export default {
       }
     },
   },
-
   mounted() {
     // console.log(this.$refs.backTopBox);
     // this.$refs.backTopBox.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件

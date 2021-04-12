@@ -84,7 +84,13 @@
                   <img src="@/assets/img/save.png" alt="" />
                   <p>保存图片</p>
                 </li>
-                 <li @click="onCopy('http://localhost:8080/home#/show/model?id=' + value.id)">
+                <li
+                  @click="
+                    onCopy(
+                      'http://localhost:8080/home#/show/model?id=' + value.id
+                    )
+                  "
+                >
                   <img src="@/assets/img/link.png" alt="" />
                   <p>复制链接</p>
                 </li>
@@ -99,12 +105,13 @@
         <div
           class="saveimg"
           :class="classFlag4 ? 'dn' : ''"
-          @click="onClickSaveImg">
+          @click="onClickSaveImg"
+        >
           <p>长按将图片保存至手机</p>
-          <img :src="value.image" alt="">
+          <img :src="value.image" alt="" />
           <div class="saveimg-model">
-            <p>¥{{value.price}}</p>
-            <h3>{{value.title}}</h3>
+            <p>¥{{ value.price }}</p>
+            <h3>{{ value.title }}</h3>
           </div>
         </div>
         <!-- 点击保存图片 弹出图片 结束 -->
@@ -188,7 +195,6 @@ export default {
           }
         });
       });
-    console.log(this.modelListAll);
   },
 
   methods: {
@@ -207,7 +213,6 @@ export default {
       });
       this.$router.go(0);
       this.dataId = Number(this.$route.query.id);
-      console.log(this.dataId);
       let that = this;
       this.$axios.get("/index.php/api/models/list?id=" + num).then((val) => {
         // console.log(val.data);
@@ -218,29 +223,23 @@ export default {
           }
         });
       });
-      console.log(this.modelListAll);
     },
     go(step) {
-      console.log(step);
       this.$router.go(step);
     },
     onClickRemoveClass: function () {
       this.classFlag = !this.classFlag;
-      console.log(111);
     },
     onClickRemoveClass2: function () {
       this.classFlag2 = !this.classFlag2;
-      // console.log(111);
     },
     onClickRemoveClass3: function () {
       this.classFlag2 = true;
-      // console.log(111);
     },
     onClickBigImg: function () {
       this.classFlag3 = !this.classFlag3;
     },
     onClickSaveImg: function () {
-      console.log(111);
       this.classFlag4 = !this.classFlag4;
     },
 
@@ -263,10 +262,10 @@ export default {
       var midHeight = this.$refs.mid[0].offsetHeight;
       var modelHeight = this.$refs.modelTop[0].offsetHeight;
 
-      window.scrollTo(0 , midHeight - modelHeight);
+      window.scrollTo(0, midHeight - modelHeight);
     },
 
-     //点击复制链接
+    //点击复制链接
     onCopy: function (url) {
       this.CopyUrl(url);
     },
@@ -287,9 +286,6 @@ export default {
     
     //滚动监听
     scrollHandle(e) {
-      // console.log(this);
-      // console.log(this.$refs);
-
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
       var modelHeight = this.$refs.modelTop[0].offsetHeight;
       var midHeight = this.$refs.mid[0].offsetHeight;
@@ -298,7 +294,7 @@ export default {
       } else {
         this.classFlag5 = true;
       }
-      if (top >= midHeight-modelHeight) {
+      if (top >= midHeight - modelHeight) {
         this.classFlag6 = false;
       } else {
         this.classFlag6 = true;
@@ -625,6 +621,7 @@ export default {
   img {
     width: 65%;
   }
+<<<<<<< HEAD
   .saveimg-model{
     // padding-left: 18%;
     // text-align: left;
@@ -632,8 +629,17 @@ export default {
     // text-align: left;
     font-size: (25 / @vw);
     color:  rgb(250, 35, 10);
+=======
+  .saveimg-model {
+    padding-left: 18%;
+    text-align: left;
+    p {
+      text-align: left;
+      font-size: (24 / @vw);
+      color: rgb(250, 35, 10);
+>>>>>>> 1cc4a4abc6f8a93c17895955dbf6d88600f4d496
     }
-    h3{
+    h3 {
       font-size: (28 / @vw);
       color: #333;
     }

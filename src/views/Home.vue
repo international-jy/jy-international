@@ -16,8 +16,9 @@
       <!-- 活动部分 -->
       <div class="activity">
         <a href="javascript:;">
-          <img src="@/assets/img/activity.jpg" alt="" />
+          <img :src="bannerSrc" alt="" />
         </a>
+        <span class="banner-text">{{ bannerTxt }}</span>
       </div>
       <!-- 环境部分 -->
       <div class="environment-box">
@@ -44,7 +45,7 @@
               </div>
             </div>
           </div>
-          <div class="phone">
+          <div class="phone" :class="val.class3">
             <div><img src="@/assets/img/phone.png" alt="" /> 联系电话</div>
           </div>
         </div>
@@ -63,7 +64,7 @@
         <span></span>
       </div>
       <div class="fameal">
-        <ul>
+        <ul :class="famealFlag ? 'fameal-move' : ''" ref="fameal">
           <li
             v-for="item in highList"
             :key="item.id"
@@ -75,7 +76,7 @@
         </ul>
       </div>
       <!-- ktv新闻 -->
-      <div class="news">
+      <div class="news" ref="news" :class="newsFlag ? 'news-move' : ''">
         <a>高端KTV新闻</a>
         <p>High-end KTV News</p>
         <span></span>
@@ -162,6 +163,7 @@
 export default {
   data() {
     return {
+      bannerSrc: "",
       navFlag: true,
       environmentMove: false,
       flag: true,
@@ -171,6 +173,9 @@ export default {
       highFlag: false,
       highList: null,
       hide: false,
+      famealFlag: false,
+      newsFlag: false,
+      bannerTxt: "",
     };
   },
   methods: {
@@ -190,12 +195,15 @@ export default {
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
       var classFlag = true;
       var classFlag2 = true;
+      var classFlag3 = true;
+      var classFlag4 = true;
       // var classFlag2 = true;
-      if (top > this.$refs.scroll[1].getBoundingClientRect().top) {
+      if (top > this.$refs.scroll[1].getBoundingClientRect().top - 60) {
         if (this.scrollFlag) {
           this.scrollFlag = false;
           this.environmentListL[1].class = "cd-environment-m";
           this.environmentListL[1].class2 = "cd-titleh";
+          this.environmentListL[1].class3 = "phone-move";
         }
       }
 
@@ -204,12 +212,25 @@ export default {
           classFlag = false;
           this.environmentListL[2].class = "cd-environment-m";
           this.environmentListL[2].class2 = "cd-titleh";
+          this.environmentListL[2].class3 = "phone-move";
         }
       }
-      if (top > this.$refs.high.getBoundingClientRect().top) {
+      if (top > this.$refs.high.getBoundingClientRect().top + 100) {
         if (classFlag2) {
           classFlag2 = false;
           this.highFlag = true;
+        }
+      }
+      if (top > this.$refs.fameal.getBoundingClientRect().top + 160) {
+        if (classFlag3) {
+          classFlag3 = false;
+          this.famealFlag = true;
+        }
+      }
+      if (top > this.$refs.news.getBoundingClientRect().top + 280) {
+        if (classFlag4) {
+          classFlag4 = false;
+          this.newsFlag = true;
         }
       }
     },
@@ -223,7 +244,7 @@ export default {
     },
     onClickSkip: function (id) {
       console.log(id);
-      this.$axios.get("/index.php/api/journalism/list").then((value) => {
+      this.$axios.get("index.php/api/journalism/list").then((value) => {
         value.data.forEach((value) => {
           this.$router.push({
             path: "/news/list",
@@ -236,7 +257,14 @@ export default {
     },
   },
   created() {
-    this.$axios.get("/index.php/api/ambient/list").then((val) => {
+    this.$axios.get("index.php/api/carousel_map/list").then((val) => {
+      val.data.forEach((val) => {
+        val.image = this.$store.state.domainName + val.image;
+      });
+      this.bannerSrc = val.data[0].image;
+      this.bannerTxt = val.data[0].content;
+    });
+    this.$axios.get("index.php/api/ambient/list").then((val) => {
       val.data.forEach((val) => {
         val.image = this.$store.state.domainName + val.image;
         val.class = "";
@@ -244,22 +272,29 @@ export default {
       });
       this.environmentListL = val.data;
     });
-    this.$axios.get("/index.php/api/journalism/list").then((value) => {
+    this.$axios.get("index.php/api/journalism/list").then((value) => {
       value.data.forEach((value) => {
         this.newsList.push(value);
       });
     });
-    this.$axios.get("/index.php/api/models/list").then((val) => {
-      console.log(val);
+    this.$axios.get("index.php/api/models/list").then((val) => {
       this.highList = val.data;
       val.data.forEach((val) => {
         val.image = this.$store.state.domainName + val.image;
       });
       this.hide = true;
+      this.environmentListL[0].class = "cd-environment-m";
+      this.environmentListL[0].class2 = "cd-titleh";
+      this.environmentListL[0].class3 = "phone-move";
     });
   },
+  mounted() {
+    //绑定页面滚动事件
+    window.addEventListener("scroll", this.scrollHandle);
+  },
   destroyed() {
-    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+    // 移出页面滚动事件
+    window.removeEventListener("scroll", this.scrollHandle);
   },
 };
 </script>
@@ -289,21 +324,26 @@ export default {
 
 @keyframes movel {
   0% {
+    opacity: 0;
     transform: translateX(500px);
   }
   100% {
+    opacity: 1;
     transform: translateX(0);
   }
 }
 
 @keyframes mover {
   0% {
-    transform: translateX(500px);
+    opacity: 0;
+    transform: translateX(-500px);
   }
   100% {
+    opacity: 1;
     transform: translateX(0);
   }
 }
+
 .nav-box {
   // position: relative;
   width: 100%;
@@ -330,6 +370,7 @@ export default {
 
 // 活动部分
 .activity {
+  position: relative;
   width: 100%;
   overflow: hidden;
   a {
@@ -337,7 +378,24 @@ export default {
     img {
       display: block;
       width: 100%;
+      height: (400 / @vw);
     }
+  }
+  .banner-text {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 30%;
+    background-color: rgba(102, 0, 0, 0.75);
+    transform: translateY(-50%);
+    font-size: (22 / @vw);
+    color: #fff;
+    text-align: left;
+    text-indent: 1.5rem;
+    line-height: (36 / @vw);
+    padding: 0 (130 / @vw);
+    box-sizing: border-box;
   }
 }
 // 环境部分
@@ -350,6 +408,7 @@ export default {
     justify-content: center;
     flex-wrap: wrap;
     p {
+      opacity: 0;
       text-align: center;
       width: 100%;
       &:nth-of-type(1) {
@@ -391,6 +450,7 @@ export default {
     .cd-title-hd {
       overflow: hidden;
       img {
+        opacity: 0;
         display: block;
       }
     }
@@ -401,8 +461,8 @@ export default {
         }
       }
     }
-
     .environment-bd {
+      opacity: 0;
       width: 100%;
       padding: (15 / @vw) (10 / @vw);
       box-sizing: border-box;
@@ -423,7 +483,7 @@ export default {
     }
     .cd-environment-m {
       .environment-bd {
-        animation: opcityMove 1.6s forwards;
+        animation: opcityMove 1.4s forwards;
       }
     }
   }
@@ -433,6 +493,7 @@ export default {
     padding: (10 / @vw) (10 / @vw) 0;
     box-sizing: border-box;
     div {
+      opacity: 0;
       width: 100%;
       height: (54 / @vw);
       display: flex;
@@ -446,6 +507,11 @@ export default {
         .setwh(32,32);
         margin-right: (10 / @vw);
       }
+    }
+  }
+  .phone-move {
+    div {
+      animation: opcityMove 1.8s forwards;
     }
   }
 }
@@ -481,11 +547,13 @@ export default {
   height: (140 / @vw);
   overflow: hidden;
   a {
+    opacity: 0;
     display: block;
     padding-top: (30 / @vw);
     font-size: (36 / @vw);
   }
   p {
+    opacity: 0;
     width: 100%;
     height: (52 / @vw);
     line-height: (52 / @vw);
@@ -493,6 +561,7 @@ export default {
     font-size: (26 / @vw);
   }
   span {
+    opacity: 0;
     position: absolute;
     left: 45%;
     bottom: 0;
@@ -506,13 +575,13 @@ export default {
 }
 .high-end-move {
   a {
-    animation: movel 1s forwards;
+    animation: movel 1s 0.5s forwards;
   }
   p {
-    animation: movel 1.2s forwards;
+    animation: movel 1.2s 0.5s forwards;
   }
   span {
-    animation: movel 1.4s forwards;
+    animation: movel 1.4s 0.5s forwards;
   }
 }
 //模特
@@ -529,6 +598,7 @@ export default {
     padding: 0 (20 / @vw) 0 (20 / @vw);
     box-sizing: border-box;
     li {
+      opacity: 0;
       padding: (40 / @vw) 0 0 0;
       img {
         .setwh(348,300);
@@ -545,6 +615,26 @@ export default {
       }
     }
   }
+  .fameal-move {
+    li:nth-of-type(1) {
+      animation: mover 1s 1s forwards;
+    }
+    li:nth-of-type(2) {
+      animation: movel 1s 1.3s forwards;
+    }
+    li:nth-of-type(3) {
+      animation: mover 1s 1.6s forwards;
+    }
+    li:nth-of-type(4) {
+      animation: movel 1s 1.9s forwards;
+    }
+    li:nth-of-type(5) {
+      animation: mover 1s 2.1s forwards;
+    }
+    li:nth-of-type(6) {
+      animation: movel 1s 2.4s forwards;
+    }
+  }
 }
 // ktv新闻
 
@@ -555,11 +645,13 @@ export default {
   background-color: #fff;
   height: (140 / @vw);
   a {
+    opacity: 0;
     display: block;
     padding-top: (30 / @vw);
     font-size: (36 / @vw);
   }
   p {
+    opacity: 0;
     width: 100%;
     height: (52 / @vw);
     line-height: (52 / @vw);
@@ -567,6 +659,7 @@ export default {
     font-size: (26 / @vw);
   }
   span {
+    opacity: 0;
     position: absolute;
     left: 45%;
     bottom: 0;
@@ -578,7 +671,17 @@ export default {
     text-align: center;
   }
 }
-
+.news-move {
+  a {
+    animation: mover 1s 1.8s forwards;
+  }
+  p {
+    animation: mover 1s 2s forwards;
+  }
+  span {
+    animation: mover 1s 2.2s forwards;
+  }
+}
 // 新闻列表
 .tjb-box {
   width: 100%;
