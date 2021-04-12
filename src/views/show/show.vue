@@ -595,7 +595,6 @@ export default {
       )
       .then((val) => {
         that.modelList = val.data;
-        console.log(val);
       });
 
     this.$axios.get("index.php/api/footer/get").then((val) => {
@@ -678,7 +677,6 @@ export default {
         )
         .then((val) => {
           that.modelList.push(...val.data);
-          console.log(val);
         });
     },
 
