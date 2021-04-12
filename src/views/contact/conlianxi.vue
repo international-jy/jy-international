@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="cc-lianxi">
+    <div class="cc-contact">
       <div class="icon">
         <div class="regard-return" @click="$router.go(-1)">
           <img src="@/assets/img/jiantou.png" alt="" />
@@ -12,14 +12,9 @@
           <img src="@/assets/img/lianjie.png" alt="" />
         </div>
       </div>
-      <div class="articleArea">
-        <h3>联系我们</h3>
-        <p>成都夜总会，成都夜场，成都酒吧各种模特佳丽【13688143752】，</p>
-        <p>设备齐全，装修高端，资源丰富，</p>
-        <p>生意每天开到爆，欢迎随时预定包厢</p>
-        <div class="lianxi-img">
-          <img src="@/assets/img/code.png" alt="" />
-        </div>
+      <div class="contact-pre" v-for="(value, index) in lxcontent" :key="index">
+        <pre class="pre">{{ value.content | upper }}</pre>
+        <img :src="$store.state.domainName + urlimg" alt="" />
       </div>
       <div class="thickness" :class="dnClass ? 'dn' : ''" @click="addClass">
         <div class="thickness-logo">
@@ -75,10 +70,21 @@
 <style lang="less">
 @import "../../assets/less/base.less";
 //联系我们
+.contact-pre {
+  width: 100%;
+  height: auto;
+  // padding: 0 (40/@vw);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.pre {
+  padding-top: (150 / @vw);
+  white-space: pre-wrap;
+}
 .dn {
   display: none;
 }
-.cc-lianxi {
+.cc-contact {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -114,25 +120,6 @@
     .regard-link {
       img {
         .setwh(50,50);
-      }
-    }
-  }
-  .articleArea {
-    width: 100%;
-    // height: 100%;
-    background-color: #fff;
-    padding-top: (100 / @vw);
-    h3 {
-      color: #333;
-      font-size: (37 / @vw);
-      margin-bottom: (10 / @vw);
-      padding-top: (18 / @vw);
-    }
-    .lianxi-img {
-      padding: (50 / @vw) 0;
-      img {
-        .setwh(600, 590);
-        margin-bottom: (30 / @vw);
       }
     }
   }
@@ -246,7 +233,28 @@ export default {
     return {
       dnClass: true,
       flag: true,
+      dataId: null,
+      lxcontent: [],
+      urlimg: null,
+      arr1: [],
     };
+  },
+  created() {
+    this.dataId = Number(this.$route.query.id);
+    // console.log(this.dataId);
+    let that = this;
+    this.$axios.get("/index.php/api/about_us/list").then((val) => {
+      let arr = val.data.find((val) => val.id == 2);
+      that.arr1 = [...arr.content];
+      let start = arr.content.indexOf("![输入图片说明]");
+      let str = that.arr1.splice(start);
+      let urlStart = str.indexOf("(");
+      let urlEnd = str.indexOf("在");
+      let num = urlEnd - urlStart;
+      let str2 = str.splice(urlStart + 1, num - 3);
+      that.urlimg = str2.join("");
+      that.lxcontent.push(arr);
+    });
   },
   methods: {
     addClass: function () {
@@ -257,6 +265,15 @@ export default {
     },
     onClickOr: function () {
       this.flag = !this.flag;
+    },
+  },
+  filters: {
+    upper: function (val) {
+      let arr = [...val];
+      let start = val.indexOf("![输入图片说明]");
+      let str = arr.splice(start);
+      str;
+      return arr.join("");
     },
   },
 };

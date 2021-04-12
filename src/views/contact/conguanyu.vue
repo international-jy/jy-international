@@ -3,7 +3,7 @@
     <!-- 关于我们  content -->
     <div class="cc-regard">
       <div class="icon">
-        <div class="regard-return" @click="go(-1)">
+        <div class="regard-return" @click="onClickGo()">
           <img src="@/assets/img/jiantou.png" alt="" />
         </div>
         <div class="regard-dl">
@@ -13,38 +13,10 @@
           <img src="@/assets/img/lianjie.png" alt="" />
         </div>
       </div>
-      <h1 class="regard-title">关于我们</h1>
-      <div class="regard-content">
-        <div class="regard-duce">
-          成都夜总会，成都夜场，成都酒吧各种模特佳丽【13688143752】，设备齐全，装修高端，资源丰富，生意每天开到爆，欢迎随时预定包厢～地处市中心繁华地段，重金打造，属成都最大最奢华的娱乐俱乐部。高端的客户、奢华的硬件、优质的服务造就了高端商务KTV，目前为止成都夜场生意最火爆，最稳定的商务会所。包房天天爆满！最具实力营销团队！高端人群聚集地！
-        </div>
-        <div class="regard-model">
-          【模特S级】:净身高172cm以上，年龄28岁以下，形象好，气质特佳
-          1500起步<br />
-          【模特*】:净身高167cm以上，年龄28岁以下，形象好，气质特佳 1200起步<br />【模特B级】:净身高163cm以上，年龄28岁以下，形象好，气质特佳
-          1000起步
-        </div>
-        <br />
-        <div class="regard-live">
-          <p>生活待遇:</p>
-          <p>
-            住宿条件为快捷酒店，2人一间，人均面积宽裕，员工床位均为单人席梦思，配备宽带，每日有阿姨烧菜，保姆清洁，每晚上班有专车送达，宿舍中我们的住宿条件1%是NO.1，真正实现了“以人为本”的经营理念。
-          </p>
-        </div>
-        <br />
-        <div class="regard-promise">
-          <p>郑重承诺:</p>
-          <br />
-          <p>1、无押金，无任何费用，不抽水，无台费，公司直聘，绝非中介。</p>
-          <br />
-          <p>2、无需办理IC卡，无需身份证。</p>
-          <br />
-          <p>3、不需要穿工服，怎么怎么穿，展现自己最美丽时尚的一面。</p>
-          <br />
-          <p>4、保证这份工作绝对是健康、安全、正规、合法的。</p>
-          <br />
-        </div>
-      </div>
+      <pre class="regard-pre" v-for="(value, index) in gycontent" :key="index">
+        {{ value.content }}
+      </pre>
+
       <div class="thickness" :class="dnClass ? 'dn' : ''" @click="addClass">
         <div class="thickness-logo">
           <a href="https://qzone.qq.com/">
@@ -100,15 +72,22 @@
 <style lang="less">
 @import "../../assets/less/base.less";
 // 关于我们
+.regard-pre {
+  padding-top: (150 / @vw);
+  width: 100%;
+  height: auto;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+}
+
 .dn {
   display: none;
 }
 .cc-regard {
   width: 100%;
   box-sizing: border-box;
-  padding: 0 0 (100 / @vw) 0;
+  padding: 0 (44 / @vw) (100 / @vw);
   line-height: (45 / @vw);
-
   .icon {
     width: 100%;
     height: (100 / @vw);
@@ -141,20 +120,7 @@
       }
     }
   }
-  .regard-title {
-    text-align: center;
-    color: #333;
-    font-size: (37 / @vw);
-    margin: (130 / @vw) 0 (10 / @vw) 0;
-  }
-  .regard-content {
-    padding: 0 (40 / @vw);
-    text-align: center;
-    color: rgb(33, 33, 33);
-    .regard-model {
-      font-family: tt, Arial, 微软雅黑;
-    }
-  }
+
   .thickness {
     position: fixed;
     top: 0;
@@ -265,8 +231,23 @@ export default {
     return {
       dnClass: true,
       flag: true,
+      dataId: null,
+      gycontent: [],
     };
   },
+  created() {
+    this.dataId = Number(this.$route.query.id);
+    console.log(this.dataId);
+    let that = this;
+    this.$axios.get("/index.php/api/about_us/list").then((val) => {
+      // console.log(val.data);
+      let arr = val.data.find((val) => val.id == 1);
+      that.gycontent.push(arr);
+      // console.log(arr);
+    });
+    // console.log(this.gycontent);
+  },
+
   methods: {
     go(step) {
       this.$router.go(step);
@@ -279,6 +260,11 @@ export default {
     },
     onClickOr: function () {
       this.flag = !this.flag;
+    },
+    onClickGo: function () {
+      this.$router.push({
+        path: "/contact",
+      });
     },
   },
 };
