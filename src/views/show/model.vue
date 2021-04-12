@@ -205,9 +205,10 @@ export default {
           }
         });
         this.hide = true;
+
+        window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
       });
   },
-
   methods: {
     // 点击返回上一个页面
     onClickBackGo() {
@@ -318,9 +319,7 @@ export default {
       }
     },
   },
-  mounted() {
-    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
-  },
+  mounted() {},
   destroyed() {
     window.removeEventListener("scroll", this.scrollHandle); //移除页面滚动事件
   },
