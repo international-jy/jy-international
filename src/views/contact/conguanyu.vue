@@ -3,7 +3,7 @@
     <!-- 关于我们  content -->
     <div class="cc-regard">
       <div class="icon">
-        <div class="regard-return" @click="onClickGo()">
+        <div class="regard-return" @click="$router.go(-1)">
           <img src="@/assets/img/jiantou.png" alt="" />
         </div>
         <div class="regard-dl">
@@ -263,11 +263,6 @@ export default {
     },
     onClickOr: function () {
       this.flag = !this.flag;
-    },
-    onClickGo: function () {
-      this.$router.push({
-        path: "/contact",
-      });
     },
   },
 };
