@@ -204,7 +204,7 @@ export default {
       var classFlag3 = true;
       var classFlag4 = true;
       // var classFlag2 = true;
-      if (top > this.$refs.scroll[1].getBoundingClientRect().top - 60) {
+      if (top > this.$refs.scroll[1].getBoundingClientRect().top - 160) {
         if (this.scrollFlag) {
           this.scrollFlag = false;
           this.environmentListL[1].class = "cd-environment-m";

@@ -239,7 +239,7 @@ export default {
   },
   created() {
     this.dataId = Number(this.$route.query.id);
-    console.log(this.dataId);
+    // console.log(this.dataId);
     let that = this;
     this.$axios.get("/index.php/api/about_us/list").then((val) => {
       let arr = val.data.find((val) => val.id == 1);
