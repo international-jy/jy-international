@@ -16,6 +16,9 @@ const routes = [
     path: "/",
     component: () => import("../views/index.vue"),
     redirect: "/home",
+    meta: {
+      keepAlive: true,
+    },
     children: [
       main,
       news,

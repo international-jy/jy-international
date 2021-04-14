@@ -32,7 +32,7 @@ export default {
       seachName: "",
       title: "",
       modelList: [],
-      seachFlag: true,
+      seachFlag: false,
     };
   },
   methods: {
@@ -44,6 +44,7 @@ export default {
     },
     getName: function () {
       if (this.seachName) {
+        this.title = "";
         if (!this.title) {
           this.modelList.forEach((val) => {
             if (val.title.indexOf(this.seachName) != -1) {
@@ -58,8 +59,11 @@ export default {
               titleName: this.title,
             },
           });
+          this.seachName = "";
         } else {
+          this.seachFlag = true;
           this.$router.push({ path: "/show/search2" });
+          this.seachName = "";
         }
       }
     },

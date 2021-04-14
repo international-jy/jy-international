@@ -115,12 +115,16 @@
               <router-link to="/news">夜场新闻</router-link>
             </li>
             <li>
-              <!-- <a href="">联系我们</a> -->
-              <router-link to="/contact">联系我们</router-link>
+              <router-link to="/show">模特展示</router-link>
             </li>
             <li>
-              <!-- <a href="">模特展示</a> -->
-              <router-link to="/show">模特展示</router-link>
+              <router-link to="/contact/2">联系我们</router-link>
+            </li>
+            <li>
+              <router-link to="/contact/1">关于我们</router-link>
+            </li>
+            <li>
+              <router-link to="/contact/3">招聘要求</router-link>
             </li>
           </ul>
         </div>
@@ -245,6 +249,10 @@ body {
           height: (22 / @vw);
           display: block;
           margin-right: (12 / @vw);
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
         .top_share1 {
           width: (44 / @vw);
@@ -716,6 +724,9 @@ export default {
     // console.log(this.$refs.backTopBox);
     // this.$refs.backTopBox.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
     window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+  },
+  activated() {
+    this.seachName = "";
   },
 };
 </script>

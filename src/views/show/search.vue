@@ -250,6 +250,7 @@ export default {
       val.data.forEach((value) => {
         if (value.title.indexOf(this.title) != -1) {
           this.modelList.push(value);
+          this.seachFlag = true;
         }
       });
     });
@@ -261,8 +262,11 @@ export default {
   methods: {
     onClickDelete: function () {
       this.seachName = "";
+      // this.getName();
       if (!this.seachName) {
         this.seachFlag = false;
+      } else {
+        this.seachFlag = true;
       }
     },
     onClickRet: function () {
@@ -287,6 +291,7 @@ export default {
     },
     getName: function () {
       if (this.seachName) {
+        this.titles = null;
         if (!this.titles) {
           this.modelList.forEach((val) => {
             if (val.title.indexOf(this.seachName) != -1) {
@@ -297,18 +302,36 @@ export default {
           });
         }
         if (this.titles) {
+          this.seachFlag = true;
           this.$router.push({
             path: "/show/search",
             query: {
               titleName: this.title,
             },
           });
-          this.titles = "";
+          this.seachName = "";
         } else {
           this.$router.push({ path: "/show/search2" });
+          this.seachName = "";
         }
       }
     },
+  },
+  activated() {
+    this.title = this.$route.query.titleName;
+    this.domeImage = this.$store.state.domainName;
+    this.$axios.get("/index.php/api/models/list").then((val) => {
+      val.data.forEach((value) => {
+        if (value.title.indexOf(this.title) != -1) {
+          this.modelList.push(value);
+          this.seachFlag = true;
+        }
+      });
+    });
+    this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
+    });
   },
 };
 </script>

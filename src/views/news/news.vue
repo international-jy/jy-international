@@ -128,8 +128,9 @@ img {
     min-width: 320px;
     padding: (100 / @vw) 0;
     margin: 0 auto;
-    // overflow: hidden;
     z-index: 2;
+    height: 100%;
+    box-sizing: border-box;
     .top {
       position: fixed;
       top: 0;
