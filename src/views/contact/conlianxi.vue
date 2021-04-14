@@ -12,10 +12,11 @@
           <img src="@/assets/img/lianjie.png" alt="" />
         </div>
       </div>
-      <div class="contact-pre" v-for="(value, index) in lxcontent" :key="index">
-        <pre class="pre">{{ value.content | upper }}</pre>
-        <img :src="$store.state.domainName + urlimg" alt="" />
+
+      <div class="markdown-body">
+        <VueMarkdown :source="value"></VueMarkdown>
       </div>
+
       <div class="thickness" :class="dnClass ? 'dn' : ''" @click="addClass">
         <div class="thickness-logo">
           <a href="https://qzone.qq.com/">
@@ -70,12 +71,14 @@
 <style lang="less" scope>
 @import "../../assets/less/base.less";
 //联系我们
-.contact-pre {
+.markdown-body {
   width: 100%;
   height: auto;
   // padding: 0 (40/@vw);
+  padding-top: (150 / @vw);
   box-sizing: border-box;
   overflow: hidden;
+  background-color: #f5f5f5;
   img {
     width: 80%;
     height: auto;
@@ -93,7 +96,6 @@
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 0 0 (100 / @vw) 0;
   text-align: center;
   background-color: #f8f8f8;
   .icon {
@@ -233,9 +235,14 @@
 </style>
 
 <script>
+import VueMarkdown from "vue-markdown";
 export default {
+  components: {
+    VueMarkdown, // 注入组件
+  },
   data: function () {
     return {
+      value: "",
       dnClass: true,
       flag: true,
       dataId: null,
@@ -261,6 +268,7 @@ export default {
       let str2 = str.splice(urlStart + 1, num - 3);
       that.urlimg = str2.join("");
       that.lxcontent.push(arr);
+      that.value = arr.content;
     });
     this.$axios.get("index.php/api/footer/get").then((val) => {
       this.footerTel = val.data.phone;
