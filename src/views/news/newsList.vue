@@ -37,12 +37,10 @@
           <a href="https://www.douban.com/"></a>
         </div>
       </div>
-      <div class="newsList" v-for="(item, k) in activeDate" :key="k">
-        <h2>{{ item.title }}</h2>
-        <div class="text">
-          <pre>{{ item.content | upper }}</pre>
-          <img :src="$store.state.domainName + item.image" alt="" />
-          <pre>{{ item.content | lower }}</pre>
+      <div class="newsList">
+        <h2>{{ activeDate.title }}</h2>
+        <div class="text markdown-body">
+          <VueMarkdown :source="value"></VueMarkdown>
         </div>
       </div>
       <div class="text-line"></div>
@@ -79,8 +77,8 @@
         </ul>
       </div>
       <div class="pageBtn" v-if="hide">
-        <button @click="goList(id - 1)">上一篇</button>
-        <button @click="goList(id + 1)">下一篇</button>
+        <button @click="goList('prev', id)">上一篇</button>
+        <button @click="goList('next', id)">下一篇</button>
       </div>
     </div>
     <div class="pql-btm-fixed">
@@ -399,34 +397,34 @@ img {
 }
 </style>
 <script>
+import VueMarkdown from "vue-markdown";
 export default {
+  components: {
+    VueMarkdown, // 注入组件
+  },
   data() {
     return {
+      value: "",
       flag: false,
       num: 0,
-      activeDate: [],
+      activeDate: {},
       id: null,
       hide: false,
       flag2: true,
-      pageNum: 0,
       footerTel: "",
       footerImage: "",
+      page: null,
     };
   },
   mounted: function () {
     let that = this;
     this.id = Number(this.$route.query.id);
-    this.pageNumnum = Number(this.$route.query.num);
     this.$axios
-      .get(
-        "/index.php/api/journalism/list?pageNumber=" +
-          that.pageNumnum +
-          "&pageSize=10&journalismtypeid=" +
-          that.id
-      )
+      .get("/index.php/api/journalism/list?journalismtypeid=" + that.id)
       .then((res) => {
-        this.activeDate = res.data;
+        this.activeDate = res.data[0];
         this.hide = true;
+        this.value = this.activeDate.content;
       });
     this.$axios.get("index.php/api/footer/get").then((val) => {
       this.footerTel = val.data.phone;
@@ -436,19 +434,36 @@ export default {
   beforeRouteUpdate(to, from, next) {
     this.hide = false;
     to, from;
-    var that = this;
+    let that = this;
+    this.page = to.query.msg;
     this.id = Number(to.query.id);
-    this.pageNumnum = Number(to.query.num);
     this.$axios
       .get(
-        "/index.php/api/journalism/list?pageNumber=" +
-          that.pageNumnum +
-          "&pageSize=10&journalismtypeid=" +
-          that.id
+        "/index.php/api/journalism/get?id=" + that.id + "&operate=" + that.page
       )
       .then((res) => {
+        if (res.data == null) {
+          if (that.page == "next") {
+            this.$message({
+              message: "这是最后一篇内容",
+              center: true,
+              duration: 2000,
+            });
+            this.$router.go(-1);
+          } else {
+            this.$message({
+              message: "这是第一篇内容",
+              center: true,
+              duration: 2000,
+            });
+            this.$router.go(-1);
+          }
+          return;
+        }
         this.activeDate = res.data;
         this.hide = true;
+        this.value = this.activeDate.content;
+        this.id = this.activeDate.id;
       });
     window.scroll(0, 0);
     next();
@@ -471,18 +486,11 @@ export default {
         this.num = 0;
       }
     },
-    goList(id) {
-      if (id == 0) {
-        this.$router.push({
-          path: "/news/list",
-          query: { id: 1 },
-        });
-      } else {
-        this.$router.push({
-          path: "/news/list",
-          query: { id: id },
-        });
-      }
+    goList(msg, id) {
+      this.$router.push({
+        path: "/news/list",
+        query: { id: id, msg: msg },
+      });
     },
     onClickcode: function () {
       this.flag2 = !this.flag2;
@@ -494,21 +502,6 @@ export default {
       this.$router.push({
         path: "/news",
       });
-    },
-  },
-  filters: {
-    upper: function (val) {
-      let arr = [...val];
-      let start = val.indexOf("![输入图片说明]");
-      let str = arr.splice(start);
-      str;
-      return arr.join("");
-    },
-    lower: function (val) {
-      let arr = [...val];
-      let end = val.lastIndexOf(")");
-      let str = arr.splice(end + 1);
-      return str.join("");
     },
   },
 };

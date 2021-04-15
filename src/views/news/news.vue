@@ -32,8 +32,8 @@
       >
         <ul class="list">
           <li
-            v-for="val in newsList"
-            :key="val.id"
+            v-for="(val, index) in newsList"
+            :key="index"
             class="infinite-list-item"
             @click="goList(val.id)"
           >
@@ -389,10 +389,9 @@ export default {
       this.$router.push({ path: "/home" });
     },
     goList(id) {
-      let that = this;
       this.$router.push({
         path: "/news/list",
-        query: { id: id, pageNum: that.num },
+        query: { id: id },
       });
     },
     onClickNav: function () {
