@@ -88,7 +88,7 @@
       <!-- 新闻列表 -->
       <div class="tjb-box">
         <div class="tjb-content">
-          <ul>
+          <ul :class="newFlag ? 'newsList' : ''" ref="newsList">
             <li
               v-for="(value, index) in newsList"
               :key="index"
@@ -186,6 +186,7 @@ export default {
       bannerTxt: "",
       footerTel: "",
       footerImage: "",
+      newFlag: false,
     };
   },
   methods: {
@@ -207,7 +208,7 @@ export default {
       var classFlag2 = true;
       var classFlag3 = true;
       var classFlag4 = true;
-      // var classFlag2 = true;
+      var classFlag5 = true;
       if (top > this.$refs.scroll[1].getBoundingClientRect().top - 160) {
         if (this.scrollFlag) {
           this.scrollFlag = false;
@@ -241,6 +242,12 @@ export default {
         if (classFlag4) {
           classFlag4 = false;
           this.newsFlag = true;
+        }
+      }
+      if (top > this.$refs.newsList.getBoundingClientRect().top + 280) {
+        if (classFlag5) {
+          classFlag5 = false;
+          this.newFlag = true;
         }
       }
     },
@@ -338,7 +345,7 @@ export default {
     transform: translateY(0);
   }
   100% {
-    transform: translateY(-986 / @vw);
+    transform: translateY(-500 / @vw);
   }
 }
 
@@ -720,16 +727,17 @@ export default {
     margin-top: (20 / @vw);
     // box-sizing: border-box;
     ul {
-      // animation: move 30s linear infinite;
-      // transition: all 0.5s;
+      animation: move 20s linear infinite;
+      transition: all 0.5s;
       li {
+        opacity: 0;
         border-bottom: 1px solid #ededed;
         a {
           display: block;
           width: 100%;
           padding-left: 6px;
           text-align-last: left;
-          font-size: (22 / @vw);
+          font-size: (24 / @vw);
           color: #7c7b7c;
           img {
             width: 4px;
@@ -738,6 +746,14 @@ export default {
             padding-right: (10 / @vw);
           }
         }
+      }
+    }
+    .newsList {
+      li:nth-of-type(2n - 1) {
+        animation: mover 1s 1.8s forwards;
+      }
+      li:nth-of-type(2n) {
+        animation: movel 1s 1.8s forwards;
       }
     }
   }
