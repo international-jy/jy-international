@@ -18,7 +18,7 @@
     <!-- 内容 开始 -->
     <ul class="search-list" :class="seachFlag ? '' : 'dn'">
       <li
-        v-for="(value, index) in modelList"
+        v-for="(value, index) in envirList"
         :key="index"
         @click="onClickModel(value.id)"
       >
@@ -233,7 +233,7 @@
 export default {
   data() {
     return {
-      modelList: [],
+      envirList: [],
       flag: true,
       title: null,
       seachName: "",
@@ -243,21 +243,19 @@ export default {
       footerImage: "",
     };
   },
-  created() {
+  async created() {
     this.title = this.$route.query.titleName;
     this.domeImage = this.$store.state.domainName;
-    this.$axios.get("/index.php/api/models/list").then((val) => {
-      val.data.forEach((value) => {
-        if (value.title.indexOf(this.title) != -1) {
-          this.modelList.push(value);
-          this.seachFlag = true;
-        }
+    await this.$axios
+      .get("index.php/api/ambient/list?pageNumber=1&pageSize=6")
+      .then((val) => {
+        val.data.forEach((value) => {
+          if (value.title.indexOf(this.title) != -1) {
+            this.envirList.push(value);
+            this.seachFlag = true;
+          }
+        });
       });
-    });
-    this.$axios.get("index.php/api/footer/get").then((val) => {
-      this.footerTel = val.data.phone;
-      this.footerImage = this.$store.state.domainName + val.data.image;
-    });
   },
   methods: {
     onClickDelete: function () {
@@ -270,14 +268,14 @@ export default {
       }
     },
     onClickRet: function () {
-      this.$router.push({ path: "/show" });
+      this.$router.push({ path: "/environment" });
     },
     onClickSetName: function () {
       this.getName();
     },
     onClickModel: function (id) {
       this.$router.push({
-        path: "/show/model",
+        path: "/environment",
         query: {
           id: id,
         },
@@ -291,47 +289,32 @@ export default {
     },
     getName: function () {
       if (this.seachName) {
-        this.titles = null;
-        if (!this.titles) {
-          this.modelList.forEach((val) => {
+        if (!this.title) {
+          this.envirList.forEach((val) => {
             if (val.title.indexOf(this.seachName) != -1) {
-              this.titles = this.seachName;
-            } else {
-              this.titles = "";
+              this.title = this.seachName;
+              this.seachFlag = true;
             }
           });
         }
-        if (this.titles) {
-          this.seachFlag = true;
+        if (this.title) {
           this.$router.push({
-            path: "/show/search",
+            path: "/environment/environmentseach",
             query: {
               titleName: this.title,
             },
           });
-          this.seachName = "";
+          this.title = "";
         } else {
-          this.$router.push({ path: "/show/search2" });
-          this.seachName = "";
+          this.$router.push({ path: "/environment/environmentseachN" });
+          this.title = "";
         }
       }
     },
   },
   activated() {
-    this.title = this.$route.query.titleName;
-    this.domeImage = this.$store.state.domainName;
-    this.$axios.get("/index.php/api/models/list").then((val) => {
-      val.data.forEach((value) => {
-        if (value.title.indexOf(this.title) != -1) {
-          this.modelList.push(value);
-          this.seachFlag = true;
-        }
-      });
-    });
-    this.$axios.get("index.php/api/footer/get").then((val) => {
-      this.footerTel = val.data.phone;
-      this.footerImage = this.$store.state.domainName + val.data.image;
-    });
+    this.seachName = "";
+    this.seachFlag = true;
   },
 };
 </script>
