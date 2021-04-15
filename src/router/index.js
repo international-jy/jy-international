@@ -28,6 +28,10 @@ const routes = [
         component: () => import("../views/environment/environment.vue"),
       },
       {
+        path: "environment/envichild",
+        component: () => import("../views/environment/envichild.vue"),
+      },
+      {
         path: "news/list",
         component: () => import("../views/news/newsList.vue"),
       },
@@ -54,6 +58,18 @@ const routes = [
       {
         path: "show/search2",
         component: () => import("../views/show/seachN"),
+      },
+      {
+        path: "environment/environmentseach",
+        component: () => import("../views/environment/environmentseach.vue"),
+      },
+      {
+        path: "environment/environmentseachN",
+        component: () => import("../views/environment/environmentseachN.vue"),
+      },
+      {
+        path: "environment/environment",
+        component: () => import("../views/environment/environment.vue"),
       },
     ],
   },
