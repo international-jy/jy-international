@@ -1,6 +1,6 @@
 <template>
   <div
-    class="xw-box"
+    class="xw-boxs"
     v-loading.fullscreen.lock="!hide"
     element-loading-text="拼命加载中"
     element-loading-background="rgba(255, 255, 255, 0.4)"
@@ -126,7 +126,8 @@
 img {
   width: auto;
 }
-.xw-box {
+.xw-boxs {
+  height: auto;
   background-repeat: repeat-y;
   background-position: left top;
   background-size: 100% auto;
@@ -136,7 +137,7 @@ img {
     min-width: 320px;
     padding: (100 / @vw) 0;
     margin: 0 auto;
-    overflow: hidden;
+    // overflow: hidden;
     z-index: 2;
     .top {
       width: 100%;

@@ -46,7 +46,11 @@
             </div>
           </div>
           <div class="phone" :class="val.class3">
-            <div><img src="@/assets/img/phone.png" alt="" /> 联系电话</div>
+            <div>
+              <a :href="'tel:' + val.phone"
+                ><img src="@/assets/img/phone.png" alt="" /> 联系电话</a
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -139,12 +143,16 @@
               <router-link to="/news">夜场新闻</router-link>
             </li>
             <li>
-              <!-- <a href="">联系我们</a> -->
-              <router-link to="/contact">联系我们</router-link>
+              <router-link to="/show">模特展示</router-link>
             </li>
             <li>
-              <!-- <a href="">模特展示</a> -->
-              <router-link to="/show">模特展示</router-link>
+              <router-link to="/contact/2">联系我们</router-link>
+            </li>
+            <li>
+              <router-link to="/contact/1">关于我们</router-link>
+            </li>
+            <li>
+              <router-link to="/contact/3">招聘要求</router-link>
             </li>
           </ul>
         </div>
@@ -200,7 +208,7 @@ export default {
       var classFlag3 = true;
       var classFlag4 = true;
       // var classFlag2 = true;
-      if (top > this.$refs.scroll[1].getBoundingClientRect().top - 60) {
+      if (top > this.$refs.scroll[1].getBoundingClientRect().top - 160) {
         if (this.scrollFlag) {
           this.scrollFlag = false;
           this.environmentListL[1].class = "cd-environment-m";
@@ -261,15 +269,13 @@ export default {
     },
   },
   async created() {
-    await this.$axios
-      .get("index.php/api/carousel_map/list?pageNumber=1&pageSize=6")
-      .then((val) => {
-        val.data.forEach((val) => {
-          val.image = this.$store.state.domainName + val.image;
-        });
-        this.bannerSrc = val.data[0].image;
-        this.bannerTxt = val.data[0].content;
+    await this.$axios.get("index.php/api/carousel_map/list").then((val) => {
+      val.data.forEach((val) => {
+        val.image = this.$store.state.domainName + val.image;
       });
+      this.bannerSrc = val.data[0].image;
+      this.bannerTxt = val.data[0].content;
+    });
     await this.$axios
       .get("index.php/api/ambient/list?pageNumber=1&pageSize=6")
       .then((val) => {
@@ -514,12 +520,14 @@ export default {
       justify-content: center;
       align-items: center;
       background-color: #c00;
-      color: #fff;
-      font-size: (32 / @vw);
       border-radius: (5 / @vw);
-      img {
-        .setwh(32,32);
-        margin-right: (10 / @vw);
+      a {
+        color: #fff;
+        font-size: (32 / @vw);
+        img {
+          .setwh(32,32);
+          margin-right: (10 / @vw);
+        }
       }
     }
   }
@@ -707,7 +715,8 @@ export default {
     width: 100%;
     overflow: hidden;
     background-color: #fff;
-    height: (986 / @vw);
+    // height: (986 / @vw);
+    min-height: (400 / @vw);
     margin-top: (20 / @vw);
     // box-sizing: border-box;
     ul {

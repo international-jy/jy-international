@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import contact from "./contact";
 import news from "./news";
 import show from "./show";
 import main from "./main";
@@ -17,10 +16,12 @@ const routes = [
     path: "/",
     component: () => import("../views/index.vue"),
     redirect: "/home",
+    meta: {
+      keepAlive: true,
+    },
     children: [
       main,
       news,
-      contact,
       show,
       {
         path: "news/list",

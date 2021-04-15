@@ -3,7 +3,7 @@
     <!-- 关于我们  content -->
     <div class="cc-regard">
       <div class="icon">
-        <div class="regard-return" @click="onClickGo()">
+        <div class="regard-return" @click="$router.go(-1)">
           <img src="@/assets/img/jiantou.png" alt="" />
         </div>
         <div class="regard-dl">
@@ -13,9 +13,13 @@
           <img src="@/assets/img/lianjie.png" alt="" />
         </div>
       </div>
-      <pre class="regard-pre" v-for="(value, index) in gycontent" :key="index">
+      <!-- <pre class="regard-pre" v-for="(value, index) in gycontent" :key="index">
         {{ value.content }}
-      </pre>
+      </pre> -->
+
+      <div class="markdown-body">
+        <VueMarkdown :source="value"></VueMarkdown>
+      </div>
 
       <div class="thickness" :class="dnClass ? 'dn' : ''" @click="addClass">
         <div class="thickness-logo">
@@ -72,12 +76,13 @@
 <style lang="less" scope>
 @import "../../assets/less/base.less";
 // 关于我们
-.regard-pre {
+.markdown-body {
   padding-top: (150 / @vw);
   width: 100%;
   height: auto;
   white-space: pre-wrap;
   box-sizing: border-box;
+  margin: 0;
 }
 
 .dn {
@@ -226,9 +231,14 @@
 </style>
 
 <script>
+import VueMarkdown from "vue-markdown";
 export default {
+  components: {
+    VueMarkdown, // 注入组件
+  },
   data: function () {
     return {
+      value: "", // value的值是要解析的markdown数据
       dnClass: true,
       flag: true,
       dataId: null,
@@ -239,11 +249,13 @@ export default {
   },
   created() {
     this.dataId = Number(this.$route.query.id);
-    console.log(this.dataId);
+    // console.log(this.dataId);
     let that = this;
     this.$axios.get("/index.php/api/about_us/list").then((val) => {
       let arr = val.data.find((val) => val.id == 1);
       that.gycontent.push(arr);
+      that.value = arr.content;
+      // console.log(arr.content);
     });
     this.$axios.get("index.php/api/footer/get").then((val) => {
       this.footerTel = val.data.phone;
@@ -263,11 +275,6 @@ export default {
     },
     onClickOr: function () {
       this.flag = !this.flag;
-    },
-    onClickGo: function () {
-      this.$router.push({
-        path: "/contact",
-      });
     },
   },
 };

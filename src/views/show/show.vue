@@ -3,8 +3,7 @@
     <!-- 顶部 开始 -->
     <div class="top">
       <div class="top-t">
-        <!-- <a href="javaScript:;" @click="go(-1)">＜</a> -->
-        <div @click="go(-1)"><img src="@/assets/img/fh.png" class="fh" /></div>
+        <div @click="go"><img src="@/assets/img/fh.png" class="fh" /></div>
         <div class="top-btn" @click="pop">
           <div class="inputm">
             <img src="@/assets/img/seek.png" />
@@ -18,7 +17,7 @@
           <a href="javaScript:;" class="top_user1">
             <img src="@/assets/img/pro_user.png" />
           </a>
-          <a href="/home" class="top_home1" @click="go(-1)">
+          <a href="/home" class="top_home1" @click="go">
             <img src="@/assets/img/pro_home.png" />
           </a>
         </div>
@@ -34,6 +33,7 @@
             <div class="pop-up-t animate__animated animate__backInLeft">
               <img src="@/assets/img/seek.png" />
               <input
+                name="searchStr"
                 type="text"
                 placeholder="请输入您要搜索的内容"
                 @keydown.enter="getName"
@@ -115,12 +115,16 @@
               <router-link to="/news">夜场新闻</router-link>
             </li>
             <li>
-              <!-- <a href="">联系我们</a> -->
-              <router-link to="/contact">联系我们</router-link>
+              <router-link to="/show">模特展示</router-link>
             </li>
             <li>
-              <!-- <a href="">模特展示</a> -->
-              <router-link to="/show">模特展示</router-link>
+              <router-link to="/contact/2">联系我们</router-link>
+            </li>
+            <li>
+              <router-link to="/contact/1">关于我们</router-link>
+            </li>
+            <li>
+              <router-link to="/contact/3">招聘要求</router-link>
             </li>
           </ul>
         </div>
@@ -245,6 +249,10 @@ body {
           height: (22 / @vw);
           display: block;
           margin-right: (12 / @vw);
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
         .top_share1 {
           width: (44 / @vw);
@@ -596,7 +604,6 @@ export default {
       )
       .then((val) => {
         that.modelList = val.data;
-        console.log(val);
       });
 
     this.$axios.get("index.php/api/footer/get").then((val) => {
@@ -611,25 +618,27 @@ export default {
     getName: function () {
       // console.log(1111);
       // var title = '';
-      if (!this.title) {
-        this.modelList.forEach((val) => {
-          // console.log();
-          if (val.title.indexOf(this.seachName) != -1) {
-            this.title = this.seachName;
-          }
-        });
-        // console.log(111);
-      }
-      if (this.title) {
-        //  console.log(111);
-        this.$router.push({
-          path: "/show/search",
-          query: {
-            titleName: this.title,
-          },
-        });
-      } else {
-        this.$router.push({ path: "/show/search2" });
+      if (this.seachName) {
+        if (!this.title) {
+          this.modelList.forEach((val) => {
+            // console.log();
+            if (val.title.indexOf(this.seachName) != -1) {
+              this.title = this.seachName;
+            }
+          });
+          // console.log(111);
+        }
+        if (this.title) {
+          //  console.log(111);
+          this.$router.push({
+            path: "/show/search",
+            query: {
+              titleName: this.title,
+            },
+          });
+        } else {
+          this.$router.push({ path: "/show/search2" });
+        }
       }
     },
     onClickModel: function (id) {
@@ -642,8 +651,10 @@ export default {
 
       //  console.log(this.dataId);
     },
-    go(step) {
-      this.$router.go(step);
+    go() {
+      this.$router.push({
+        path: "/home",
+      });
     },
     high() {
       this.blueClass = !this.blueClass;
@@ -677,7 +688,6 @@ export default {
         )
         .then((val) => {
           that.modelList.push(...val.data);
-          console.log(val);
         });
     },
 
@@ -714,6 +724,9 @@ export default {
     // console.log(this.$refs.backTopBox);
     // this.$refs.backTopBox.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
     window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
+  },
+  activated() {
+    this.seachName = "";
   },
 };
 </script>

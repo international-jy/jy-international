@@ -24,7 +24,7 @@
       >
         <div class="search-content">
           <div class="search-list-l">
-            <img :src="value.image" />
+            <img :src="domeImage + value.image" />
           </div>
           <div class="search-list-r">
             <p class="s-l-t">{{ value.title }}</p>
@@ -69,7 +69,7 @@
     <!-- 微信二维码 -->
     <div class="or-code" :class="flag ? 'dn' : ''" @click="onClickOr">
       <div class="white">
-        <img src="@/assets/img/code.png" alt="" />
+        <img :src="footerImage" alt="" />
         <p>长按识别二维码</p>
       </div>
     </div>
@@ -131,6 +131,7 @@
 }
 // 内容
 .search-list {
+  padding-bottom: (88 / @vw);
   li {
     margin-bottom: 10px;
     overflow: hidden;
@@ -238,23 +239,34 @@ export default {
       seachName: "",
       titles: null,
       seachFlag: true,
+      domeImage: null,
+      footerImage: "",
     };
   },
   created() {
     this.title = this.$route.query.titleName;
+    this.domeImage = this.$store.state.domainName;
     this.$axios.get("/index.php/api/models/list").then((val) => {
       val.data.forEach((value) => {
         if (value.title.indexOf(this.title) != -1) {
           this.modelList.push(value);
+          this.seachFlag = true;
         }
       });
+    });
+    this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
     });
   },
   methods: {
     onClickDelete: function () {
       this.seachName = "";
+      // this.getName();
       if (!this.seachName) {
         this.seachFlag = false;
+      } else {
+        this.seachFlag = true;
       }
     },
     onClickRet: function () {
@@ -262,9 +274,6 @@ export default {
     },
     onClickSetName: function () {
       this.getName();
-    },
-    go(step) {
-      this.$router.go(step);
     },
     onClickModel: function (id) {
       this.$router.push({
@@ -281,24 +290,48 @@ export default {
       this.flag = !this.flag;
     },
     getName: function () {
-      if (!this.titles) {
-        this.modelList.forEach((val) => {
-          if (val.title.indexOf(this.seachName) != -1) {
-            this.titles = this.seachName;
-          }
-        });
-      }
-      if (this.titles) {
-        this.$router.push({
-          path: "/show/search",
-          query: {
-            titleName: this.title,
-          },
-        });
-      } else {
-        this.$router.push({ path: "/show/search2" });
+      if (this.seachName) {
+        this.titles = null;
+        if (!this.titles) {
+          this.modelList.forEach((val) => {
+            if (val.title.indexOf(this.seachName) != -1) {
+              this.titles = this.seachName;
+            } else {
+              this.titles = "";
+            }
+          });
+        }
+        if (this.titles) {
+          this.seachFlag = true;
+          this.$router.push({
+            path: "/show/search",
+            query: {
+              titleName: this.title,
+            },
+          });
+          this.seachName = "";
+        } else {
+          this.$router.push({ path: "/show/search2" });
+          this.seachName = "";
+        }
       }
     },
+  },
+  activated() {
+    this.title = this.$route.query.titleName;
+    this.domeImage = this.$store.state.domainName;
+    this.$axios.get("/index.php/api/models/list").then((val) => {
+      val.data.forEach((value) => {
+        if (value.title.indexOf(this.title) != -1) {
+          this.modelList.push(value);
+          this.seachFlag = true;
+        }
+      });
+    });
+    this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
+    });
   },
 };
 </script>
