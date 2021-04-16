@@ -417,17 +417,17 @@ export default {
       page: null,
     };
   },
-  mounted: function () {
+  async mounted() {
     let that = this;
     this.id = Number(this.$route.query.id);
-    this.$axios
-      .get("/index.php/api/journalism/list?journalismtypeid=" + that.id)
+    await this.$axios
+      .get("/index.php/api/journalism/list?id=" + that.id)
       .then((res) => {
         this.activeDate = res.data[0];
         this.hide = true;
         this.value = this.activeDate.content;
       });
-    this.$axios.get("index.php/api/footer/get").then((val) => {
+    await this.$axios.get("index.php/api/footer/get").then((val) => {
       this.footerTel = val.data.phone;
       this.footerImage = this.$store.state.domainName + val.data.image;
     });
@@ -504,6 +504,21 @@ export default {
         path: "/news",
       });
     },
+  },
+  async activated() {
+    let that = this;
+    this.id = Number(this.$route.query.id);
+    await this.$axios
+      .get("/index.php/api/journalism/list?id=" + that.id)
+      .then((res) => {
+        this.activeDate = res.data[0];
+        this.hide = true;
+        this.value = this.activeDate.content;
+      });
+    await this.$axios.get("index.php/api/footer/get").then((val) => {
+      this.footerTel = val.data.phone;
+      this.footerImage = this.$store.state.domainName + val.data.image;
+    });
   },
 };
 </script>

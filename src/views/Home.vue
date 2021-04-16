@@ -271,20 +271,11 @@ export default {
         },
       });
     },
-    onClickSkip: function () {
-      // console.log(id);
-      this.$axios
-        .get("index.php/api/journalism/list?pageNumber=1&pageSize=6")
-        .then((value) => {
-          value.data.forEach((value) => {
-            this.$router.push({
-              path: "/news/list",
-              query: {
-                id: value.id,
-              },
-            });
-          });
-        });
+    onClickSkip: function (id) {
+      this.$router.push({
+        path: "/news/list",
+        query: { id: id },
+      });
     },
   },
   async created() {
