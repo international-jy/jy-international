@@ -118,6 +118,9 @@
               <router-link to="/show">模特展示</router-link>
             </li>
             <li>
+              <router-link to="/environment">环境展示</router-link>
+            </li>
+            <li>
               <router-link to="/contact/2">联系我们</router-link>
             </li>
             <li>

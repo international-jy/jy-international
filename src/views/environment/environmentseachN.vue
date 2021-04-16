@@ -32,7 +32,7 @@ export default {
       seachName: "",
       title: "",
       modelList: [],
-      seachFlag: false,
+      seachFlag: true,
     };
   },
   methods: {
@@ -54,7 +54,7 @@ export default {
         }
         if (this.title) {
           this.$router.push({
-            path: "/show/search",
+            path: "/environment/environmentseach",
             query: {
               titleName: this.title,
             },
@@ -62,7 +62,7 @@ export default {
           this.seachName = "";
         } else {
           this.seachFlag = true;
-          this.$router.push({ path: "/show/search2" });
+          this.$router.push({ path: "/environment/environmentseachN" });
           this.seachName = "";
         }
       }
@@ -71,14 +71,23 @@ export default {
       this.getName();
     },
     onClickRet: function () {
-      this.$router.push({ path: "/show" });
+      this.$router.push({ path: "/environment" });
     },
   },
   created() {
     let that = this;
-    this.$axios.get("/index.php/api/models/list").then((val) => {
-      that.modelList = val.data;
-    });
+    this.$axios
+      .get("index.php/api/ambient/list?pageNumber=1&pageSize=6")
+      .then((val) => {
+        that.modelList = val.data;
+      });
+    this.$axios
+      .get("index.php/api/ambient/list?pageNumber=1&pageSize=6")
+      .then((val) => {
+        val.data.forEach((item) => {
+          that.modelList.push(item);
+        });
+      });
   },
 };
 </script>
