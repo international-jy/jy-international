@@ -514,17 +514,16 @@ body {
         }
       }
       p {
-        font-size: (22 / @vw);
+        font-size: (16 / @vw);
         color: #222;
-        line-height: (24 / @vw);
+        line-height: (20 / @vw);
         padding-left: (10 / @vw);
       }
       span {
-        font-size: (26 / @vw);
+        font-size: (18 / @vw);
         font-weight: 600;
         color: #f00;
         padding-left: (10 / @vw);
-        line-height: (28 / @vw);
       }
     }
   }
@@ -552,18 +551,19 @@ export default {
       envirList: [],
     };
   },
-  async created() {
+  created() {
     let that = this;
-    await this.$axios
+    this.$axios
       .get("index.php/api/ambient/list?pageNumber=1&pageSize=6")
       .then((val) => {
         val.data.forEach((item) => {
           item.image = this.$store.state.domainName + item.image;
         });
         that.envirList = val.data;
+        // console.log(val.data);
       });
 
-    await this.$axios.get("index.php/api/footer/get").then((val) => {
+    this.$axios.get("index.php/api/footer/get").then((val) => {
       this.footerTel = val.data.phone;
       this.footerImage = this.$store.state.domainName + val.data.image;
     });
@@ -575,7 +575,7 @@ export default {
     getName: function () {
       if (this.seachName) {
         if (!this.title) {
-          this.envirList.forEach((val) => {
+          this.modelList.forEach((val) => {
             if (val.title.indexOf(this.seachName) != -1) {
               this.title = this.seachName;
             }
@@ -583,13 +583,13 @@ export default {
         }
         if (this.title) {
           this.$router.push({
-            path: "/environment/environmentseach",
+            path: "/show/search",
             query: {
               titleName: this.title,
             },
           });
         } else {
-          this.$router.push({ path: "/environment/environmentseachN" });
+          this.$router.push({ path: "/show/search2" });
         }
       }
     },
