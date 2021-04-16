@@ -89,6 +89,9 @@ export default {
         });
       });
   },
+  activated() {
+    this.seachFlag = true;
+  },
 };
 </script>
 <style lang="less" scope>
