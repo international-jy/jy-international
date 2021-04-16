@@ -118,6 +118,9 @@
               <router-link to="/show">模特展示</router-link>
             </li>
             <li>
+              <router-link to="/environment">环境展示</router-link>
+            </li>
+            <li>
               <router-link to="/contact/2">联系我们</router-link>
             </li>
             <li>
@@ -583,13 +586,13 @@ export default {
         }
         if (this.title) {
           this.$router.push({
-            path: "/show/search",
+            path: "/environment/environmentseach",
             query: {
               titleName: this.title,
             },
           });
         } else {
-          this.$router.push({ path: "/show/search2" });
+          this.$router.push({ path: "/environment/environmentseachN" });
         }
       }
     },
@@ -626,19 +629,6 @@ export default {
     },
     onClickOr: function () {
       this.flag = !this.flag;
-    },
-    load() {
-      let that = this;
-      this.num++;
-      this.$axios
-        .get(
-          "/index.php/api/models/list?pageNumber=" +
-            that.num +
-            "&pageSize=10&typeid=1,2"
-        )
-        .then((val) => {
-          that.modelList.push(...val.data);
-        });
     },
   },
   activated() {

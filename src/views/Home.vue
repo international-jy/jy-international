@@ -29,7 +29,7 @@
         </div>
         <div v-for="val in environmentListL" :key="val.id" ref="scroll">
           <div>
-            <div class="environment">
+            <div class="environment" @click="onClickEnvi(val.id)">
               <div class="cd-environment" :class="val.class">
                 <div class="cd-title" :class="val.class2">
                   <div>
@@ -193,6 +193,14 @@ export default {
     };
   },
   methods: {
+    onClickEnvi: function (id) {
+      this.$router.push({
+        path: "/environment/envichild",
+        query: {
+          id: id,
+        },
+      });
+    },
     onClickNav: function () {
       this.navFlag = !this.navFlag;
     },

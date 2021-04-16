@@ -240,8 +240,6 @@ export default {
         // });
 
         this.hide = true;
-
-        window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
       });
     await this.$axios.get("index.php/api/footer/get").then((val) => {
       this.footerImage = this.$store.state.domainName + val.data.image;
@@ -274,12 +272,12 @@ export default {
     },
     // 点击返回上一个页面
     onClickBackGo() {
-      this.$router.push("/show");
+      this.$router.push("/environment");
     },
     async getData(num) {
       this.modelListAll.splice(0, this.modelListAll.length);
       await this.$router.push({
-        path: "/show/model",
+        path: "/environment/envichild",
         replace: true,
         query: {
           id: num,
@@ -289,7 +287,7 @@ export default {
       this.dataId = Number(this.$route.query.id);
       let that = this;
       await this.$axios
-        .get("/index.php/api/models/list?id=" + num)
+        .get("/index.php/api/ambient/get?id=" + num)
         .then((val) => {
           // console.log(val.data);
           val.data.forEach((val) => {
@@ -341,8 +339,8 @@ export default {
     },
 
     onClickTiaoTop: function () {
-      var midHeight = this.$refs.mid[0].offsetHeight;
-      var modelHeight = this.$refs.modelTop[0].offsetHeight;
+      var midHeight = this.$refs.mid.offsetHeight;
+      var modelHeight = this.$refs.modelTop.offsetHeight;
 
       window.scrollTo(0, midHeight - modelHeight);
     },
@@ -369,8 +367,8 @@ export default {
     //滚动监听
     scrollHandle(e) {
       let top = e.srcElement.scrollingElement.scrollTop; // 获取页面滚动高度
-      var modelHeight = this.$refs.modelTop[0].offsetHeight;
-      var midHeight = this.$refs.mid[0].offsetHeight;
+      var modelHeight = this.$refs.modelTop.offsetHeight;
+      var midHeight = this.$refs.mid.offsetHeight;
       if (top > modelHeight) {
         this.classFlag5 = false;
       } else {
@@ -386,6 +384,9 @@ export default {
   mounted() {},
   destroyed() {
     window.removeEventListener("scroll", this.scrollHandle); //移除页面滚动事件
+  },
+  activated() {
+    window.addEventListener("scroll", this.scrollHandle); //绑定页面滚动事件
   },
 };
 </script>
