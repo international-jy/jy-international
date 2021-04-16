@@ -560,7 +560,7 @@ export default {
           item.image = this.$store.state.domainName + item.image;
         });
         that.envirList = val.data;
-        console.log(val.data);
+        // console.log(val.data);
       });
 
     this.$axios.get("index.php/api/footer/get").then((val) => {
