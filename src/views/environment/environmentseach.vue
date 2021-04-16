@@ -28,7 +28,7 @@
           </div>
           <div class="search-list-r">
             <p class="s-l-t">{{ value.title }}</p>
-            <p class="s-l-b">￥{{ value.price }}</p>
+            <p class="s-l-b">暂无价格</p>
           </div>
         </div>
       </li>
