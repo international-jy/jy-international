@@ -272,7 +272,7 @@ export default {
           that.chuanid = val.id;
           val.image = this.$store.state.domainName + val.image;
         });
-        console.log(that.modelList);
+        // console.log(that.modelList);
         // that.modelList.push(arr.find((value) => value.id == that.dataId));
         // arr.forEach((e) => {
         //   if (e.id != that.dataId) {
@@ -289,7 +289,7 @@ export default {
     await this.$axios
       .get("index.php/api/ambient/list?pageNumber=1&pageSize=6")
       .then((val) => {
-        console.log(val.data);
+        // console.log(val.data);
         val.data.forEach((item) => {
           item.image = this.$store.state.domainName + item.image;
         });

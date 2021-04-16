@@ -577,18 +577,18 @@ export default {
     },
     getName: function () {
       if (this.seachName) {
-        console.log(this.title);
+        // console.log(this.title);
         if (!this.title) {
           this.envirList.forEach((val) => {
             if (val.title.indexOf(this.seachName) != -1) {
               this.title = this.seachName;
-              console.log(111);
+              // console.log(111);
             }
           });
         }
-        console.log(this.title);
+        // console.log(this.title);
         if (this.title) {
-          console.log(222);
+          // console.log(222);
           this.$router.push({
             path: "/environment/environmentseach",
             query: {
@@ -596,7 +596,7 @@ export default {
             },
           });
         } else {
-          console.log(333);
+          // console.log(333);
           this.$router.push({ path: "/environment/environmentseachN" });
         }
       }

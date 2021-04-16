@@ -382,7 +382,7 @@ export default {
       )
       .then((res) => {
         this.newsList = res.data;
-        console.log(res.data);
+        // console.log(res.data);
         this.hide = true;
       });
     let footer = this.$refs.footer.offsetHeight;
