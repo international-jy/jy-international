@@ -104,6 +104,7 @@
         </div>
       </div>
     </div>
+    <!-- 底部 -->
     <div class="pql-btm-fixed">
       <ul>
         <li>
@@ -738,8 +739,8 @@ export default {
     margin-top: (20 / @vw);
     // box-sizing: border-box;
     ul {
-      animation: move 20s linear infinite;
-      transition: all 0.5s;
+      // animation: move 20s linear infinite;
+      // transition: all 0.5s;
       li {
         opacity: 0;
         border-bottom: 1px solid #ededed;
@@ -761,10 +762,10 @@ export default {
     }
     .newsList {
       li:nth-of-type(2n - 1) {
-        animation: mover 1s 1.8s forwards;
+        animation: mover 1s 2.2s forwards;
       }
       li:nth-of-type(2n) {
-        animation: movel 1s 1.8s forwards;
+        animation: movel 1s 2.4s forwards;
       }
     }
   }

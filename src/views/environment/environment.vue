@@ -139,7 +139,7 @@
       <!-- 高端模特 开始 -->
       <div class="high-end">
         <a href="javaScript:;" @click="high" :class="blueClass ? '' : 'hight'"
-          >高端模特</a
+          >夜总会环境</a
         >
       </div>
       <!-- 高端模特 结束 -->
