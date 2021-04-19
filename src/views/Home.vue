@@ -18,7 +18,9 @@
         <a href="javascript:;">
           <img :src="bannerSrc" alt="" />
         </a>
-        <span class="banner-text">{{ bannerTxt }}</span>
+        <span class="banner-text"
+          ><VueMarkdown :source="bannerTxt"></VueMarkdown
+        ></span>
       </div>
       <!-- 环境部分 -->
       <div class="environment-box">
@@ -172,7 +174,11 @@
   </div>
 </template>
 <script>
+import VueMarkdown from "vue-markdown";
 export default {
+  components: {
+    VueMarkdown, // 注入组件
+  },
   data() {
     return {
       bannerSrc: "",
@@ -331,7 +337,7 @@ export default {
 
 <style lang="less" scope>
 @import "../assets/less/base.less";
-@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+// @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 @keyframes opcityMove {
   0% {
     opacity: 0;
@@ -408,7 +414,7 @@ export default {
     img {
       display: block;
       width: 100%;
-      height: (400 / @vw);
+      // height: (400 / @vw);
     }
   }
   .banner-text {
@@ -416,15 +422,15 @@ export default {
     left: 0;
     top: 50%;
     width: 100%;
-    height: 30%;
+    // height: 30%;
     background-color: rgba(102, 0, 0, 0.75);
     transform: translateY(-50%);
     font-size: (22 / @vw);
     color: #fff;
-    text-align: left;
-    text-indent: 1.5rem;
-    line-height: (36 / @vw);
-    padding: 0 (130 / @vw);
+    // text-align: left;
+    // text-indent: 1.5rem;
+    // line-height: (36 / @vw);
+    padding: (10 / @vw) (130 / @vw);
     box-sizing: border-box;
   }
 }

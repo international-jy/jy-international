@@ -84,7 +84,7 @@ export default {
 </script>
 <style lang="less" scope>
 @import "../../assets/less/base.less";
-@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+// @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 // 搜索
 .search {
   height: (60 / @vw);

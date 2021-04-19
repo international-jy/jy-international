@@ -163,7 +163,7 @@
 
 <style lang="less" scope>
 @import "../../assets/less/base.less";
-@import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
+// @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 body {
   height: 100%;
 }
